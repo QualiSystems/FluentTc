@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="RemoteTc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TcAgent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="igor.txt" />
