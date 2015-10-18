@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FluentTc
 {
-    public class RemoteTc
+    public partial class RemoteTc
     {
         public RemoteTc Connect(Action<TeamCityConfigurationBuilder> connect)
         {

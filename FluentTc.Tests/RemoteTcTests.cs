@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace FluentTc.Tests
 {
@@ -9,6 +10,11 @@ namespace FluentTc.Tests
         [Ignore]
         public void Sample_Usage()
         {
+            // Agents
+
+            var tcAgents = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
+                                    .GetAgents(h => h.Connected().Authorized().Enabled());
+
             // Builds
             new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetBuilds(h => h.BelongingToBuildConfiguration(r => r.ConfigurationId(123456)));
