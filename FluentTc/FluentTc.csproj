@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EasyHttp">
-      <HintPath>packages\EasyHttp.1.6.67.0\lib\net40\EasyHttp.dll</HintPath>
-    </Reference>
-    <Reference Include="JsonFx">
-      <HintPath>packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -72,7 +66,7 @@
     <Compile Include="TeamCityDateFilter.cs" />
     <Compile Include="TeamcityJsonEncoderDecoderConfiguration.cs" />
   </ItemGroup>
-  <ItemGroup>
+ <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
