@@ -30,8 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyHttp">
+      <HintPath>packages\EasyHttp.1.6.67.0\lib\net40\EasyHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="JsonFx">
+      <HintPath>packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,9 +46,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildsRetriever.cs" />
+    <Compile Include="Domain\Build.cs" />
+    <Compile Include="Domain\BuildWrapper.cs" />
+    <Compile Include="Locators\AgentLocatorBuilder.cs" />
+    <Compile Include="BuildConfiguration.cs" />
+    <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />
+    <Compile Include="Locators\BuildConfigurationPropertyBuilder.cs" />
+    <Compile Include="Locators\BuildHavingBuilder.cs" />
+    <Compile Include="BuildNotFoundException.cs" />
+    <Compile Include="Locators\BuildParametersBuilder.cs" />
+    <Compile Include="Locators\BuildParameterValueBuilder.cs" />
+    <Compile Include="Locators\BuildProjectHavingBuilder.cs" />
+    <Compile Include="Locators\BuildIncludeBuilder.cs" />
+    <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
+    <Compile Include="Locators\CountBuilder.cs" />
+    <Compile Include="ITeamCityConnectionDetails.cs" />
+    <Compile Include="Locators\StringExtensions.cs" />
+    <Compile Include="MoreThanOneBuildFoundException.cs" />
     <Compile Include="RemoteTc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TeamCityCaller.cs" />
+    <Compile Include="Locators\TeamCityConfigurationBuilder.cs" />
+    <Compile Include="TeamCityConnectionDetails.cs" />
+    <Compile Include="TeamCityDateFilter.cs" />
+    <Compile Include="TeamcityJsonEncoderDecoderConfiguration.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
