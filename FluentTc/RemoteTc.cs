@@ -9,18 +9,14 @@ namespace FluentTc
     public class RemoteTc
     {
         private ITeamCityCaller m_Caller;
-        private readonly BuildsRetriever m_BuildsRetriever;
-
-        public RemoteTc()
-        {
-            m_BuildsRetriever = new BuildsRetriever(m_Caller);
-        }
+        private IBuildsRetriever m_BuildsRetriever;
 
         public RemoteTc Connect(Action<TeamCityConfigurationBuilder> connect)
         {
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
-            connect.Invoke(teamCityConfigurationBuilder);
+            connect(teamCityConfigurationBuilder);
             m_Caller = new TeamCityCaller(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
+            m_BuildsRetriever = new BuildsRetriever(m_Caller);
             return this;
         }
 

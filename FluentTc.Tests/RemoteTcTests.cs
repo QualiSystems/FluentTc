@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentTc.Domain;
+using FluentTc.Locators;
 using NUnit.Framework;
 
 namespace FluentTc.Tests

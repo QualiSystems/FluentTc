@@ -5,7 +5,12 @@ using FluentTc.Locators;
 
 namespace FluentTc
 {
-    internal class BuildsRetriever
+    internal interface IBuildsRetriever
+    {
+        List<Build> GetBuilds(Action<BuildHavingBuilder> having, Action<CountBuilder> count, Action<BuildIncludeBuilder> include);
+    }
+
+    internal class BuildsRetriever : IBuildsRetriever
     {
         private readonly ITeamCityCaller m_Caller;
 

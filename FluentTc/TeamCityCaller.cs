@@ -2,8 +2,11 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Authentication;
+using System.Web;
 using EasyHttp.Http;
 using EasyHttp.Infrastructure;
+using HttpException = EasyHttp.Infrastructure.HttpException;
+using HttpResponse = EasyHttp.Http.HttpResponse;
 
 namespace FluentTc
 {
