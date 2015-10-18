@@ -7,7 +7,7 @@ namespace FluentTc
 {
     internal interface IBuildsRetriever
     {
-        List<Build> GetBuilds(Action<BuildHavingBuilder> having, Action<CountBuilder> count, Action<BuildIncludeBuilder> include);
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count, Action<BuildIncludeBuilder> include);
     }
 
     internal class BuildsRetriever : IBuildsRetriever
@@ -21,7 +21,7 @@ namespace FluentTc
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
         }
 
-        public List<Build> GetBuilds(Action<BuildHavingBuilder> having, Action<CountBuilder> count, Action<BuildIncludeBuilder> include)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count, Action<BuildIncludeBuilder> include)
         {
             var buildHavingBuilder = m_BuildHavingBuilderFactory.CreateBuildHavingBuilder();
             having(buildHavingBuilder);

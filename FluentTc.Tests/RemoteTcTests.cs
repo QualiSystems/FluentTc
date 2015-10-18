@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentTc.Domain;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FluentTc.Tests
 {

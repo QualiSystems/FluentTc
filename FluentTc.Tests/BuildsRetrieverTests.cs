@@ -20,8 +20,11 @@ namespace FluentTc.Tests
                         A<object[]>._))
                 .Returns(new BuildWrapper() {Count = "0"});
 
+            var buildHavingBuilder = A.Fake<IBuildHavingBuilder>();
+            A.CallTo(() => buildHavingBuilder.GetLocator()).Returns("id:123");
+
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
-            A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(new BuildHavingBuilder());
+            A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(buildHavingBuilder);
 
             var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory);
 

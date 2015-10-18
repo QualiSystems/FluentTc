@@ -3,16 +3,49 @@ using System.Collections.Generic;
 
 namespace FluentTc.Locators
 {
-    public class BuildHavingBuilder
+    public interface IBuildHavingBuilder
+    {
+        BuildHavingBuilder BuildConfiguration(
+            Action<BuildConfigurationHavingBuilder> havingBuildConfig);
+
+        BuildHavingBuilder Id(int buildId);
+        BuildHavingBuilder Tags(params string [] tags);
+        BuildHavingBuilder Status(BuildStatus buildStatus);
+        BuildHavingBuilder TriggeredBy(UserHavingBuilder buildStatus);
+        BuildHavingBuilder Personal();
+        BuildHavingBuilder NotPersonal();
+        BuildHavingBuilder Cancelled();
+        BuildHavingBuilder NotCancelled();
+        BuildHavingBuilder Running();
+        BuildHavingBuilder NotRunning();
+        BuildHavingBuilder Pinned();
+        BuildHavingBuilder NotPinned();
+        BuildHavingBuilder Branch(Action<BranchHavingBuilder> branchHavingBuilder);
+        BuildHavingBuilder AgentName(string agentName);
+        BuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder);
+        BuildHavingBuilder SinceDate(DateTime dateTime);
+        BuildHavingBuilder Project(Action<BuildProjectHavingBuilder> projectHavingBuilder);
+        string GetLocator();
+    }
+
+    public class BuildHavingBuilder : IBuildHavingBuilder
     {
         private const string DateFormat = "yyyyMMddTHHmmsszz00";
 
         private readonly List<string> m_Having = new List<string>();
+        private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
+        private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
+
+        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory)
+        {
+            m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
+            m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
+        }
 
         public BuildHavingBuilder BuildConfiguration(
             Action<BuildConfigurationHavingBuilder> havingBuildConfig)
         {
-            var buildConfigurationHavingBuilder = new BuildConfigurationHavingBuilder();
+            var buildConfigurationHavingBuilder = m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             havingBuildConfig.Invoke(buildConfigurationHavingBuilder);
             m_Having.AddRange(buildConfigurationHavingBuilder.Get());
             return this;
@@ -104,9 +137,9 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder SinceBuild(Action<BuildHavingBuilder> buildHavingBuilder)
+        public BuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder)
         {
-            var havingBuilder = new BuildHavingBuilder();
+            var havingBuilder = m_BuildHavingBuilderFactory.CreateBuildHavingBuilder();
             buildHavingBuilder(havingBuilder);
             m_Having.Add("sinceBuild:" + havingBuilder.GetLocator());
             return this;
@@ -126,7 +159,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        internal string GetLocator()
+        string IBuildHavingBuilder.GetLocator()
         {
             return string.Join(",", m_Having);
         }

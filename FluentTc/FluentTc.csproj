@@ -58,6 +58,7 @@
     <Compile Include="BuildConfiguration.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />
+    <Compile Include="Locators\BuildConfigurationHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationPropertyBuilder.cs" />
     <Compile Include="Locators\BuildHavingBuilder.cs" />
     <Compile Include="BuildNotFoundException.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Locators\BuildParameterValueBuilder.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilder.cs" />
     <Compile Include="Locators\BuildIncludeBuilder.cs" />
+    <Compile Include="Locators\BuildProjectHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildStatus.cs" />
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />

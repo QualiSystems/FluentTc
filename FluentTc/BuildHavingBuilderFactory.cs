@@ -2,16 +2,23 @@ using FluentTc.Locators;
 
 namespace FluentTc
 {
-    internal interface IBuildHavingBuilderFactory
+    public interface IBuildHavingBuilderFactory
     {
-        BuildHavingBuilder CreateBuildHavingBuilder();
+        IBuildHavingBuilder CreateBuildHavingBuilder();
     }
 
     internal class BuildHavingBuilderFactory : IBuildHavingBuilderFactory
     {
-        public BuildHavingBuilder CreateBuildHavingBuilder()
+        private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
+
+        public BuildHavingBuilderFactory(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory)
         {
-            return new BuildHavingBuilder();
+            m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
+        }
+
+        public IBuildHavingBuilder CreateBuildHavingBuilder()
+        {
+            return new BuildHavingBuilder(m_BuildConfigurationHavingBuilderFactory, this);
         }
     }
 }

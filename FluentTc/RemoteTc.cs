@@ -16,27 +16,27 @@ namespace FluentTc
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
             connect(teamCityConfigurationBuilder);
             m_Caller = new TeamCityCaller(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
-            m_BuildsRetriever = new BuildsRetriever(m_Caller, new BuildHavingBuilderFactory());
+            m_BuildsRetriever = new BuildsRetriever(m_Caller, new BuildHavingBuilderFactory(new BuildConfigurationHavingBuilderFactory(new BuildProjectHavingBuilderFactory()) ));
             return this;
         }
 
-        public List<Build> GetBuilds(Action<BuildHavingBuilder> having, Action<CountBuilder> count,
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count,
             Action<BuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);
         }
 
-        public List<Build> GetBuilds(Action<BuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, _ => _.All(), include);
         }
 
-        public List<Build> GetBuilds(Action<BuildHavingBuilder> having)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having)
         {
             return m_BuildsRetriever.GetBuilds(having, _ => _.All(), _ => _.IncludeDefaults());
         }
 
-        public Build GetBuild(Action<BuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
+        public Build GetBuild(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
         {
             var builds = GetBuilds(having, include);
             if (!builds.Any() ) throw new BuildNotFoundException();
@@ -44,7 +44,7 @@ namespace FluentTc
             return builds.Single();
         }
 
-        public Build GetBuild(Action<BuildHavingBuilder> having)
+        public Build GetBuild(Action<IBuildHavingBuilder> having)
         {
             return GetBuild(having, _ => _.IncludeDefaults());
         }
