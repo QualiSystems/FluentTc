@@ -4,12 +4,12 @@ namespace FluentTc.Locators
 {
     public class BuildConfigurationHavingBuilder
     {
-        public BuildConfigurationHavingBuilder ConfigurationId(int buildConfigurationId)
+        public BuildConfigurationHavingBuilder Id(string buildConfigurationId)
         {
             return this;
         }
 
-        public BuildConfigurationHavingBuilder ConfigurationName(string buildConfigurationName)
+        public BuildConfigurationHavingBuilder Name(string buildConfigurationName)
         {
             return this;
         }

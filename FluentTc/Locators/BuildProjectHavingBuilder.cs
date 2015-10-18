@@ -6,5 +6,10 @@ namespace FluentTc.Locators
         {
             return this;
         }
+
+        internal string GetLocator()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

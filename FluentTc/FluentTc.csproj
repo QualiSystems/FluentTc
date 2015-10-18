@@ -11,6 +11,8 @@
     <AssemblyName>FluentTc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,11 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildHavingBuilderFactory.cs" />
     <Compile Include="BuildsRetriever.cs" />
     <Compile Include="Domain\Build.cs" />
     <Compile Include="Domain\BuildWrapper.cs" />
     <Compile Include="Locators\AgentLocatorBuilder.cs" />
     <Compile Include="BuildConfiguration.cs" />
+    <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationPropertyBuilder.cs" />
     <Compile Include="Locators\BuildHavingBuilder.cs" />
@@ -61,10 +65,12 @@
     <Compile Include="Locators\BuildParameterValueBuilder.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilder.cs" />
     <Compile Include="Locators\BuildIncludeBuilder.cs" />
+    <Compile Include="Locators\BuildStatus.cs" />
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="ITeamCityConnectionDetails.cs" />
     <Compile Include="Locators\StringExtensions.cs" />
+    <Compile Include="Locators\UserHavingBuilder.cs" />
     <Compile Include="MoreThanOneBuildFoundException.cs" />
     <Compile Include="RemoteTc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +84,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

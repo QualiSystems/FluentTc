@@ -1,5 +1,6 @@
 ﻿using FakeItEasy;
 using FluentTc.Domain;
+using FluentTc.Locators;
 using NUnit.Framework;
 
 namespace FluentTc.Tests
@@ -19,7 +20,10 @@ namespace FluentTc.Tests
                         A<object[]>._))
                 .Returns(new BuildWrapper() {Count = "0"});
 
-            var buildsRetriever = new BuildsRetriever(teamCityCaller);
+            var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
+            A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(new BuildHavingBuilder());
+
+            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory);
 
             // Act
             var builds = buildsRetriever.GetBuilds(_ => _.HavingId(123), _ => _.All(), _ => _.IncludeDefaults());

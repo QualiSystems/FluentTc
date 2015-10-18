@@ -16,7 +16,7 @@ namespace FluentTc
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
             connect(teamCityConfigurationBuilder);
             m_Caller = new TeamCityCaller(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
-            m_BuildsRetriever = new BuildsRetriever(m_Caller);
+            m_BuildsRetriever = new BuildsRetriever(m_Caller, new BuildHavingBuilderFactory());
             return this;
         }
 
@@ -64,22 +64,22 @@ namespace FluentTc
             throw new NotImplementedException();
         }
 
-        public BuildConfiguration Run(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters)
+        public BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters)
         {
             throw new NotImplementedException();
         }
 
-        public BuildConfiguration Run(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent)
+        public BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent)
         {
             throw new NotImplementedException();
         }
 
-        public BuildConfiguration Run(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent, Action<BuildParameterValueBuilder> parameters)
+        public BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent, Action<BuildParameterValueBuilder> parameters)
         {
             throw new NotImplementedException();
         }
 
-        public BuildConfiguration Run(Action<BuildConfigurationHavingBuilder> having)
+        public BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having)
         {
             throw new NotImplementedException();
         }
@@ -94,7 +94,7 @@ namespace FluentTc
             throw new NotImplementedException();
         }
 
-        public void AttachToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving)
+        public void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving)
         {
             throw new NotImplementedException();
         }

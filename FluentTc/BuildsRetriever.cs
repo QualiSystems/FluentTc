@@ -13,15 +13,17 @@ namespace FluentTc
     internal class BuildsRetriever : IBuildsRetriever
     {
         private readonly ITeamCityCaller m_Caller;
+        private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
 
-        public BuildsRetriever(ITeamCityCaller caller)
+        public BuildsRetriever(ITeamCityCaller caller, IBuildHavingBuilderFactory buildHavingBuilderFactory)
         {
             m_Caller = caller;
+            m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
         }
 
         public List<Build> GetBuilds(Action<BuildHavingBuilder> having, Action<CountBuilder> count, Action<BuildIncludeBuilder> include)
         {
-            var buildHavingBuilder = new BuildHavingBuilder();
+            var buildHavingBuilder = m_BuildHavingBuilderFactory.CreateBuildHavingBuilder();
             having(buildHavingBuilder);
             var buildIncludeBuilder = new BuildIncludeBuilder();
             include(buildIncludeBuilder);

@@ -11,9 +11,21 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public CountBuilder Top(int count)
+        public CountBuilder Count(int count)
         {
             m_Count = count;
+            return this;
+        }
+
+        public CountBuilder Start(int start)
+        {
+            m_Count = start;
+            return this;
+        }
+
+        public CountBuilder LookupLimit(int lookupLimit)
+        {
+            m_Count = lookupLimit;
             return this;
         }
 
