@@ -26,7 +26,7 @@ namespace FluentTc.Tests
             var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory);
 
             // Act
-            var builds = buildsRetriever.GetBuilds(_ => _.HavingId(123), _ => _.All(), _ => _.IncludeDefaults());
+            var builds = buildsRetriever.GetBuilds(_ => _.Id(123), _ => _.All(), _ => _.IncludeDefaults());
 
             // Assert
             A.CallTo(

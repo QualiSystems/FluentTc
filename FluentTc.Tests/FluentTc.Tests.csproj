@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildsRetrieverTests.cs" />
+    <Compile Include="Locators\BuildHavingBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteTcTests.cs" />
   </ItemGroup>

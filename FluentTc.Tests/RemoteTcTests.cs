@@ -17,19 +17,19 @@ namespace FluentTc.Tests
                 .GetBuilds(h => h.BuildConfiguration(r => r.Id("bt2")));
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.OnlyPersonal(), _ => _.Count(5), _ => _.IncludeDefaults());
+                .GetBuilds(_ => _.Personal(), _ => _.Count(5), _ => _.IncludeDefaults());
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.OnlyPersonal(), _ => _.Count(5), _ => _.IncludeDefaults());
+                .GetBuilds(_ => _.Personal(), _ => _.Count(5), _ => _.IncludeDefaults());
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuilds(_ => _.BuildConfiguration(x => x.Id("bt2")).NotPersonal().NotRunning(), _ => _.Count(5), _ => _.IncludeDefaults());
 
             var build = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuild(_ => _.HavingId(123456), _ => _.IncludeDefaults());
+                .GetBuild(_ => _.Id(123456), _ => _.IncludeDefaults());
 
             build = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuild(_ => _.HavingId(123456));            
+                .GetBuild(_ => _.Id(123456));            
             
 
             // Build configurations

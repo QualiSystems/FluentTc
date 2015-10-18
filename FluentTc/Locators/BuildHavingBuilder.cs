@@ -18,7 +18,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder HavingId(int buildId)
+        public BuildHavingBuilder Id(int buildId)
         {
             m_Having.Add("id:" + buildId);
             return this;
@@ -42,7 +42,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder OnlyPersonal()
+        public BuildHavingBuilder Personal()
         {
             m_Having.Add("personal:" + bool.TrueString);
             return this;
