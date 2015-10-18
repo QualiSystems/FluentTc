@@ -11,7 +11,6 @@ namespace FluentTc.Tests
         public void Sample_Usage()
         {
             // Agents
-
             var tcAgents = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
                                     .GetAgents(h => h.Connected().Authorized().Enabled());
 
