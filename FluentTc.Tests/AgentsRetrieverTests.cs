@@ -9,8 +9,7 @@ namespace FluentTc.Tests
     public class AgentsRetrieverTests
     {
         [Test]
-        [Ignore]
-        public void GetAgents_All_GetFormatCalled() //todo
+        public void GetAgents_AllAuthorized_GetFormatCalled()
         {
             // Arrange
             var teamCityCaller = A.Fake<ITeamCityCaller>();
@@ -27,14 +26,14 @@ namespace FluentTc.Tests
             var agentsRetriever = new AgentsRetriever(teamCityCaller, agentHavingBuilderFactory);
 
             // Act
-            var agents = agentsRetriever.GetAgents(_ => _.OnlyConnected());
+            var agents = agentsRetriever.GetAgents(_ => _.OnlyAuthorized());
 
             // Assert
             A.CallTo(
                 () =>
                     teamCityCaller.GetFormat<AgentWrapper>(
                         "/app/rest/agents?locator={0}",
-                        A<object[]>.That.IsSameSequenceAs(new object[] { })))
+                        A<object[]>.That.IsSameSequenceAs(new object[] { "authorized:True" })))
                 .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
