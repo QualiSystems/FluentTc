@@ -10,6 +10,7 @@ namespace FluentTc
     {
         private ITeamCityCaller m_Caller;
         private IBuildsRetriever m_BuildsRetriever;
+        private IAgentsRetriever m_AgentsRetriever;
 
         public RemoteTc Connect(Action<TeamCityConfigurationBuilder> connect)
         {
@@ -17,6 +18,7 @@ namespace FluentTc
             connect(teamCityConfigurationBuilder);
             m_Caller = new TeamCityCaller(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
             m_BuildsRetriever = new BuildsRetriever(m_Caller, new BuildHavingBuilderFactory(new BuildConfigurationHavingBuilderFactory(new BuildProjectHavingBuilderFactory()) ));
+            m_AgentsRetriever = new AgentsRetriever(m_Caller, new AgentHavingBuilderFactory());
             return this;
         }
 
@@ -24,6 +26,11 @@ namespace FluentTc
             Action<BuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);
+        }
+
+        public List<Agent> GetAgents(Action<IAgentHavingBuilder> having)
+        {
+            return m_AgentsRetriever.GetAgents(having);
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
