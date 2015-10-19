@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentTc.Domain;
+using NUnit.Framework;
 
 namespace FluentTc.Tests
 {
