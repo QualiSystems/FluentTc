@@ -11,7 +11,10 @@ namespace FluentTc.Tests
         {
             // Agents
             var agents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
-                .GetAgents(h => h.OnlyConnected());
+                .GetAgents(h => h.Connected());
+            
+            var enabledAuthorizedButDisconnectedAgents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .GetAgents(h => h.Disconnected().Enabled().Authorized());
 
             // Builds
 
