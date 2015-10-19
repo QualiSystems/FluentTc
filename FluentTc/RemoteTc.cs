@@ -14,8 +14,9 @@ namespace FluentTc
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
             connect(teamCityConfigurationBuilder);
             m_Caller = new TeamCityCaller(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
-            var buildHavingBuilderFactory = new BuildHavingBuilderFactory(new BuildConfigurationHavingBuilderFactory(new BuildProjectHavingBuilderFactory()), new UserHavingBuilderFactory(), new BranchHavingBuilderFactory(), new BuildProjectHavingBuilderFactory());
-            m_BuildsRetriever = new BuildsRetriever(m_Caller, buildHavingBuilderFactory, new CountBuilderFactory(), new BuildIncludeBuilderFactory());
+            var buildProjectHavingBuilderFactory = new BuildProjectHavingBuilderFactory();
+            var buildHavingBuilderFactory = new BuildHavingBuilderFactory(new BuildConfigurationHavingBuilderFactory(buildProjectHavingBuilderFactory), new UserHavingBuilderFactory(), new BranchHavingBuilderFactory(), buildProjectHavingBuilderFactory);
+            m_BuildsRetriever = new BuildsRetriever(m_Caller, buildHavingBuilderFactory, new CountBuilderFactory(), new BuildIncludeBuilderFactory(), buildProjectHavingBuilderFactory);
             m_AgentsRetriever = new AgentsRetriever(m_Caller, new AgentHavingBuilderFactory());
             return new ConnectedTc(m_Caller, m_BuildsRetriever, m_AgentsRetriever);
         }
