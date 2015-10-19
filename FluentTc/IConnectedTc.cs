@@ -8,7 +8,7 @@ namespace FluentTc
 {
     public interface IConnectedTc
     {
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count,
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count,
             Action<BuildIncludeBuilder> include);
 
         List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
@@ -42,7 +42,7 @@ namespace FluentTc
             m_AgentsRetriever = agentsRetriever;
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count,
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count,
     Action<BuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);

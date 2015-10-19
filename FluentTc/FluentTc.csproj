@@ -53,6 +53,7 @@
     <Compile Include="AgentHavingBuilderFactory.cs" />
     <Compile Include="BuildHavingBuilderFactory.cs" />
     <Compile Include="BuildsRetriever.cs" />
+    <Compile Include="CountBuilderFactory.cs" />
     <Compile Include="Domain\Build.cs" />
     <Compile Include="Domain\BuildWrapper.cs" />
     <Compile Include="Domain\Agent.cs" />
