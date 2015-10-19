@@ -71,6 +71,7 @@
     <Compile Include="BuildsRetrieverTests.cs" />
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />
     <Compile Include="Locators\Auto.cs" />
+    <Compile Include="Locators\BranchHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildHavingBuilderTests.cs" />
     <Compile Include="Locators\CountBuilderTests.cs" />
     <Compile Include="Locators\UserHavingBuilderTests.cs" />

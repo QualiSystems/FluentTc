@@ -253,5 +253,25 @@ namespace FluentTc.Tests.Locators
             // Assert
             ((IBuildHavingBuilder) havingBuilder).GetLocator().Should().Be("user:id:123");
         }
+
+        [Test]
+        public void Branch()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var branchHavingBuilder = A.Fake<IBranchHavingBuilder>();
+            A.CallTo(() => branchHavingBuilder.GetLocator()).Returns("name:Branch1");
+
+            var userHavingBuilderFactory = fixture.Freeze<IBranchHavingBuilderFactory>();
+            A.CallTo(() => userHavingBuilderFactory.CreateBranchHavingBuilder()).Returns(branchHavingBuilder);
+
+            var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
+
+            // Act
+            var havingBuilder = buildHavingBuilder.Branch(_ => _.Name("Branch1"));
+
+            // Assert
+            ((IBuildHavingBuilder) havingBuilder).GetLocator().Should().Be("branch:name:Branch1");
+        }
     }
 }
