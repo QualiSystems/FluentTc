@@ -26,19 +26,20 @@ namespace FluentTc
         BuildConfiguration CreateBuildConfiguration(Action<BuildProjectHavingBuilder> having, string buildConfigurationName);
         void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving);
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
+        Project GetProject(Action<IBuildProjectHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
     {
-        private readonly ITeamCityCaller m_Caller;
         private readonly IBuildsRetriever m_BuildsRetriever;
         private readonly IAgentsRetriever m_AgentsRetriever;
+        private readonly IProjectsRetriever m_ProjectsRetriever;
 
-        public ConnectedTc(ITeamCityCaller caller, IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever)
+        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever)
         {
-            m_Caller = caller;
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
+            m_ProjectsRetriever = projectsRetriever;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -129,5 +130,9 @@ namespace FluentTc
             throw new NotImplementedException();
         }
 
+        public Project GetProject(Action<IBuildProjectHavingBuilder> having)
+        {
+            return m_ProjectsRetriever.GetProject(having);
+        }
     }
 }
