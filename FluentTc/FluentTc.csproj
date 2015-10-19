@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentHavingBuilderFactory.cs" />
+    <Compile Include="BuildConfigurationRetriever.cs" />
     <Compile Include="BuildHavingBuilderFactory.cs" />
     <Compile Include="BuildIncludeBuilderFactory.cs" />
     <Compile Include="BuildsRetriever.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Domain\ArtifactDependency.cs" />
     <Compile Include="Domain\Build.cs" />
     <Compile Include="Domain\BuildConfig.cs" />
+    <Compile Include="Domain\BuildConfiguration.cs" />
     <Compile Include="Domain\BuildStep.cs" />
     <Compile Include="Domain\BuildSteps.cs" />
     <Compile Include="Domain\BuildTrigger.cs" />
@@ -81,7 +83,6 @@
     <Compile Include="IConnectedTc.cs" />
     <Compile Include="IProjectsRetriever.cs" />
     <Compile Include="Locators\AgentLocatorBuilder.cs" />
-    <Compile Include="BuildConfiguration.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />
