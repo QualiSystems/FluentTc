@@ -57,6 +57,7 @@
     <Compile Include="Domain\BuildWrapper.cs" />
     <Compile Include="Domain\Agent.cs" />
     <Compile Include="Domain\AgentWrapper.cs" />
+    <Compile Include="IConnectedTc.cs" />
     <Compile Include="Locators\AgentLocatorBuilder.cs" />
     <Compile Include="BuildConfiguration.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
