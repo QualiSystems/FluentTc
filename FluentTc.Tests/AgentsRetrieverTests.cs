@@ -26,7 +26,7 @@ namespace FluentTc.Tests
             var agentsRetriever = new AgentsRetriever(teamCityCaller, agentHavingBuilderFactory);
 
             // Act
-            var agents = agentsRetriever.GetAgents(_ => _.OnlyAuthorized());
+            var agents = agentsRetriever.GetAgents(_ => _.Authorized());
 
             // Assert
             A.CallTo(

@@ -38,7 +38,9 @@ namespace FluentTc.Tests
             var buildIncludeBuilderFactory = A.Fake<IBuildIncludeBuilderFactory>();
             A.CallTo(() => buildIncludeBuilderFactory.CreateBuildIncludeBuilder()).Returns(buildIncludeBuilder);
 
-            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory, countBuilderFactory, buildIncludeBuilderFactory);
+            var buildProjectHavingBuilderFactory = A.Fake<IBuildProjectHavingBuilderFactory>();
+
+            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory, countBuilderFactory, buildIncludeBuilderFactory, buildProjectHavingBuilderFactory);
 
             // Act
             var builds = buildsRetriever.GetBuilds(_ => _.Id(123), _ => _.All(), _ => _.IncludeDefaults());

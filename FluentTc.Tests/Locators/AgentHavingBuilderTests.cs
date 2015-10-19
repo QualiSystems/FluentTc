@@ -16,7 +16,7 @@ namespace FluentTc.Tests.Locators
             var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
 
             // Act
-            var havingBuilder = agentHavingBuilder.OnlyConnected();
+            var havingBuilder = agentHavingBuilder.Connected();
 
             // Assert
             ((IAgentHavingBuilder)havingBuilder).GetLocator().Should().Be("connected:True");
@@ -30,7 +30,7 @@ namespace FluentTc.Tests.Locators
             var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
 
             // Act
-            var havingBuilder = agentHavingBuilder.OnlyAuthorized();
+            var havingBuilder = agentHavingBuilder.Authorized();
 
             // Assert
             ((IAgentHavingBuilder)havingBuilder).GetLocator().Should().Be("authorized:True");

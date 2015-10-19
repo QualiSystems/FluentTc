@@ -4,8 +4,10 @@ namespace FluentTc.Locators
 {
     public interface IAgentHavingBuilder
     {
-        AgentHavingBuilder OnlyConnected();
-        AgentHavingBuilder OnlyAuthorized();
+        AgentHavingBuilder Connected();
+        AgentHavingBuilder Disconnected();
+        AgentHavingBuilder Authorized();
+        AgentHavingBuilder Enabled();
         string GetLocator();
     }
 
@@ -13,15 +15,27 @@ namespace FluentTc.Locators
     {
         private readonly List<string> m_Having = new List<string>();
 
-        public AgentHavingBuilder OnlyConnected()
+        public AgentHavingBuilder Connected()
         {
             m_Having.Add("connected:" + bool.TrueString);
             return this;
         }
 
-        public AgentHavingBuilder OnlyAuthorized()
+        public AgentHavingBuilder Disconnected()
+        {
+            m_Having.Add("connected:" + bool.FalseString);
+            return this;
+        }
+
+        public AgentHavingBuilder Authorized()
         {
             m_Having.Add("authorized:" + bool.TrueString);
+            return this;
+        }
+
+        public AgentHavingBuilder Enabled()
+        {
+            m_Having.Add("enabled:" + bool.TrueString);
             return this;
         }
 
