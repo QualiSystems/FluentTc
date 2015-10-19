@@ -10,6 +10,10 @@ namespace FluentTc.Tests
         [Ignore]
         public void Sample_Usage()
         {
+            // Project
+            var project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .GetProject(_ => _.Name("FluentTc"));
+
             // Agents
             var agents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetAgents(h => h.Connected());
@@ -23,7 +27,6 @@ namespace FluentTc.Tests
                .GetBuildQueue(_ => _.Id("Branch6_4_Green_NightlyCi_TestegatorIntegrationTests"));
 
             // Builds
-
             var builds = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetBuilds(h => h.BuildConfiguration(r => r.Id("bt2")));
 
@@ -40,31 +43,32 @@ namespace FluentTc.Tests
                 .GetBuild(_ => _.Id(123456), _ => _.IncludeDefaults());
 
             build = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuild(_ => _.Id(123456));            
+                .GetBuild(_ => _.Id(123456));   
+
 
             // Build configurations
-            BuildConfiguration build2 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            BuildConfiguration buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuildConfiguration(_ => _.Id("bt2"), _ => _.IncludeDefaults());
 
-            BuildConfiguration build3 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .SetParameters(_ => _.Id("bt2"),
                     _ => _.Parameters("name", "value").Parameters("name2", "value"));
 
-            BuildConfiguration build4 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"));
 
-            BuildConfiguration build5 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"),
                     _ => _.Parameters("name", "value").Parameters("name2", "value"));
 
-            BuildConfiguration build6 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"), _ => _.AgentName("agent1"));
 
-            BuildConfiguration build7 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"), _ => _.AgentName("agent1"),
                     _ => _.Parameters("name", "value").Parameters("name2", "value"));
 
-            BuildConfiguration build8 = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .CreateBuildConfiguration(_ => _.Id("Trunk"), "config name");
 
             new RemoteTc().Connect(_ => _.ToHost("tc"))
