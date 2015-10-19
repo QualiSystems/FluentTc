@@ -72,6 +72,7 @@
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />
     <Compile Include="Locators\Auto.cs" />
     <Compile Include="Locators\BuildHavingBuilderTests.cs" />
+    <Compile Include="Locators\CountBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteTcTests.cs" />
     <Compile Include="AgentsRetrieverTests.cs" />

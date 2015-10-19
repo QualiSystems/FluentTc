@@ -3,17 +3,21 @@ using System.Diagnostics;
 
 namespace FluentTc.Locators
 {
-    public class BuildIncludeBuilder
+    public interface IBuildIncludeBuilder
+    {
+        BuildIncludeBuilder IncludeStartDate();
+        BuildIncludeBuilder IncludeFinishDate();
+        BuildIncludeBuilder IncludeStatusText();
+        BuildIncludeBuilder IncludeDefaults();
+        string GetColumns();
+    }
+
+    public class BuildIncludeBuilder : IBuildIncludeBuilder
     {
         readonly IList<string> m_Properties = new List<string>(new[]
         {
             "buildTypeId", "href", "id", "number", "state", "status","webUrl"
         });
-
-        internal string GetColumns()
-        {
-            return string.Join(",", m_Properties);
-        }
 
         public BuildIncludeBuilder IncludeStartDate()
         {
@@ -40,6 +44,11 @@ namespace FluentTc.Locators
         public BuildIncludeBuilder IncludeDefaults()
         {
             return this;
+        }
+
+        string IBuildIncludeBuilder.GetColumns()
+        {
+            return string.Join(",", m_Properties);
         }
     }
 }

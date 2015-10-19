@@ -8,13 +8,12 @@ namespace FluentTc
 {
     public interface IConnectedTc
     {
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count,
-            Action<BuildIncludeBuilder> include);
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include);
 
         List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include);
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
-        Build GetBuild(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include);
+        Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         Build GetBuild(Action<IBuildHavingBuilder> having);
         BuildConfiguration GetBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
         IList<BuildConfiguration> GetBuildConfigurations(Action<BuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
@@ -42,8 +41,7 @@ namespace FluentTc
             m_AgentsRetriever = agentsRetriever;
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<CountBuilder> count,
-    Action<BuildIncludeBuilder> include)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);
         }
@@ -53,7 +51,7 @@ namespace FluentTc
             return m_AgentsRetriever.GetAgents(having);
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, _ => _.All(), include);
         }
@@ -63,7 +61,7 @@ namespace FluentTc
             return m_BuildsRetriever.GetBuilds(having, _ => _.All(), _ => _.IncludeDefaults());
         }
 
-        public Build GetBuild(Action<IBuildHavingBuilder> having, Action<BuildIncludeBuilder> include)
+        public Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
         {
             var builds = GetBuilds(having, include);
             if (!builds.Any()) throw new BuildNotFoundException();

@@ -16,7 +16,7 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.GetFormat<BuildWrapper>(
-                        "/app/rest/builds?locator={0},count:{1},&fields=count,build({2})",
+                        "/app/rest/builds?locator={0},{1},&fields=count,build({2})",
                         A<object[]>._))
                 .Returns(new BuildWrapper() {Count = "0"});
 
@@ -26,7 +26,19 @@ namespace FluentTc.Tests
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
             A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(buildHavingBuilder);
 
-            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory);
+            var countBuilder = A.Fake<ICountBuilder>();
+            A.CallTo(() => countBuilder.GetCount()).Returns("count:-1");
+
+            var countBuilderFactory = A.Fake<ICountBuilderFactory>();
+            A.CallTo(() => countBuilderFactory.CreateCountBuilder()).Returns(countBuilder);
+
+            var buildIncludeBuilder = A.Fake<IBuildIncludeBuilder>();
+            A.CallTo(() => buildIncludeBuilder.GetColumns()).Returns("buildTypeId,href,id,number,state,status,webUrl");
+
+            var buildIncludeBuilderFactory = A.Fake<IBuildIncludeBuilderFactory>();
+            A.CallTo(() => buildIncludeBuilderFactory.CreateBuildIncludeBuilder()).Returns(buildIncludeBuilder);
+
+            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory, countBuilderFactory, buildIncludeBuilderFactory);
 
             // Act
             var builds = buildsRetriever.GetBuilds(_ => _.Id(123), _ => _.All(), _ => _.IncludeDefaults());
@@ -35,8 +47,8 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.GetFormat<BuildWrapper>(
-                        "/app/rest/builds?locator={0},count:{1},&fields=count,build({2})",
-                        A<object[]>.That.IsSameSequenceAs(new object[] { "id:123", -1, "buildTypeId,href,id,number,state,status,webUrl" })))
+                        "/app/rest/builds?locator={0},{1},&fields=count,build({2})",
+                        A<object[]>.That.IsSameSequenceAs(new object[] { "id:123", "count:-1", "buildTypeId,href,id,number,state,status,webUrl" })))
                 .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
