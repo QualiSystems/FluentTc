@@ -10,7 +10,6 @@ namespace FluentTc.Tests
         public void Sample_Usage()
         {
             // Agents
-
             var agents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetAgents(h => h.OnlyConnected());
 
