@@ -7,11 +7,10 @@ namespace FluentTc.Locators
     {
         BuildHavingBuilder BuildConfiguration(
             Action<BuildConfigurationHavingBuilder> havingBuildConfig);
-
         BuildHavingBuilder Id(int buildId);
         BuildHavingBuilder Tags(params string [] tags);
         BuildHavingBuilder Status(BuildStatus buildStatus);
-        BuildHavingBuilder TriggeredBy(UserHavingBuilder buildStatus);
+        BuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus);
         BuildHavingBuilder Personal();
         BuildHavingBuilder NotPersonal();
         BuildHavingBuilder Cancelled();
@@ -35,11 +34,13 @@ namespace FluentTc.Locators
         private readonly List<string> m_Having = new List<string>();
         private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
+        private readonly IUserHavingBuilderFactory m_UserHavingBuilderFactory;
 
-        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory)
+        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory)
         {
             m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
+            m_UserHavingBuilderFactory = userHavingBuilderFactory;
         }
 
         public BuildHavingBuilder BuildConfiguration(
@@ -69,9 +70,11 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder TriggeredBy(UserHavingBuilder buildStatus)
+        public BuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus)
         {
-            m_Having.Add("user:" + buildStatus.GetLocator());
+            var userHavingBuilder = m_UserHavingBuilderFactory.CreateUserHavingBuilder();
+            buildStatus(userHavingBuilder);
+            m_Having.Add("user:" + userHavingBuilder.GetLocator());
             return this;
         }
 

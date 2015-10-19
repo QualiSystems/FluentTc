@@ -1,4 +1,5 @@
 ﻿using System;
+using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Locators;
 using NUnit.Framework;
@@ -231,6 +232,26 @@ namespace FluentTc.Tests.Locators
 
             // Assert
             ((IBuildHavingBuilder) havingBuilder).GetLocator().Should().Be("tags:tag1,tag2");
+        }
+
+        [Test]
+        public void TriggeredBy()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var userHavingBuilder = A.Fake<IUserHavingBuilder>();
+            A.CallTo(() => userHavingBuilder.GetLocator()).Returns("id:123");
+
+            var userHavingBuilderFactory = fixture.Freeze<IUserHavingBuilderFactory>();
+            A.CallTo(() => userHavingBuilderFactory.CreateUserHavingBuilder()).Returns(userHavingBuilder);
+
+            var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
+
+            // Act
+            var havingBuilder = buildHavingBuilder.TriggeredBy(_ => _.InternalUserId("123"));
+
+            // Assert
+            ((IBuildHavingBuilder) havingBuilder).GetLocator().Should().Be("user:id:123");
         }
     }
 }

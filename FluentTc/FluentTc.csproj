@@ -80,6 +80,7 @@
     <Compile Include="Locators\StringExtensions.cs" />
     <Compile Include="Locators\AgentHavingBuilder.cs" />
     <Compile Include="Locators\UserHavingBuilder.cs" />
+    <Compile Include="Locators\UserHavingBuilderFactory.cs" />
     <Compile Include="MoreThanOneBuildFoundException.cs" />
     <Compile Include="RemoteTc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
