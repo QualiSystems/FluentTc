@@ -7,7 +7,7 @@ namespace FluentTc
 {
     internal interface IBuildConfigurationRetriever
     {
-        IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
+        IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
     }
 
     internal class BuildConfigurationRetriever : IBuildConfigurationRetriever
@@ -21,7 +21,7 @@ namespace FluentTc
             m_TeamCityCaller = teamCityCaller;
         }
 
-        public IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having)
+        public IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)
         {
             var buildConfigurationHavingBuilder =
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
