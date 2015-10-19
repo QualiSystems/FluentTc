@@ -19,7 +19,7 @@ namespace FluentTc.Locators
         BuildHavingBuilder NotRunning();
         BuildHavingBuilder Pinned();
         BuildHavingBuilder NotPinned();
-        BuildHavingBuilder Branch(Action<BranchHavingBuilder> branchHavingBuilder);
+        BuildHavingBuilder Branch(Action<IBranchHavingBuilder> branchHavingBuilder);
         BuildHavingBuilder AgentName(string agentName);
         BuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder);
         BuildHavingBuilder SinceDate(DateTime dateTime);
@@ -35,12 +35,14 @@ namespace FluentTc.Locators
         private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
         private readonly IUserHavingBuilderFactory m_UserHavingBuilderFactory;
+        private readonly IBranchHavingBuilderFactory m_BranchHavingBuilderFactory;
 
-        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory)
+        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory)
         {
             m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
             m_UserHavingBuilderFactory = userHavingBuilderFactory;
+            m_BranchHavingBuilderFactory = branchHavingBuilderFactory;
         }
 
         public BuildHavingBuilder BuildConfiguration(
@@ -126,9 +128,9 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder Branch(Action<BranchHavingBuilder> branchHavingBuilder)
+        public BuildHavingBuilder Branch(Action<IBranchHavingBuilder> branchHavingBuilder)
         {
-            var havingBuilder = new BranchHavingBuilder();
+            var havingBuilder = m_BranchHavingBuilderFactory.CreateBranchHavingBuilder();
             branchHavingBuilder(havingBuilder);
             m_Having.Add("branch:" + havingBuilder.GetLocator());
             return this;

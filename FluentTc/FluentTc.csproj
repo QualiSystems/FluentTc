@@ -63,6 +63,7 @@
     <Compile Include="Locators\AgentLocatorBuilder.cs" />
     <Compile Include="BuildConfiguration.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
+    <Compile Include="Locators\BranchHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationPropertyBuilder.cs" />
