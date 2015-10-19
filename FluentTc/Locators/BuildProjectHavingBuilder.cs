@@ -1,15 +1,33 @@
+using System.Collections.Generic;
+
 namespace FluentTc.Locators
 {
-    public class BuildProjectHavingBuilder
+    public interface IBuildProjectHavingBuilder
     {
-        public BuildProjectHavingBuilder ProjectId(string projectId)
+        IBuildProjectHavingBuilder Id(string projectId);
+        IBuildProjectHavingBuilder Name(string projectName);
+        string GetLocator();
+    }
+
+    public class BuildProjectHavingBuilder : IBuildProjectHavingBuilder
+    {
+        readonly List<string> m_Having = new List<string>();
+
+        public IBuildProjectHavingBuilder Id(string projectId)
         {
+            m_Having.Add("id:" + projectId);
             return this;
         }
 
-        internal string GetLocator()
+        public IBuildProjectHavingBuilder Name(string projectName)
         {
-            throw new System.NotImplementedException();
+            m_Having.Add("name:" + projectName);
+            return this;
+        }
+
+        string IBuildProjectHavingBuilder.GetLocator()
+        {
+            return string.Join(",", m_Having);
         }
     }
 }

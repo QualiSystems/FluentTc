@@ -3,7 +3,17 @@ using System.Collections.Generic;
 
 namespace FluentTc.Locators
 {
-    public class BuildConfigurationHavingBuilder
+    public interface IBuildConfigurationHavingBuilder
+    {
+        IBuildConfigurationHavingBuilder Id(string buildConfigurationId);
+        IBuildConfigurationHavingBuilder Name(string buildConfigurationName);
+        IBuildConfigurationHavingBuilder InternalId(string internalId);
+        IBuildConfigurationHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilderAction);
+        IBuildConfigurationHavingBuilder ProjectRecursively(Action<IBuildProjectHavingBuilder> projectHavingBuilderAction);
+        string GetLocator();
+    }
+
+    public class BuildConfigurationHavingBuilder : IBuildConfigurationHavingBuilder
     {
         private readonly List<string> m_Having = new List<string>();
         private readonly IBuildProjectHavingBuilderFactory m_BuildProjectHavingBuilderFactory;
@@ -13,25 +23,25 @@ namespace FluentTc.Locators
             m_BuildProjectHavingBuilderFactory = buildProjectHavingBuilderFactory;
         }
 
-        public BuildConfigurationHavingBuilder Id(string buildConfigurationId)
+        public IBuildConfigurationHavingBuilder Id(string buildConfigurationId)
         {
             m_Having.Add("id:" + buildConfigurationId);
             return this;
         }
 
-        public BuildConfigurationHavingBuilder Name(string buildConfigurationName)
+        public IBuildConfigurationHavingBuilder Name(string buildConfigurationName)
         {
             m_Having.Add("name:" + buildConfigurationName);
             return this;
         }
 
-        public BuildConfigurationHavingBuilder InternalId(string internalId)
+        public IBuildConfigurationHavingBuilder InternalId(string internalId)
         {
             m_Having.Add("internalId:" + internalId);
             return this;
         }
 
-        public BuildConfigurationHavingBuilder Project(Action<BuildProjectHavingBuilder> projectHavingBuilderAction)
+        public IBuildConfigurationHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilderAction)
         {
             var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
             projectHavingBuilderAction(buildProjectHavingBuilder);
@@ -39,17 +49,17 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildConfigurationHavingBuilder ProjectRecursively(Action<BuildProjectHavingBuilder> projectHavingBuilderAction)
+        public IBuildConfigurationHavingBuilder ProjectRecursively(Action<IBuildProjectHavingBuilder> projectHavingBuilderAction)
         {
-            var buildProjectHavingBuilder = new BuildProjectHavingBuilder();
+            var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
             projectHavingBuilderAction(buildProjectHavingBuilder);
             m_Having.Add("affectedProject:" + buildProjectHavingBuilder.GetLocator());
             return this;
         }
 
-        public IEnumerable<string> Get()
+        string IBuildConfigurationHavingBuilder.GetLocator()
         {
-            return new string[] {};
+            return string.Join(",", m_Having);
         }
     }
 }

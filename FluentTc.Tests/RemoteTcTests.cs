@@ -60,7 +60,7 @@ namespace FluentTc.Tests
                     _ => _.Parameters("name", "value").Parameters("name2", "value"));
 
             BuildConfiguration build8 = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .CreateBuildConfiguration(_ => _.ProjectId("Trunk"), "config name");
+                .CreateBuildConfiguration(_ => _.Id("Trunk"), "config name");
 
             new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .AttachBuildConfigurationToTemplate(_ => _.Name("Trunk"), _ => _.TemplateName("config name"));
