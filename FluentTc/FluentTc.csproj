@@ -73,6 +73,7 @@
     <Compile Include="Domain\AgentWrapper.cs" />
     <Compile Include="Domain\Parameters.cs" />
     <Compile Include="Domain\Project.cs" />
+    <Compile Include="Domain\ProjectWrapper.cs" />
     <Compile Include="Domain\Properties.cs" />
     <Compile Include="Domain\Property.cs" />
     <Compile Include="Domain\SnapshotDependencies.cs" />

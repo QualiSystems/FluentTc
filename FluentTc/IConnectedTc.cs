@@ -27,6 +27,7 @@ namespace FluentTc
         void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving);
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
         Project GetProject(Action<IBuildProjectHavingBuilder> having);
+        IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -134,7 +135,23 @@ namespace FluentTc
 
         public Project GetProject(Action<IBuildProjectHavingBuilder> having)
         {
-            return m_ProjectsRetriever.GetProject(having);
+            var projects = GetProjects(having);
+            if (!projects.Any()) throw new ProjectNotFoundException();
+            if (projects.Count() > 1) throw new MoreThanOneProjectFoundException();
+            return projects.Single();
         }
+
+        public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having)
+        {
+            return m_ProjectsRetriever.GetProjects(having);
+        }
+    }
+
+    internal class MoreThanOneProjectFoundException : Exception
+    {
+    }
+
+    internal class ProjectNotFoundException : Exception
+    {
     }
 }

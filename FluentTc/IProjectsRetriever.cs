@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
@@ -6,7 +7,7 @@ namespace FluentTc
 {
     internal interface IProjectsRetriever
     {
-        Project GetProject(Action<IBuildProjectHavingBuilder> having);
+        IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
     }
 
     internal class ProjectsRetriever : IProjectsRetriever
@@ -21,11 +22,12 @@ namespace FluentTc
             m_TeamCityCaller = teamCityCaller;
         }
 
-        public Project GetProject(Action<IBuildProjectHavingBuilder> having)
+        public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having)
         {
             var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
             having(buildProjectHavingBuilder);
-            return m_TeamCityCaller.GetFormat<Project>("/app/rest/projects/{0}", buildProjectHavingBuilder.GetLocator());
+            var projects = m_TeamCityCaller.GetFormat<ProjectWrapper>("/app/rest/projects/{0}", buildProjectHavingBuilder.GetLocator());
+            return projects.Project;
         }
     }
 }
