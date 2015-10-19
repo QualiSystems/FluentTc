@@ -52,5 +52,26 @@ namespace FluentTc.Tests
             // Assert
             action.ShouldThrow<MoreThanOneBuildFoundException>();
         }
+
+        [Test]
+        public void GetBuild_OneBuild_ThantBuild()
+        {
+            // Arrange
+            Action<IBuildHavingBuilder> having = _ => _.AgentName("Bond");
+
+            var fixture = Auto.Fixture();
+            var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
+            var build = new Build { Id = 123};
+            A.CallTo(() => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
+                .Returns(new List<Build>(new [] { build }));
+
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            var actualBuild = connectedTc.GetBuild(having);
+
+            // Assert
+            actualBuild.Should().Be(build);
+        }
     }
 }

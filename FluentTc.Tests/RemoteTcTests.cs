@@ -6,8 +6,6 @@ namespace FluentTc.Tests
     [TestFixture]
     public class RemoteTcTests
     {
-        [Test]
-        [Ignore]
         public void Sample_Usage()
         {
             // Project
