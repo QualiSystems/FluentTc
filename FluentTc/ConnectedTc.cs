@@ -9,7 +9,6 @@ namespace FluentTc
     public interface IConnectedTc
     {
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include);
-
         List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
@@ -81,12 +80,15 @@ namespace FluentTc
 
         public BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)
         {
-            throw new NotImplementedException();
+            var buildConfigurations = GetBuildConfigurations(having, include);
+            if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
+            if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
+            return buildConfigurations.Single();
         }
 
         public IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)
         {
-            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having);
+            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having, include);
         }
 
         public BuildConfiguration SetParameters(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters)
@@ -151,13 +153,5 @@ namespace FluentTc
         {
             return m_ProjectsRetriever.GetProjects(having);
         }
-    }
-
-    internal class MoreThanOneProjectFoundException : Exception
-    {
-    }
-
-    internal class ProjectNotFoundException : Exception
-    {
     }
 }
