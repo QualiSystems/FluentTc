@@ -5,25 +5,24 @@ namespace FluentTc.Locators
 {
     public interface IBuildHavingBuilder
     {
-        BuildHavingBuilder BuildConfiguration(
-            Action<BuildConfigurationHavingBuilder> havingBuildConfig);
-        BuildHavingBuilder Id(int buildId);
-        BuildHavingBuilder Tags(params string [] tags);
-        BuildHavingBuilder Status(BuildStatus buildStatus);
-        BuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus);
-        BuildHavingBuilder Personal();
-        BuildHavingBuilder NotPersonal();
-        BuildHavingBuilder Cancelled();
-        BuildHavingBuilder NotCancelled();
-        BuildHavingBuilder Running();
-        BuildHavingBuilder NotRunning();
-        BuildHavingBuilder Pinned();
-        BuildHavingBuilder NotPinned();
-        BuildHavingBuilder Branch(Action<IBranchHavingBuilder> branchHavingBuilder);
-        BuildHavingBuilder AgentName(string agentName);
-        BuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder);
-        BuildHavingBuilder SinceDate(DateTime dateTime);
-        BuildHavingBuilder Project(Action<BuildProjectHavingBuilder> projectHavingBuilder);
+        IBuildHavingBuilder BuildConfiguration(Action<IBuildConfigurationHavingBuilder> havingBuildConfig);
+        IBuildHavingBuilder Id(int buildId);
+        IBuildHavingBuilder Tags(params string[] tags);
+        IBuildHavingBuilder Status(BuildStatus buildStatus);
+        IBuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus);
+        IBuildHavingBuilder Personal();
+        IBuildHavingBuilder NotPersonal();
+        IBuildHavingBuilder Cancelled();
+        IBuildHavingBuilder NotCancelled();
+        IBuildHavingBuilder Running();
+        IBuildHavingBuilder NotRunning();
+        IBuildHavingBuilder Pinned();
+        IBuildHavingBuilder NotPinned();
+        IBuildHavingBuilder Branch(Action<IBranchHavingBuilder> branchHavingBuilder);
+        IBuildHavingBuilder AgentName(string agentName);
+        IBuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder);
+        IBuildHavingBuilder SinceDate(DateTime dateTime);
+        IBuildHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilder);
         string GetLocator();
     }
 
@@ -36,43 +35,44 @@ namespace FluentTc.Locators
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
         private readonly IUserHavingBuilderFactory m_UserHavingBuilderFactory;
         private readonly IBranchHavingBuilderFactory m_BranchHavingBuilderFactory;
+        private readonly IBuildProjectHavingBuilderFactory m_BuildProjectHavingBuilderFactory;
 
-        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory)
+        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory, IBuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory)
         {
             m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
             m_UserHavingBuilderFactory = userHavingBuilderFactory;
             m_BranchHavingBuilderFactory = branchHavingBuilderFactory;
+            m_BuildProjectHavingBuilderFactory = buildProjectHavingBuilderFactory;
         }
 
-        public BuildHavingBuilder BuildConfiguration(
-            Action<BuildConfigurationHavingBuilder> havingBuildConfig)
+        public IBuildHavingBuilder BuildConfiguration(Action<IBuildConfigurationHavingBuilder> havingBuildConfig)
         {
             var buildConfigurationHavingBuilder = m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             havingBuildConfig.Invoke(buildConfigurationHavingBuilder);
-            m_Having.AddRange(buildConfigurationHavingBuilder.Get());
+            m_Having.Add("buildType:" + buildConfigurationHavingBuilder.GetLocator());
             return this;
         }
 
-        public BuildHavingBuilder Id(int buildId)
+        public IBuildHavingBuilder Id(int buildId)
         {
             m_Having.Add("id:" + buildId);
             return this;
         }
 
-        public BuildHavingBuilder Tags(params string [] tags)
+        public IBuildHavingBuilder Tags(params string[] tags)
         {
             m_Having.Add("tags:" + string.Join(",", tags));
             return this;
         }
 
-        public BuildHavingBuilder Status(BuildStatus buildStatus)
+        public IBuildHavingBuilder Status(BuildStatus buildStatus)
         {
             m_Having.Add("status:" + buildStatus.ToString().ToUpper());
             return this;
         }
 
-        public BuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus)
+        public IBuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus)
         {
             var userHavingBuilder = m_UserHavingBuilderFactory.CreateUserHavingBuilder();
             buildStatus(userHavingBuilder);
@@ -80,55 +80,55 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder Personal()
+        public IBuildHavingBuilder Personal()
         {
             m_Having.Add("personal:" + bool.TrueString);
             return this;
         }
 
-        public BuildHavingBuilder NotPersonal()
+        public IBuildHavingBuilder NotPersonal()
         {
             m_Having.Add("personal:" + bool.FalseString);
             return this;
         }
 
-        public BuildHavingBuilder Cancelled()
+        public IBuildHavingBuilder Cancelled()
         {
             m_Having.Add("cancelled:" + bool.TrueString);
             return this;
         }
 
-        public BuildHavingBuilder NotCancelled()
+        public IBuildHavingBuilder NotCancelled()
         {
             m_Having.Add("cancelled:" + bool.FalseString);
             return this;
         }
 
-        public BuildHavingBuilder Running()
+        public IBuildHavingBuilder Running()
         {
             m_Having.Add("running:" + bool.TrueString);
             return this;
         }
 
-        public BuildHavingBuilder NotRunning()
+        public IBuildHavingBuilder NotRunning()
         {
             m_Having.Add("running:" + bool.FalseString);
             return this;
         }
 
-        public BuildHavingBuilder Pinned()
+        public IBuildHavingBuilder Pinned()
         {
             m_Having.Add("pinned:" + bool.TrueString);
             return this;
         }
 
-        public BuildHavingBuilder NotPinned()
+        public IBuildHavingBuilder NotPinned()
         {
             m_Having.Add("pinned:" + bool.FalseString);
             return this;
         }
 
-        public BuildHavingBuilder Branch(Action<IBranchHavingBuilder> branchHavingBuilder)
+        public IBuildHavingBuilder Branch(Action<IBranchHavingBuilder> branchHavingBuilder)
         {
             var havingBuilder = m_BranchHavingBuilderFactory.CreateBranchHavingBuilder();
             branchHavingBuilder(havingBuilder);
@@ -136,13 +136,13 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder AgentName(string agentName)
+        public IBuildHavingBuilder AgentName(string agentName)
         {
             m_Having.Add("agentName:" + agentName);
             return this;
         }
 
-        public BuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder)
+        public IBuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder)
         {
             var havingBuilder = m_BuildHavingBuilderFactory.CreateBuildHavingBuilder();
             buildHavingBuilder(havingBuilder);
@@ -150,15 +150,15 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildHavingBuilder SinceDate(DateTime dateTime)
+        public IBuildHavingBuilder SinceDate(DateTime dateTime)
         {
             m_Having.Add("sinceDate:" + dateTime.ToString(DateFormat));
             return this;
         }
 
-        public BuildHavingBuilder Project(Action<BuildProjectHavingBuilder> projectHavingBuilder)
+        public IBuildHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilder)
         {
-            var buildProjectHavingBuilder = new BuildProjectHavingBuilder();
+            var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
             projectHavingBuilder(buildProjectHavingBuilder);
             m_Having.Add("project:" + buildProjectHavingBuilder.GetLocator());
             return this;
