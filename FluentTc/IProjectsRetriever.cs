@@ -5,7 +5,7 @@ using FluentTc.Locators;
 
 namespace FluentTc
 {
-    internal interface IProjectsRetriever
+    public interface IProjectsRetriever
     {
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
     }
@@ -15,7 +15,7 @@ namespace FluentTc
         private readonly IBuildProjectHavingBuilderFactory m_BuildProjectHavingBuilderFactory;
         private readonly ITeamCityCaller m_TeamCityCaller;
 
-        internal ProjectsRetriever(IBuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory,
+        public ProjectsRetriever(IBuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory,
             ITeamCityCaller teamCityCaller)
         {
             m_BuildProjectHavingBuilderFactory = buildProjectHavingBuilderFactory;

@@ -3,23 +3,19 @@ using FluentTc.Locators;
 
 namespace FluentTc
 {
-    public class RemoteTc
+    public interface IRemoteTc
+    {
+        IConnectedTc Connect(Action<TeamCityConfigurationBuilder> connect);
+    }
+
+    public class RemoteTc : IRemoteTc
     {
         public IConnectedTc Connect(Action<TeamCityConfigurationBuilder> connect)
         {
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
             connect(teamCityConfigurationBuilder);
-            ITeamCityCaller teamCityCaller = new TeamCityCaller(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
-            var buildProjectHavingBuilderFactory = new BuildProjectHavingBuilderFactory();
-            var locatorBuilder = new LocatorBuilder(new BuildConfigurationHavingBuilderFactory(new BuildProjectHavingBuilderFactory()),
-                new BuildProjectHavingBuilderFactory());
-            var buildHavingBuilderFactory = new BuildHavingBuilderFactory(new UserHavingBuilderFactory(),
-                new BranchHavingBuilderFactory(),
-                buildProjectHavingBuilderFactory,
-                locatorBuilder);
-            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory, new CountBuilderFactory(), new BuildIncludeBuilderFactory(), buildProjectHavingBuilderFactory, new BuildConfigurationHavingBuilderFactory(new BuildProjectHavingBuilderFactory()),new QueueHavingBuilderFactory(locatorBuilder));
-            var projectsRetriever = new ProjectsRetriever(new BuildProjectHavingBuilderFactory(), teamCityCaller);
-            return new ConnectedTc(buildsRetriever, new AgentsRetriever(teamCityCaller, new AgentHavingBuilderFactory()), projectsRetriever, new BuildConfigurationRetriever(new BuildConfigurationHavingBuilderFactory(new BuildProjectHavingBuilderFactory()), teamCityCaller));
+            var bootstrapper = new Bootstrapper(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
+            return bootstrapper.GetConnectedTc();
         }
     }
 }

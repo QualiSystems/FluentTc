@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="EasyHttp, Version=1.6.67.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\EasyHttp.1.6.67.0\lib\net40\EasyHttp.dll</HintPath>
@@ -51,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentHavingBuilderFactory.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="BuildConfigurationNotFoundException.cs" />
     <Compile Include="BuildConfigurationRetriever.cs" />
     <Compile Include="BuildHavingBuilderFactory.cs" />

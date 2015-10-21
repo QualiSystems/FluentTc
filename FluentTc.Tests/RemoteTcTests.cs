@@ -1,4 +1,5 @@
-﻿using FluentTc.Domain;
+﻿using FluentAssertions;
+using FluentTc.Domain;
 using NUnit.Framework;
 
 namespace FluentTc.Tests
@@ -6,11 +7,24 @@ namespace FluentTc.Tests
     [TestFixture]
     public class RemoteTcTests
     {
+        [Test]
+        public void Connect_Guest_NotNull()
+        {
+            // Arrange
+            var remoteTc = new RemoteTc();
+
+            // Act
+            var connectedTc = remoteTc.Connect(_ => _.AsGuest());
+
+            // Assert
+            connectedTc.Should().NotBeNull();
+        }
+
         public void Sample_Usage()
         {
             // Project
             var project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
-                .GetProject(_ => _.Name("FluentTc"));
+                .GetProject(_ => _.Name("Trunk"));
 
             // Agents
             var agents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
