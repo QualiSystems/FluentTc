@@ -40,7 +40,7 @@ namespace FluentTc.Tests
 
             var buildProjectHavingBuilderFactory = A.Fake<IBuildProjectHavingBuilderFactory>();
 
-            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory, countBuilderFactory, buildIncludeBuilderFactory, buildProjectHavingBuilderFactory);
+            var buildsRetriever = new BuildsRetriever(teamCityCaller, buildHavingBuilderFactory, countBuilderFactory, buildIncludeBuilderFactory, buildProjectHavingBuilderFactory, A.Fake<IBuildConfigurationHavingBuilderFactory>(),A.Fake<IQueueHavingBuilderFactory>());
 
             // Act
             var builds = buildsRetriever.GetBuilds(_ => _.Id(123), _ => _.All(), _ => _.IncludeDefaults());

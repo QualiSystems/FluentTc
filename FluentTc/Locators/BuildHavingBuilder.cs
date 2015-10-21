@@ -31,26 +31,30 @@ namespace FluentTc.Locators
         private const string DateFormat = "yyyyMMddTHHmmsszz00";
 
         private readonly List<string> m_Having = new List<string>();
-        private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
         private readonly IUserHavingBuilderFactory m_UserHavingBuilderFactory;
         private readonly IBranchHavingBuilderFactory m_BranchHavingBuilderFactory;
-        private readonly IBuildProjectHavingBuilderFactory m_BuildProjectHavingBuilderFactory;
+        private readonly ILocatorBuilder m_LocatorBuilder;
 
-        public BuildHavingBuilder(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory, IBuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory)
+        public BuildHavingBuilder(IBuildHavingBuilderFactory buildHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory, IBuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory, ILocatorBuilder locatorBuilder)
         {
-            m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
             m_UserHavingBuilderFactory = userHavingBuilderFactory;
             m_BranchHavingBuilderFactory = branchHavingBuilderFactory;
-            m_BuildProjectHavingBuilderFactory = buildProjectHavingBuilderFactory;
+            m_LocatorBuilder = locatorBuilder;
         }
 
         public IBuildHavingBuilder BuildConfiguration(Action<IBuildConfigurationHavingBuilder> havingBuildConfig)
         {
-            var buildConfigurationHavingBuilder = m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
-            havingBuildConfig.Invoke(buildConfigurationHavingBuilder);
-            m_Having.Add("buildType:" + buildConfigurationHavingBuilder.GetLocator());
+            var locator = m_LocatorBuilder.GetBuildConfigurationLocator(havingBuildConfig);
+            m_Having.Add("buildType:" + locator);
+            return this;
+        }
+
+        public IBuildHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilder)
+        {
+            var locator = m_LocatorBuilder.GetProjectLocator(projectHavingBuilder);
+            m_Having.Add("project:" + locator);
             return this;
         }
 
@@ -153,14 +157,6 @@ namespace FluentTc.Locators
         public IBuildHavingBuilder SinceDate(DateTime dateTime)
         {
             m_Having.Add("sinceDate:" + dateTime.ToString(DateFormat));
-            return this;
-        }
-
-        public IBuildHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilder)
-        {
-            var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
-            projectHavingBuilder(buildProjectHavingBuilder);
-            m_Having.Add("project:" + buildProjectHavingBuilder.GetLocator());
             return this;
         }
 
