@@ -9,22 +9,22 @@ namespace FluentTc
 
     internal class BuildHavingBuilderFactory : IBuildHavingBuilderFactory
     {
-        private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
         private readonly IUserHavingBuilderFactory m_UserHavingBuilderFactory;
         private readonly IBranchHavingBuilderFactory m_BranchHavingBuilderFactory;
         private readonly BuildProjectHavingBuilderFactory m_BuildProjectHavingBuilderFactory;
+        private readonly ILocatorBuilder m_LocatorBuilder;
 
-        public BuildHavingBuilderFactory(IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory, IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory, BuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory)
+        public BuildHavingBuilderFactory(IUserHavingBuilderFactory userHavingBuilderFactory, IBranchHavingBuilderFactory branchHavingBuilderFactory, BuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory, ILocatorBuilder locatorBuilder)
         {
-            m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
             m_UserHavingBuilderFactory = userHavingBuilderFactory;
             m_BranchHavingBuilderFactory = branchHavingBuilderFactory;
             m_BuildProjectHavingBuilderFactory = buildProjectHavingBuilderFactory;
+            m_LocatorBuilder = locatorBuilder;
         }
 
         public IBuildHavingBuilder CreateBuildHavingBuilder()
         {
-            return new BuildHavingBuilder(m_BuildConfigurationHavingBuilderFactory, this, m_UserHavingBuilderFactory, m_BranchHavingBuilderFactory, m_BuildProjectHavingBuilderFactory);
+            return new BuildHavingBuilder(this, m_UserHavingBuilderFactory, m_BranchHavingBuilderFactory, m_BuildProjectHavingBuilderFactory, m_LocatorBuilder);
         }
     }
 }

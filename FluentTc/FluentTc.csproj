@@ -102,6 +102,8 @@
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="ITeamCityConnectionDetails.cs" />
+    <Compile Include="Locators\LocatorBuilder.cs" />
+    <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\StringExtensions.cs" />
     <Compile Include="Locators\AgentHavingBuilder.cs" />
     <Compile Include="Locators\UserHavingBuilder.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="MoreThanOneBuildFoundException.cs" />
     <Compile Include="MoreThanOneProjectFoundException.cs" />
     <Compile Include="ProjectNotFoundException.cs" />
+    <Compile Include="QueueHavingBuilderFactory.cs" />
     <Compile Include="RemoteTc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AgentsRetriever.cs" />

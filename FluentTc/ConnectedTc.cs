@@ -25,7 +25,7 @@ namespace FluentTc
         BuildConfiguration CreateBuildConfiguration(Action<BuildProjectHavingBuilder> having, string buildConfigurationName);
         void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving);
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
-        List<Build> GetBuildQueue(Action<IBuildProjectHavingBuilder> having);
+        List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having);
         Project GetProject(Action<IBuildProjectHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
     }
@@ -136,11 +136,11 @@ namespace FluentTc
             throw new NotImplementedException();
         }
 
-        public List<Build> GetBuildQueue(Action<IBuildProjectHavingBuilder> having)
+        public List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having)
         {
             return m_BuildsRetriever.GetBuildQueues(having);
         }
-        
+
         public Project GetProject(Action<IBuildProjectHavingBuilder> having)
         {
             var projects = GetProjects(having);

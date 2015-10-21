@@ -48,18 +48,16 @@ namespace FluentTc.Tests.Locators
         public void BuildConfiguration()
         {
             // Arrange
-            var fixture = Auto.Fixture();
-            var buildConfigurationHavingBuilder = A.Fake<IBuildConfigurationHavingBuilder>();
-            A.CallTo(() => buildConfigurationHavingBuilder.GetLocator()).Returns("id:bt2");
+            Action<IBuildConfigurationHavingBuilder> havingBuildConfig = _ => _.Id("bt2");
 
-            var buildConfigurationHavingBuilderFactory = fixture.Freeze<IBuildConfigurationHavingBuilderFactory>();
-            A.CallTo(() => buildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder())
-                .Returns(buildConfigurationHavingBuilder);
+            var fixture = Auto.Fixture();
+            var locatorBuilder = fixture.Freeze<ILocatorBuilder>();
+            A.CallTo(() => locatorBuilder.GetBuildConfigurationLocator(havingBuildConfig)).Returns("id:bt2");
 
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.BuildConfiguration(_ => _.Id("bt2"));
+            var havingBuilder = buildHavingBuilder.BuildConfiguration(havingBuildConfig);
 
             // Assert
             havingBuilder.GetLocator().Should().Be("buildType:id:bt2");
