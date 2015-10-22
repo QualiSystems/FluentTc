@@ -49,10 +49,12 @@ namespace FluentTc
     internal class TeamCityCaller : ITeamCityCaller
     {
         private readonly ITeamCityConnectionDetails m_TeamCityConnectionDetails;
+        private readonly IHttpClientWrapperFactory m_HttpClientWrapperFactory;
 
-        public TeamCityCaller(ITeamCityConnectionDetails teamCityConnectionDetails)
+        public TeamCityCaller(ITeamCityConnectionDetails teamCityConnectionDetails, IHttpClientWrapperFactory httpClientWrapperFactory)
         {
             m_TeamCityConnectionDetails = teamCityConnectionDetails;
+            m_HttpClientWrapperFactory = httpClientWrapperFactory;
         }
 
         public T GetFormat<T>(string urlPart, params object[] parts)
@@ -157,7 +159,7 @@ namespace FluentTc
             return response.StaticBody<T>();
         }
 
-        public T Get<T>(string urlPart)
+        public virtual T Get<T>(string urlPart)
         {
             var response = GetResponse(urlPart);
             return response.StaticBody<T>();
@@ -237,7 +239,7 @@ namespace FluentTc
             ThrowIfHttpError(client.Response, client.Request.Uri);
         }
 
-        private HttpClient MakePostRequest(object data, string contenttype, string urlPart, string accept)
+        private IHttpClientWrapper MakePostRequest(object data, string contenttype, string urlPart, string accept)
         {
             var client = CreateHttpClient(m_TeamCityConnectionDetails.Username, m_TeamCityConnectionDetails.Password, string.IsNullOrWhiteSpace(accept) ? GetContentType(data.ToString()) : accept);
 
@@ -249,7 +251,7 @@ namespace FluentTc
             return client;
         }
 
-        private HttpClient MakePutRequest(object data, string contenttype, string urlPart, string accept)
+        private IHttpClientWrapper MakePutRequest(object data, string contenttype, string urlPart, string accept)
         {
             var client = CreateHttpClient(m_TeamCityConnectionDetails.Username, m_TeamCityConnectionDetails.Password, string.IsNullOrWhiteSpace(accept) ? GetContentType(data.ToString()) : accept);
 
@@ -294,14 +296,13 @@ namespace FluentTc
             return m_TeamCityConnectionDetails.UseSSL ? "https://" : "http://";
         }
 
-        private HttpClient CreateHttpClient(string userName, string password, string accept)
+        private IHttpClientWrapper CreateHttpClient(string userName, string password, string accept)
         {
-            var httpClient = new HttpClient(new TeamcityJsonEncoderDecoderConfiguration());
-            httpClient.Request.Accept = accept;
+            var httpClient = m_HttpClientWrapperFactory.CreateHttpClientWrapper();
+            httpClient.SetRequestAccept(accept);
             if (!m_TeamCityConnectionDetails.ActAsGuest)
             {
-                httpClient.Request.SetBasicAuthentication(userName, password);
-                httpClient.Request.ForceBasicAuth = true;
+                httpClient.SetRequestBasicAuthentication(userName, password, true);
             }
 
             return httpClient;

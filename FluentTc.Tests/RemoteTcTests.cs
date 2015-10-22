@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using FluentTc.Domain;
 using NUnit.Framework;
 
 namespace FluentTc.Tests
@@ -33,35 +32,46 @@ namespace FluentTc.Tests
             var enabledAuthorizedButDisconnectedAgents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetAgents(h => h.Disconnected().Enabled().Authorized());
 
-            // Build queue
+            // Build queue  
             var buildQueue = new RemoteTc().Connect(_ => _.ToHost("tc"))
-               .GetBuildQueue(_ => _.Project(__ => __.Id("Branch6_4_Red_NightlyCi_RedWebTests")));
+                .GetBuildQueue(_ => _.Project(__ => __.Id("Branch6_4_Red_NightlyCi_RedWebTests")));
 
             var buildQueue2 = new RemoteTc().Connect(_ => _.ToHost("tc"))
-               .GetBuildQueue(__ => __.Project(___ => ___.Id("Branch6_4_Red_NightlyCi_RedWebTests")));
+                .GetBuildQueue(
+                    __ =>
+                        __.Project(___ => ___.Id("Branch6_4_Red_NightlyCi_RedWebTests"))
+                            .BuildConfiguration(b => b.Name("Trunk")));
 
             // Builds
             var builds = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
-                .GetBuilds(h => h.BuildConfiguration(r => r.Id("bt2")));
+                .GetBuilds(
+                    h =>
+                        h.BuildConfiguration(r => r.Id("bt2"))
+                            .NotPersonal()
+                            .Project(r => r.Name("Trunk"))
+                            .AgentName("BUILDS11")
+                            .Branch(b => b.Name("aa")));
+
+            builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
+                .GetBuilds(_ => _.Personal(), _ => _.All(),
+                    _ => _.IncludeStartDate().IncludeFinishDate().IncludeStatusText());
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuilds(_ => _.Personal(), _ => _.Count(5), _ => _.IncludeDefaults());
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.Personal(), _ => _.Count(5), _ => _.IncludeDefaults());
-
-            builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.BuildConfiguration(x => x.Id("bt2")).NotPersonal().NotRunning(), _ => _.Count(5), _ => _.IncludeDefaults());
+                .GetBuilds(_ => _.BuildConfiguration(x => x.Id("bt2")).NotPersonal().NotRunning(), _ => _.Count(5),
+                    _ => _.IncludeDefaults());
 
             var build = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuild(_ => _.Id(123456), _ => _.IncludeDefaults());
 
             build = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuild(_ => _.Id(123456));   
+                .GetBuild(_ => _.Id(123456));
 
 
             // Build configurations
-            BuildConfiguration buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            var buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuildConfiguration(_ => _.Id("bt2"), _ => _.IncludeDefaults());
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
@@ -91,5 +101,7 @@ namespace FluentTc.Tests
             new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .DeleteBuildConfiguration(_ => _.Name("Trunk"));
         }
+
+
     }
 }

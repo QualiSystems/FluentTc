@@ -12,9 +12,14 @@ namespace FluentTc
     {
         public IConnectedTc Connect(Action<TeamCityConfigurationBuilder> connect)
         {
+            return Connect(connect, null);
+        }
+
+        internal IConnectedTc Connect(Action<TeamCityConfigurationBuilder> connect, params object[] overrides)
+        {
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
             connect(teamCityConfigurationBuilder);
-            var bootstrapper = new Bootstrapper(teamCityConfigurationBuilder.GetITeamCityConnectionDetails());
+            var bootstrapper = new Bootstrapper(teamCityConfigurationBuilder.GetITeamCityConnectionDetails(), overrides);
             return bootstrapper.GetConnectedTc();
         }
     }
