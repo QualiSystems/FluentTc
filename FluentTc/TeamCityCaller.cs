@@ -77,7 +77,7 @@ namespace FluentTc
             Post(data.ToString(), contenttype, string.Format(urlPart, parts), string.Empty);
         }
 
-        public void PutFormat(object data, string contenttype, string urlPart, params object[] parts)
+        public virtual void PutFormat(object data, string contenttype, string urlPart, params object[] parts)
         {
             Put(data.ToString(), contenttype, string.Format(urlPart, parts), string.Empty);
         }

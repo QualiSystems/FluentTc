@@ -10,6 +10,42 @@ namespace FluentTc.Tests
     public class AcceptanceTests
     {
         [Test]
+        public void DisableAgent_Id()
+        {
+            // Arrange
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.DisableAgent(_ => _.Id(123));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.PutFormat("False", "text/plain", "/app/rest/agents/{0}/enabled",
+                        A<object[]>.That.IsSameSequenceAs(new[] {"id:123"}))).MustHaveHappened();
+        }
+
+        [Test]
+        public void EnableAgent_Id()
+        {
+            // Arrange
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.EnableAgent(_ => _.Id(123));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.PutFormat("True", "text/plain", "/app/rest/agents/{0}/enabled",
+                        A<object[]>.That.IsSameSequenceAs(new[] {"id:123"}))).MustHaveHappened();
+        }
+
+        [Test]
         public void GetBuild_Id_Build()
         {
             // Arrange

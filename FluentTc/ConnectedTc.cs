@@ -28,6 +28,8 @@ namespace FluentTc
         List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having);
         Project GetProject(Action<IBuildProjectHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
+        void DisableAgent(Action<IAgentHavingBuilder> having);
+        void EnableAgent(Action<IAgentHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -36,13 +38,15 @@ namespace FluentTc
         private readonly IAgentsRetriever m_AgentsRetriever;
         private readonly IProjectsRetriever m_ProjectsRetriever;
         private readonly IBuildConfigurationRetriever m_BuildConfigurationRetriever;
+        private readonly IAgentEnabler m_AgentEnabler;
 
-        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever)
+        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
             m_ProjectsRetriever = projectsRetriever;
             m_BuildConfigurationRetriever = buildConfigurationRetriever;
+            m_AgentEnabler = agentEnabler;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -152,6 +156,16 @@ namespace FluentTc
         public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having)
         {
             return m_ProjectsRetriever.GetProjects(having);
+        }
+
+        public void DisableAgent(Action<IAgentHavingBuilder> having)
+        {
+            m_AgentEnabler.DisableAgent(having);
+        }
+
+        public void EnableAgent(Action<IAgentHavingBuilder> having)
+        {
+            m_AgentEnabler.EnableAgent(having);
         }
     }
 }

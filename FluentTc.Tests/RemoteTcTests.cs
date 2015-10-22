@@ -21,6 +21,13 @@ namespace FluentTc.Tests
 
         public void Sample_Usage()
         {
+            // Agents
+            new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .DisableAgent(_ => _.Ip("127.0.0.1"));
+
+            new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .EnableAgent(_ => _.Name("agent1"));
+
             // Project
             var project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetProject(_ => _.Name("Trunk"));

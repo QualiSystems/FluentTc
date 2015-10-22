@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgentEnabler.cs" />
     <Compile Include="AgentHavingBuilderFactory.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="BuildConfigurationNotFoundException.cs" />
