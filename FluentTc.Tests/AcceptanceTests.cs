@@ -131,5 +131,33 @@ namespace FluentTc.Tests
 ", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
+
+        [Test]
+        public void RunBuildConfiguration_ConfigurationNameWithParameters()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration {Id = "bt2"});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, p => p.Parameter("param1","value1"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build>
+<buildType id=""bt2""/>
+<properties>
+<property name=""param1"" value=""value1""/>
+</properties>
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
     }
 }

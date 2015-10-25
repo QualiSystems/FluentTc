@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EasyHttp.Http;
@@ -10,7 +9,7 @@ namespace FluentTc
 {
     public interface IBuildConfigurationRunner
     {
-        void Run(Action<IBuildConfigurationHavingBuilder> having);
+        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters = null);
     }
 
     internal class BuildConfigurationRunner : IBuildConfigurationRunner
@@ -24,11 +23,21 @@ namespace FluentTc
             m_TeamCityCaller = teamCityCaller;
         }
 
-        public void Run(Action<IBuildConfigurationHavingBuilder> having)
+        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters = null)
         {
             var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
-            var body = CreateTriggerBody(buildConfiguration.Id, null, new Property[0]);
+            var properties = GetProperties(parameters);
+            var body = CreateTriggerBody(buildConfiguration.Id, null, properties);
             m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
+        }
+
+        private static Property[] GetProperties(Action<IBuildParameterValueBuilder> parameters)
+        {
+            if ( parameters == null ) return new Property[0];
+
+            var buildParameterValueBuilder = new BuildParameterValueBuilder();
+            parameters(buildParameterValueBuilder);
+            return buildParameterValueBuilder.GetParameters();
         }
 
         private static string CreateTriggerBody(string buildConfigId, int? agentId, Property[] properties)
