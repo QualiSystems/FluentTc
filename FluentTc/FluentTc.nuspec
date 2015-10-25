@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>FluentTc</id>
+    <version>$version$</version>
+    <authors>Boris Modylevsky, Igor Olikh, Tomer Cohen</authors>
+    <owners>Boris Modylevsky</owners>
+    <licenseUrl>https://github.com/borismod/FluentTc/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/borismod/FluentTc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity</description>
+    <copyright>Copyright © 2015</copyright>
+    <tags>TeamCity API REST HTTP</tags>
+    <dependencies>
+      <dependency id="Autofac" version="3.5.2" />
+      <dependency id="EasyHttp" version="1.6.67.0" />
+    </dependencies>
+  </metadata>
+</package>
