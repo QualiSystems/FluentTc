@@ -16,7 +16,7 @@ namespace FluentTc
         Build GetBuild(Action<IBuildHavingBuilder> having);
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
-        BuildConfiguration SetParameters(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters);
+        void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters);
         BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent);
         BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent, Action<BuildParameterValueBuilder> parameters);
@@ -95,9 +95,9 @@ namespace FluentTc
             return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having, include);
         }
 
-        public BuildConfiguration SetParameters(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters)
+        public void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
         {
-            throw new NotImplementedException();
+            m_BuildConfigurationRetriever.SetParameters(having, parameters);
         }
 
         public BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters)

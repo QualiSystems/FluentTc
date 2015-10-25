@@ -81,23 +81,23 @@ namespace FluentTc.Tests
             var buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuildConfiguration(_ => _.Id("bt2"), _ => _.IncludeDefaults());
 
-            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .SetParameters(_ => _.Id("bt2"),
-                    _ => _.Parameters("name", "value").Parameters("name2", "value"));
+                    _ => _.Parameter("name", "value").Parameter("name2", "value"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"),
-                    _ => _.Parameters("name", "value").Parameters("name2", "value"));
+                    _ => _.Parameter("name", "value").Parameter("name2", "value"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"), _ => _.AgentName("agent1"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"), _ => _.AgentName("agent1"),
-                    _ => _.Parameters("name", "value").Parameters("name2", "value"));
+                    _ => _.Parameter("name", "value").Parameter("name2", "value"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .CreateBuildConfiguration(_ => _.Id("Trunk"), "config name");
