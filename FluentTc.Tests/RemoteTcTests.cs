@@ -85,7 +85,7 @@ namespace FluentTc.Tests
                 .SetParameters(_ => _.Id("bt2"),
                     _ => _.Parameter("name", "value").Parameter("name2", "value"));
 
-            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
+            new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))

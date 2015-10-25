@@ -20,7 +20,7 @@ namespace FluentTc
         BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<BuildParameterValueBuilder> parameters);
         BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent);
         BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having, Action<AgentLocatorBuilder> onAgent, Action<BuildParameterValueBuilder> parameters);
-        BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
+        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<BuildProjectHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
         BuildConfiguration CreateBuildConfiguration(Action<BuildProjectHavingBuilder> having, string buildConfigurationName);
         void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving);
@@ -39,14 +39,16 @@ namespace FluentTc
         private readonly IProjectsRetriever m_ProjectsRetriever;
         private readonly IBuildConfigurationRetriever m_BuildConfigurationRetriever;
         private readonly IAgentEnabler m_AgentEnabler;
+        private readonly IBuildConfigurationRunner m_BuildConfigurationRunner;
 
-        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler)
+        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
             m_ProjectsRetriever = projectsRetriever;
             m_BuildConfigurationRetriever = buildConfigurationRetriever;
             m_AgentEnabler = agentEnabler;
+            m_BuildConfigurationRunner = buildConfigurationRunner;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -84,10 +86,7 @@ namespace FluentTc
 
         public BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)
         {
-            var buildConfigurations = GetBuildConfigurations(having, include);
-            if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
-            if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
-            return buildConfigurations.Single();
+            return m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
         }
 
         public IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)
@@ -115,9 +114,9 @@ namespace FluentTc
             throw new NotImplementedException();
         }
 
-        public BuildConfiguration RunBuildConfiguration(Action<BuildConfigurationHavingBuilder> having)
+        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)
         {
-            throw new NotImplementedException();
+            m_BuildConfigurationRunner.Run(having);
         }
 
         public IList<BuildConfiguration> GetBuildConfigurations(Action<BuildProjectHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)

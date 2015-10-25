@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EasyHttp.Http;
 using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Domain;
+using FluentTc.Locators;
 using NUnit.Framework;
 
 namespace FluentTc.Tests
@@ -102,6 +104,31 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.PutFormat("newVal", HttpContentTypes.TextPlain, "/app/rest/buildTypes/{0}/parameters/{1}", A<object[]>.That.IsSameSequenceAs(new[] {"name:FluentTc", "name"})))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void RunBuildConfiguration_ConfigurationName()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration {Id = "bt2"});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having);
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build>
+<buildType id=""bt2""/>
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
