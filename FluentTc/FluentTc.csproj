@@ -93,7 +93,6 @@
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="HttpClientWrapperFactory.cs" />
     <Compile Include="IProjectsRetriever.cs" />
-    <Compile Include="Locators\AgentLocatorBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />

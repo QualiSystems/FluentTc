@@ -11,6 +11,7 @@ namespace FluentTc
     {
         void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters = null);
         void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent);
+        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters);
     }
 
     internal class BuildConfigurationRunner : IBuildConfigurationRunner
@@ -39,6 +40,14 @@ namespace FluentTc
             var agent = m_AgentsRetriever.GetAgent(onAgent);
             var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
             var body = CreateTriggerBody(buildConfiguration.Id, agent.Id);
+            m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
+        }
+
+        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters)
+        {
+            var agent = m_AgentsRetriever.GetAgent(onAgent);
+            var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
+            var body = CreateTriggerBody(buildConfiguration.Id, agent.Id,GetProperties(parameters));
             m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
         }
 
