@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. " +
                                "Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Boris Modylevsky, Igor Olikh, Tomer Cohen")]
 [assembly: AssemblyProduct("FluentTc")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright 2015 Boris Modylevsky")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
