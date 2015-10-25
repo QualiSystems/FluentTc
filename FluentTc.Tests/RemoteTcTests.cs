@@ -92,8 +92,8 @@ namespace FluentTc.Tests
                 .RunBuildConfiguration(_ => _.Id("bt2"),
                     _ => _.Parameter("name", "value").Parameter("name2", "value"));
 
-            buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .RunBuildConfiguration(_ => _.Id("bt2"), _ => _.AgentName("agent1"));
+            new RemoteTc().Connect(_ => _.ToHost("tc"))
+                .RunBuildConfiguration(having => having.Id("bt2"), onAgent => onAgent.Name("agent1"));
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .RunBuildConfiguration(_ => _.Id("bt2"), _ => _.AgentName("agent1"),

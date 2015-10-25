@@ -159,5 +159,35 @@ namespace FluentTc.Tests
 ", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
+
+        [Test]
+        public void RunBuildConfiguration_OnAgentName()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration {Id = "bt2"});
+
+            Action<IAgentHavingBuilder> onAgent = p => p.Name("agent1");
+            var agentsRetriever = A.Fake<IAgentsRetriever>();
+            A.CallTo(() => agentsRetriever.GetAgent(onAgent)).Returns(new Agent() {Id = 9});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever, agentsRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, onAgent);
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build>
+<buildType id=""bt2""/>
+<agent id=""9""/>
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
     }
 }

@@ -1,13 +1,19 @@
 namespace FluentTc.Locators
 {
-    public class AgentLocatorBuilder
+    public interface IAgentLocatorBuilder
     {
-        public AgentLocatorBuilder AgentName(string agentName)
+        IAgentLocatorBuilder AgentName(string agentName);
+        IAgentLocatorBuilder AgentId(string agentId);
+    }
+
+    public class AgentLocatorBuilder : IAgentLocatorBuilder
+    {
+        public IAgentLocatorBuilder AgentName(string agentName)
         {
             return this;
         }
 
-        public AgentLocatorBuilder AgentId(string agentId)
+        public IAgentLocatorBuilder AgentId(string agentId)
         {
             return this;
         }
