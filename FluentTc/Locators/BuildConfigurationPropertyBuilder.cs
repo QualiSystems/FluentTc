@@ -1,6 +1,10 @@
 namespace FluentTc.Locators
 {
-    public class BuildConfigurationPropertyBuilder
+    public interface IBuildConfigurationPropertyBuilder
+    {
+    }
+
+    public class BuildConfigurationPropertyBuilder : IBuildConfigurationPropertyBuilder
     {
         public BuildConfigurationPropertyBuilder IncludeDefaults()
         {

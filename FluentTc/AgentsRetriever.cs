@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
@@ -7,7 +8,8 @@ namespace FluentTc
 {
     internal interface IAgentsRetriever
     {
-        List<Agent> GetAgents(Action<AgentHavingBuilder> having);
+        List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
+        Agent GetAgent(Action<IAgentHavingBuilder> having);
     }
 
     internal class AgentsRetriever : IAgentsRetriever
@@ -21,7 +23,7 @@ namespace FluentTc
             m_AgentHavingBuilderFactory = agentHavingBuilderFactory;
         }
 
-        public List<Agent> GetAgents(Action<AgentHavingBuilder> having)
+        public List<Agent> GetAgents(Action<IAgentHavingBuilder> having)
         {
             var agentHavingBuilder = m_AgentHavingBuilderFactory.CreateAgentHavingBuilder();
             having(agentHavingBuilder);
@@ -33,6 +35,14 @@ namespace FluentTc
                 return agentWrapper.Agent;
             }
             return new List<Agent>();
+        }
+
+        public Agent GetAgent(Action<IAgentHavingBuilder> having)
+        {
+            var buildConfigurations = GetAgents(having);
+            if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
+            if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
+            return buildConfigurations.Single();
         }
     }
 }

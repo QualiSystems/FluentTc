@@ -58,6 +58,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="BuildConfigurationNotFoundException.cs" />
     <Compile Include="BuildConfigurationRetriever.cs" />
+    <Compile Include="BuildConfigurationRunner.cs" />
     <Compile Include="BuildHavingBuilderFactory.cs" />
     <Compile Include="BuildIncludeBuilderFactory.cs" />
     <Compile Include="BuildsRetriever.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="HttpClientWrapperFactory.cs" />
     <Compile Include="IProjectsRetriever.cs" />
-    <Compile Include="Locators\AgentLocatorBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />

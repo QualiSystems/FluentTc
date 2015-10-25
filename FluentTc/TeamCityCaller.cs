@@ -213,7 +213,7 @@ namespace FluentTc
             }
         }
 
-        public HttpResponse Post(object data, string contenttype, string urlPart, string accept)
+        public virtual HttpResponse Post(object data, string contenttype, string urlPart, string accept)
         {
             var client = MakePostRequest(data, contenttype, urlPart, accept);
 
