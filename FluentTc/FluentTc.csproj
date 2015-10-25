@@ -56,6 +56,7 @@
     <Compile Include="AgentEnabler.cs" />
     <Compile Include="AgentHavingBuilderFactory.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="BuildConfigurationCreator.cs" />
     <Compile Include="BuildConfigurationNotFoundException.cs" />
     <Compile Include="BuildConfigurationRetriever.cs" />
     <Compile Include="BuildConfigurationRunner.cs" />

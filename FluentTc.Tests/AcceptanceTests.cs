@@ -244,5 +244,23 @@ namespace FluentTc.Tests
             buildConfigurations.Single().Id.Should().Be("bt987");
         }
 
+        [Test]
+        public void CreateBuildConfiguration_ByName()
+        {
+            // Arrange
+            Action<IBuildProjectHavingBuilder> having = _ => _.Name("OpenSource");
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            BuildConfiguration buildConfiguration = connectedTc.CreateBuildConfiguration(having, "NewConfig");
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post("NewConfig", HttpContentTypes.TextPlain, "/app/rest/projects/name:OpenSource/buildTypes", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        }
+
     }
 }
