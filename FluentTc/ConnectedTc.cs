@@ -15,13 +15,14 @@ namespace FluentTc
         Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         Build GetBuild(Action<IBuildHavingBuilder> having);
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
+        IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
+        IList<BuildConfiguration> GetBuildConfigurations(Action<BuildProjectHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
         void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
-        IList<BuildConfiguration> GetBuildConfigurations(Action<BuildProjectHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include);
         BuildConfiguration CreateBuildConfiguration(Action<BuildProjectHavingBuilder> having, string buildConfigurationName);
         void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving);
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
@@ -87,6 +88,11 @@ namespace FluentTc
         public BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)
         {
             return m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
+        }
+
+        public IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having)
+        {
+            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having, null);
         }
 
         public IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having, Action<BuildConfigurationPropertyBuilder> include)

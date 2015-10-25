@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EasyHttp.Http;
 using FakeItEasy;
 using FluentAssertions;
@@ -222,5 +223,26 @@ namespace FluentTc.Tests
 ", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
+
+        [Test]
+        public void GetBuildConfigurations_ByName()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildTypeWrapper>("/app/rest/buildTypes/name:FluentTc"))
+                .Returns(new BuildTypeWrapper { BuildType = new List<BuildConfiguration>(new[] { new BuildConfiguration { Id = "bt987" } }) });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var buildConfigurations = connectedTc.GetBuildConfigurations(having);
+
+            // Assert
+            buildConfigurations.Single().Id.Should().Be("bt987");
+        }
+
     }
 }
