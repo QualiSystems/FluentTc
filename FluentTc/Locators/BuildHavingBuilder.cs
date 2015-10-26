@@ -7,6 +7,7 @@ namespace FluentTc.Locators
     {
         IBuildHavingBuilder BuildConfiguration(Action<IBuildConfigurationHavingBuilder> havingBuildConfig);
         IBuildHavingBuilder Id(int buildId);
+        IBuildHavingBuilder Id(long buildId);
         IBuildHavingBuilder Tags(params string[] tags);
         IBuildHavingBuilder Status(BuildStatus buildStatus);
         IBuildHavingBuilder TriggeredBy(Action<IUserHavingBuilder> buildStatus);
@@ -59,6 +60,12 @@ namespace FluentTc.Locators
         }
 
         public IBuildHavingBuilder Id(int buildId)
+        {
+            m_Having.Add("id:" + buildId);
+            return this;
+        }
+
+        public IBuildHavingBuilder Id(long buildId)
         {
             m_Having.Add("id:" + buildId);
             return this;

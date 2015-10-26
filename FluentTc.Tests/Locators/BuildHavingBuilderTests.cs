@@ -92,6 +92,20 @@ namespace FluentTc.Tests.Locators
         }
 
         [Test]
+        public void Id_AsLong()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
+
+            // Act
+            var havingBuilder = buildHavingBuilder.Id(123L);
+
+            // Assert
+            havingBuilder.GetLocator().Should().Be("id:123");
+        }
+
+        [Test]
         public void NotCancelled()
         {
             // Arrange
