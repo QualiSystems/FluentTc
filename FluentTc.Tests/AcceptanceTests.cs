@@ -126,10 +126,10 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(A<object>.That.IsEqualTo(@"<build>
+                    teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 </build>
-"), HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -151,13 +151,13 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(A<object>.That.IsEqualTo(@"<build>
+                    teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 <properties>
 <property name=""param1"" value=""value1""/>
 </properties>
 </build>
-"), HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -184,11 +184,11 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(A<object>.That.IsEqualTo(@"<build>
+                    teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 <agent id=""9""/>
 </build>
-"), HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -214,14 +214,14 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(A<object>.That.IsEqualTo(@"<build>
+                    teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 <agent id=""9""/>
 <properties>
 <property name=""param1"" value=""value1""/>
 </properties>
 </build>
-"), HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -283,7 +283,7 @@ namespace FluentTc.Tests
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
             A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.PostFormat<string>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.PostFormat<string>(A<string>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             return teamCityCaller;
