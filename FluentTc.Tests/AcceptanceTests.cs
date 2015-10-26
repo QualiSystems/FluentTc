@@ -113,7 +113,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
             A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
                 .Returns(new BuildConfiguration {Id = "bt2"});
@@ -138,7 +138,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
             A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
                 .Returns(new BuildConfiguration {Id = "bt2"});
@@ -166,7 +166,8 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
+
             var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
             A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
                 .Returns(new BuildConfiguration {Id = "bt2"});
@@ -196,7 +197,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
             A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
                 .Returns(new BuildConfiguration {Id = "bt2"});
@@ -267,8 +268,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
-            A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            var teamCityCaller = CreateTeamCityCaller();
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -281,5 +281,12 @@ namespace FluentTc.Tests
                     teamCityCaller.Put("BuildTemplateId", HttpContentTypes.TextPlain, "/app/rest/buildTypes/name:FluentTc/template", string.Empty)).MustHaveHappened();
         }
 
+        private static TeamCityCaller CreateTeamCityCaller()
+        {
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            return teamCityCaller;
+        }
     }
 }

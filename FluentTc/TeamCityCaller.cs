@@ -72,7 +72,7 @@ namespace FluentTc
             return Post<T>(data.ToString(), contenttype, string.Format(urlPart, parts), accept);
         }
 
-        public void PostFormat(object data, string contenttype, string urlPart, params object[] parts)
+        public virtual void PostFormat(object data, string contenttype, string urlPart, params object[] parts)
         {
             Post(data.ToString(), contenttype, string.Format(urlPart, parts), string.Empty);
         }
