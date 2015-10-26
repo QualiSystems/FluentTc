@@ -22,13 +22,13 @@ namespace FluentTc
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having, string buildConfigurationName);
-        void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving);
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
         List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having);
         Project GetProject(Action<IBuildProjectHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
         void DisableAgent(Action<IAgentHavingBuilder> having);
         void EnableAgent(Action<IAgentHavingBuilder> having);
+        void AttachBuildConfigurationToTemplate(Action<IBuildConfigurationHavingBuilder> having, string buildTemplateId);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -40,8 +40,9 @@ namespace FluentTc
         private readonly IAgentEnabler m_AgentEnabler;
         private readonly IBuildConfigurationRunner m_BuildConfigurationRunner;
         private readonly IBuildConfigurationCreator m_BuildConfigurationCreator;
+        private readonly IBuildTemplateAttacher m_BuildTemplateAttacher;
 
-        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator)
+        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator, IBuildTemplateAttacher buildTemplateAttacher)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -50,6 +51,7 @@ namespace FluentTc
             m_AgentEnabler = agentEnabler;
             m_BuildConfigurationRunner = buildConfigurationRunner;
             m_BuildConfigurationCreator = buildConfigurationCreator;
+            m_BuildTemplateAttacher = buildTemplateAttacher;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -125,9 +127,9 @@ namespace FluentTc
             return m_BuildConfigurationCreator.Create(having, buildConfigurationName);
         }
 
-        public void AttachBuildConfigurationToTemplate(Action<BuildConfigurationHavingBuilder> having, Action<BuildTemplateHavingBuilder> templateHaving)
+        public void AttachBuildConfigurationToTemplate(Action<IBuildConfigurationHavingBuilder> having, string buildTemplateId)
         {
-            throw new NotImplementedException();
+            m_BuildTemplateAttacher.Attach(having, buildTemplateId);
         }
 
         public void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having)

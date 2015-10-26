@@ -103,9 +103,6 @@ namespace FluentTc.Tests
                 .CreateBuildConfiguration(_ => _.Id("Trunk"), "config name");
 
             new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .AttachBuildConfigurationToTemplate(_ => _.Name("Trunk"), _ => _.TemplateName("config name"));
-
-            new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .DeleteBuildConfiguration(_ => _.Name("Trunk"));
         }
 

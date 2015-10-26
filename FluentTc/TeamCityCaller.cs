@@ -220,7 +220,7 @@ namespace FluentTc
             return client.Response;
         }
 
-        public HttpResponse Put(object data, string contenttype, string urlPart, string accept)
+        public virtual HttpResponse Put(object data, string contenttype, string urlPart, string accept)
         {
             var client = MakePutRequest(data, contenttype, urlPart, accept);
 
