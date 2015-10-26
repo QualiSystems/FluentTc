@@ -214,7 +214,7 @@ namespace FluentTc.Tests.Locators
             var havingBuilder = buildHavingBuilder.SinceDate(new DateTime(2015, 10, 18, 16, 56, 0));
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("sinceDate:20151018T165600+0300");
+            havingBuilder.GetLocator().Should().Be("sinceDate:20151018T165600%2b0300");
         }
 
         [Test]

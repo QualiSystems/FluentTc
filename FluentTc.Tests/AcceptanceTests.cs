@@ -91,6 +91,27 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void GetBuilds_SinceDate()
+        {
+            // Arrange
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var build = new Build {Id = 987};
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildWrapper>(
+                        "/app/rest/builds?locator=sinceDate:20151026T162200%2b0200,count:-1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
+                .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {build})});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var builds = connectedTc.GetBuilds(_ => _.SinceDate(new DateTime(2015,10,26,16,22,0)));
+
+            // Assert
+            builds.ShouldAllBeEquivalentTo(new [] { build });
+        }
+
+        [Test]
         public void SetParameters_ConfigurationName()
         {
             // Arrange

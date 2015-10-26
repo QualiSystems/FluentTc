@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web;
 
 namespace FluentTc.Locators
 {
@@ -163,7 +164,7 @@ namespace FluentTc.Locators
 
         public IBuildHavingBuilder SinceDate(DateTime dateTime)
         {
-            m_Having.Add("sinceDate:" + dateTime.ToString(DateFormat));
+            m_Having.Add("sinceDate:" + HttpUtility.UrlEncode(dateTime.ToString(DateFormat)));
             return this;
         }
 
