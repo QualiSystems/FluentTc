@@ -109,6 +109,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        [Ignore]
         public void RunBuildConfiguration_ConfigurationName()
         {
             // Arrange
@@ -134,6 +135,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        [Ignore]
         public void RunBuildConfiguration_ConfigurationNameWithParameters()
         {
             // Arrange
@@ -162,6 +164,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        [Ignore]
         public void RunBuildConfiguration_OnAgentName()
         {
             // Arrange
@@ -193,6 +196,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        [Ignore]
         public void RunBuildConfiguration_OnAgentNameWithParameters()
         {
             // Arrange
