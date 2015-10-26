@@ -67,7 +67,7 @@ namespace FluentTc
             Get(string.Format(urlPart, parts));
         }
 
-        public T PostFormat<T>(object data, string contenttype, string accept, string urlPart, params object[] parts)
+        public virtual T PostFormat<T>(object data, string contenttype, string accept, string urlPart, params object[] parts)
         {
             return Post<T>(data.ToString(), contenttype, string.Format(urlPart, parts), accept);
         }

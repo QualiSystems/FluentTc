@@ -9,9 +9,7 @@ namespace FluentTc
 {
     public interface IBuildConfigurationRunner
     {
-        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters = null);
-        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent);
-        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters);
+        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null);
     }
 
     internal class BuildConfigurationRunner : IBuildConfigurationRunner
@@ -27,28 +25,18 @@ namespace FluentTc
             m_AgentsRetriever = agentsRetriever;
         }
 
-        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters = null)
+        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null)
         {
+            var agentId = GetAgentId(onAgent);
             var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
-            var properties = GetProperties(parameters);
-            var body = CreateTriggerBody(buildConfiguration.Id, null, properties);
+            var body = CreateTriggerBody(buildConfiguration.Id, agentId, GetProperties(parameters));
             m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
         }
 
-        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent)
+        private int? GetAgentId(Action<IAgentHavingBuilder> onAgent)
         {
-            var agent = m_AgentsRetriever.GetAgent(onAgent);
-            var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
-            var body = CreateTriggerBody(buildConfiguration.Id, agent.Id);
-            m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
-        }
-
-        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters)
-        {
-            var agent = m_AgentsRetriever.GetAgent(onAgent);
-            var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
-            var body = CreateTriggerBody(buildConfiguration.Id, agent.Id,GetProperties(parameters));
-            m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
+            if (onAgent == null) return null;
+            return m_AgentsRetriever.GetAgent(onAgent).Id;
         }
 
         private static Property[] GetProperties(Action<IBuildParameterValueBuilder> parameters)

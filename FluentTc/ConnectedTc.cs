@@ -104,7 +104,7 @@ namespace FluentTc
 
         public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
         {
-            m_BuildConfigurationRunner.Run(having, parameters);
+            m_BuildConfigurationRunner.Run(having, parameters: parameters);
         }
 
         public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent)

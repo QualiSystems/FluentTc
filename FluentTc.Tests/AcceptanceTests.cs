@@ -250,7 +250,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildProjectHavingBuilder> having = _ => _.Name("OpenSource");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -258,9 +258,7 @@ namespace FluentTc.Tests
             BuildConfiguration buildConfiguration = connectedTc.CreateBuildConfiguration(having, "NewConfig");
 
             // Assert
-            A.CallTo(
-                () =>
-                    teamCityCaller.Post("NewConfig", HttpContentTypes.TextPlain, "/app/rest/projects/name:OpenSource/buildTypes", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+            A.CallTo(() => teamCityCaller.Post("NewConfig", HttpContentTypes.TextPlain, "/app/rest/projects/name:OpenSource/buildTypes", HttpContentTypes.ApplicationJson)).MustHaveHappened();
         }
 
         [Test]
@@ -285,6 +283,8 @@ namespace FluentTc.Tests
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
             A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.PostFormat<string>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             return teamCityCaller;
         }
