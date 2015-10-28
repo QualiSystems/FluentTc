@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MoreLinq;
 using NUnit.Framework;
 
 namespace FluentTc.Tests
@@ -30,7 +31,7 @@ namespace FluentTc.Tests
 
             // Project
             var project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
-                .GetProject(_ => _.Name("Trunk"));
+                .GetProjectById("FluentTc");
 
             // Agents
             var agents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
@@ -48,6 +49,11 @@ namespace FluentTc.Tests
                     __ =>
                         __.Project(___ => ___.Id("Branch6_4_Red_NightlyCi_RedWebTests"))
                             .BuildConfiguration(b => b.Name("Trunk")));
+            
+            // Remove builds from queue by project Id recursively 
+            var connectedTc = new RemoteTc().Connect(_ => _.ToHost("tc"));
+            connectedTc.GetBuildConfigurationsRecursively("ProjectId")
+                .ForEach(c => connectedTc.RemoveBuildFromQueue(__ => __.BuildConfiguration(___ => ___.Id(c.Id))));
 
             // Builds
             var builds = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())

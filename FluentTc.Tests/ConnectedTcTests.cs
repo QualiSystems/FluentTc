@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Domain;
@@ -72,6 +73,35 @@ namespace FluentTc.Tests
 
             // Assert
             actualBuild.Should().Be(build);
+        }
+
+        [Test]
+        public void GetBuildConfigurationsRecursively_ProjectWithChildProjectAndConfiguration_Retrieved()
+        {
+            // Arrange
+            var childProject = CreateProject("childId", new Project[0], new[]{ new BuildConfiguration { Id = "childConfig"}, });
+            var rootProject = CreateProject("rootId", new[] { childProject, }, new [] { new BuildConfiguration() { Id = "rootConfig"} });
+
+            var fixture = Auto.Fixture();
+            var projectsRetriever = fixture.Freeze<IProjectsRetriever>();
+            A.CallTo(() => projectsRetriever.GetProject("childId")).Returns(childProject);
+            A.CallTo(() => projectsRetriever.GetProject("rootId")).Returns(rootProject);
+
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            var buildConfigurations = connectedTc.GetBuildConfigurationsRecursively("rootId");
+
+            // Assert
+            buildConfigurations.Select(c => c.Id).ShouldAllBeEquivalentTo(new[] { "rootConfig", "childConfig" });
+        }
+
+        private static Project CreateProject(string projectId, Project[] childProjects, BuildConfiguration[] buildConfigurations)
+        {
+            return new Project { 
+                Id = projectId, 
+                BuildTypes = new BuildTypeWrapper { BuildType = new List<BuildConfiguration>(buildConfigurations) }, 
+                Projects = new ProjectWrapper { Project = new List<Project>(childProjects )}};
         }
     }
 }

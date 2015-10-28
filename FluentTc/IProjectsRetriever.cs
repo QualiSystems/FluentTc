@@ -8,6 +8,7 @@ namespace FluentTc
     public interface IProjectsRetriever
     {
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
+        Project GetProject(string projectId);
     }
 
     internal class ProjectsRetriever : IProjectsRetriever
@@ -28,6 +29,11 @@ namespace FluentTc
             having(buildProjectHavingBuilder);
             var projects = m_TeamCityCaller.GetFormat<ProjectWrapper>("/app/rest/projects/{0}", buildProjectHavingBuilder.GetLocator());
             return projects.Project;
+        }
+
+        public Project GetProject(string projectId)
+        {
+            return m_TeamCityCaller.GetFormat<Project>("/app/rest/projects/id:{0}", projectId);
         }
     }
 }

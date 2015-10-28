@@ -26,11 +26,12 @@ namespace FluentTc
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
         List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having);
         void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having);
-        Project GetProject(Action<IBuildProjectHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
         void DisableAgent(Action<IAgentHavingBuilder> having);
         void EnableAgent(Action<IAgentHavingBuilder> having);
         void AttachBuildConfigurationToTemplate(Action<IBuildConfigurationHavingBuilder> having, string buildTemplateId);
+        Project GetProjectById(string projectId);
+        IList<BuildConfiguration> GetBuildConfigurationsRecursively(string projectId);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -151,12 +152,9 @@ namespace FluentTc
             m_BuildQueueRemover.RemoveBuildFromQueue(having);
         }
 
-        public Project GetProject(Action<IBuildProjectHavingBuilder> having)
+        public Project GetProjectById(string projectId)
         {
-            var projects = GetProjects(having);
-            if (!projects.Any()) throw new ProjectNotFoundException();
-            if (projects.Count() > 1) throw new MoreThanOneProjectFoundException();
-            return projects.Single();
+            return m_ProjectsRetriever.GetProject(projectId);
         }
 
         public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having)
@@ -172,6 +170,16 @@ namespace FluentTc
         public void EnableAgent(Action<IAgentHavingBuilder> having)
         {
             m_AgentEnabler.EnableAgent(having);
+        }
+
+        public IList<BuildConfiguration> GetBuildConfigurationsRecursively(string projectId)
+        {
+            var project = GetProjectById(projectId);
+            if (project.Projects.Project == null || !project.Projects.Project.Any()) return project.BuildTypes.BuildType;
+
+            return project.BuildTypes.BuildType.Concat(
+                project.Projects.Project.SelectMany(p => GetBuildConfigurationsRecursively(p.Id)))
+                .ToList();
         }
     }
 }

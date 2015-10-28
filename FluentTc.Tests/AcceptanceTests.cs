@@ -53,7 +53,7 @@ namespace FluentTc.Tests
         public void GetBuild_Id_Build()
         {
             // Arrange
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             A.CallTo(
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
@@ -73,7 +73,7 @@ namespace FluentTc.Tests
         public void GetBuilds_BuildConfigurationName()
         {
             // Arrange
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             var build = new Build {Id = 987};
             A.CallTo(
                 () =>
@@ -94,7 +94,7 @@ namespace FluentTc.Tests
         public void GetBuilds_SinceDate()
         {
             // Arrange
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             var build = new Build {Id = 987};
             A.CallTo(
                 () =>
@@ -255,7 +255,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
-            var teamCityCaller = A.Fake<TeamCityCaller>();
+            var teamCityCaller = CreateTeamCityCaller();
             A.CallTo(
                 () =>
                     teamCityCaller.Get<BuildTypeWrapper>("/app/rest/buildTypes/name:FluentTc"))
@@ -319,11 +319,29 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.Delete("/app/rest/buildQueue/?locator=project:id:FluentTc")).MustHaveHappened();
-        }        
+        }   
+
+        [Test]
+        public void GetProjectById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.GetProjectById("FluentTc");
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<Project>(@"/app/rest/projects/id:FluentTc")).MustHaveHappened();
+        }    
 
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.GetFormat<BuildTypeWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.GetFormat<BuildWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<string>(A<string>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();

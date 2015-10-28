@@ -58,7 +58,7 @@ namespace FluentTc
             m_HttpClientWrapperFactory = httpClientWrapperFactory;
         }
 
-        public T GetFormat<T>(string urlPart, params object[] parts)
+        public virtual T GetFormat<T>(string urlPart, params object[] parts)
         {
             return Get<T>(string.Format(urlPart, parts));
         }
@@ -166,7 +166,7 @@ namespace FluentTc
             return response.StaticBody<T>();
         }
 
-        public void Get(string urlPart)
+        public virtual void Get(string urlPart)
         {
             GetResponse(urlPart);
         }
