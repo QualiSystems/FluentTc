@@ -42,10 +42,10 @@ namespace FluentTc.Tests
 
             // Build queue  
             var buildQueue = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuildQueue(_ => _.Project(__ => __.Id("Branch6_4_Red_NightlyCi_RedWebTests")));
+                .GetBuildsQueue(_ => _.Project(__ => __.Id("Branch6_4_Red_NightlyCi_RedWebTests")));
 
             var buildQueue2 = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuildQueue(
+                .GetBuildsQueue(
                     __ =>
                         __.Project(___ => ___.Id("Branch6_4_Red_NightlyCi_RedWebTests"))
                             .BuildConfiguration(b => b.Name("Trunk")));
@@ -116,9 +116,6 @@ namespace FluentTc.Tests
 
             buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .CreateBuildConfiguration(_ => _.Id("Trunk"), "config name");
-
-            new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .DeleteBuildConfiguration(_ => _.Name("Trunk"));
 
             // Retrieves all the projects
             var allProjects = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())

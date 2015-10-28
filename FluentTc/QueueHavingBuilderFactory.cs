@@ -4,7 +4,7 @@ namespace FluentTc
 {
     internal interface IQueueHavingBuilderFactory
     {
-        QueueHavingBuilder CreateBuildProjectHavingBuilder();
+        IQueueHavingBuilder CreateBuildProjectHavingBuilder();
     }
 
     internal class QueueHavingBuilderFactory : IQueueHavingBuilderFactory
@@ -16,7 +16,7 @@ namespace FluentTc
             m_LocatorBuilder = locatorBuilder;
         }
 
-        public QueueHavingBuilder CreateBuildProjectHavingBuilder()
+        public IQueueHavingBuilder CreateBuildProjectHavingBuilder()
         {
             return new QueueHavingBuilder(m_LocatorBuilder);
         }

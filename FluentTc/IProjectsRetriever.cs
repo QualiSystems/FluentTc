@@ -33,8 +33,7 @@ namespace FluentTc
         {
             var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
             having(buildProjectHavingBuilder);
-            var locator = buildProjectHavingBuilder.GetLocator();
-            return locator;
+            return buildProjectHavingBuilder.GetLocator();
         }
 
         public Project GetProject(string projectId)

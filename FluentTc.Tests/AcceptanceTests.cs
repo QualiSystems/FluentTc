@@ -351,6 +351,40 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.Get<ProjectWrapper>(@"/app/rest/projects/")).MustHaveHappened();
         }    
 
+        [Test]
+        public void GetBuildsQueue_All()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue"))
+                .Returns(new BuildWrapper {Count = "0"});
+
+            // Act
+            connectedTc.GetBuildsQueue();
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue")).MustHaveHappened();
+        }    
+
+        [Test]
+        public void GetBuildsQueue_ByProjectId()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk"))
+                .Returns(new BuildWrapper {Count = "0"});
+
+            // Act
+            connectedTc.GetBuildsQueue(_ => _.Project(p => p.Id("Trunk")));
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk")).MustHaveHappened();
+        }    
+
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();

@@ -23,8 +23,7 @@ namespace FluentTc
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having, string buildConfigurationName);
-        void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
-        List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having);
+        List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null);
         void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
         void DisableAgent(Action<IAgentHavingBuilder> having);
@@ -138,14 +137,9 @@ namespace FluentTc
             m_BuildTemplateAttacher.Attach(having, buildTemplateId);
         }
 
-        public void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having)
+        public List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having)
-        {
-            return m_BuildsRetriever.GetBuildQueues(having);
+            return m_BuildsRetriever.GetBuildsQueue(having);
         }
 
         public void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having)
