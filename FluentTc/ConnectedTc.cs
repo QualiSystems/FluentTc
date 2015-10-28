@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentTc.Domain;
+using FluentTc.Engine;
 using FluentTc.Locators;
 
 namespace FluentTc
@@ -24,6 +25,7 @@ namespace FluentTc
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having, string buildConfigurationName);
         void DeleteBuildConfiguration(Action<BuildConfigurationHavingBuilder> having);
         List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having);
+        void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having);
         Project GetProject(Action<IBuildProjectHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
         void DisableAgent(Action<IAgentHavingBuilder> having);
@@ -41,8 +43,9 @@ namespace FluentTc
         private readonly IBuildConfigurationRunner m_BuildConfigurationRunner;
         private readonly IBuildConfigurationCreator m_BuildConfigurationCreator;
         private readonly IBuildTemplateAttacher m_BuildTemplateAttacher;
+        private readonly IBuildQueueRemover m_BuildQueueRemover;
 
-        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator, IBuildTemplateAttacher buildTemplateAttacher)
+        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator, IBuildTemplateAttacher buildTemplateAttacher, IBuildQueueRemover buildQueueRemover)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -52,6 +55,7 @@ namespace FluentTc
             m_BuildConfigurationRunner = buildConfigurationRunner;
             m_BuildConfigurationCreator = buildConfigurationCreator;
             m_BuildTemplateAttacher = buildTemplateAttacher;
+            m_BuildQueueRemover = buildQueueRemover;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -140,6 +144,11 @@ namespace FluentTc
         public List<Build> GetBuildQueue(Action<IQueueHavingBuilder> having)
         {
             return m_BuildsRetriever.GetBuildQueues(having);
+        }
+
+        public void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having)
+        {
+            m_BuildQueueRemover.RemoveBuildFromQueue(having);
         }
 
         public Project GetProject(Action<IBuildProjectHavingBuilder> having)

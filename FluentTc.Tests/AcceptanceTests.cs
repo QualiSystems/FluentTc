@@ -304,6 +304,23 @@ namespace FluentTc.Tests
                     teamCityCaller.Put("BuildTemplateId", HttpContentTypes.TextPlain, "/app/rest/buildTypes/name:FluentTc/template", string.Empty)).MustHaveHappened();
         }
 
+        [Test]
+        public void RemoveBuildFromQueue_ProjectName()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.RemoveBuildFromQueue(_ => _.Project(__ => __.Id("FluentTc")));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Delete("/app/rest/buildQueue/?locator=project:id:FluentTc")).MustHaveHappened();
+        }        
+
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
@@ -311,6 +328,7 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.PostFormat<string>(A<string>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.DeleteFormat(A<string>._, A<object[]>._)).CallsBaseMethod();
             return teamCityCaller;
         }
     }

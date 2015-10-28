@@ -83,7 +83,7 @@ namespace FluentTc
             Put(data.ToString(), contenttype, string.Format(urlPart, parts), string.Empty);
         }
 
-        public void DeleteFormat(string urlPart, params object[] parts)
+        public virtual void DeleteFormat(string urlPart, params object[] parts)
         {
             Delete(string.Format(urlPart, parts));
         }
@@ -228,7 +228,7 @@ namespace FluentTc
             return client.Response;
         }
 
-        public void Delete(string urlPart)
+        public virtual void Delete(string urlPart)
         {
             MakeDeleteRequest(urlPart);
         }

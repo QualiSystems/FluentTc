@@ -104,6 +104,7 @@
     <Compile Include="Domain\VcsRootEntries.cs" />
     <Compile Include="Domain\VcsRootEntry.cs" />
     <Compile Include="ConnectedTc.cs" />
+    <Compile Include="Engine\BuildQueueRemover.cs" />
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="HttpClientWrapperFactory.cs" />
     <Compile Include="IProjectsRetriever.cs" />
