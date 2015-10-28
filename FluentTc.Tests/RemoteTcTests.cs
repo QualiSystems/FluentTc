@@ -87,6 +87,15 @@ namespace FluentTc.Tests
             var buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuildConfiguration(_ => _.Id("bt2"));
 
+            // Retrieves all the build configuration under a project
+            var buildConfigurations = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
+                .GetBuildConfigurations(_ => _.Project(__ => __.Id("Trunk")));
+
+            // Retrieves all the build configuration under a project recursively
+            buildConfigurations = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
+                .GetBuildConfigurations(_ => _.ProjectRecursively(__ => __.Id("Trunk")));
+
+
             new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .SetParameters(_ => _.Id("bt2"),
                     _ => _.Parameter("name", "value").Parameter("name2", "value"));
@@ -110,8 +119,10 @@ namespace FluentTc.Tests
 
             new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .DeleteBuildConfiguration(_ => _.Name("Trunk"));
+
+            // Retrieves all the projects
+            var allProjects = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
+                .GetAllProjects();
         }
-
-
     }
 }

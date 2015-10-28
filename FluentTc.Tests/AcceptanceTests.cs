@@ -258,7 +258,7 @@ namespace FluentTc.Tests
             var teamCityCaller = CreateTeamCityCaller();
             A.CallTo(
                 () =>
-                    teamCityCaller.Get<BuildTypeWrapper>("/app/rest/buildTypes/name:FluentTc"))
+                    teamCityCaller.Get<BuildTypeWrapper>("/app/rest/buildTypes?locator=name:FluentTc"))
                 .Returns(new BuildTypeWrapper { BuildType = new List<BuildConfiguration>(new[] { new BuildConfiguration { Id = "bt987" } }) });
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
@@ -336,9 +336,25 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.Get<Project>(@"/app/rest/projects/id:FluentTc")).MustHaveHappened();
         }    
 
+        [Test]
+        public void GetAllProjects()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.GetAllProjects();
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<ProjectWrapper>(@"/app/rest/projects/")).MustHaveHappened();
+        }    
+
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildTypeWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();

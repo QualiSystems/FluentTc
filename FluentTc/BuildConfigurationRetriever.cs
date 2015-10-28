@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using EasyHttp.Http;
+using EasyHttp.Infrastructure;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
@@ -35,12 +37,18 @@ namespace FluentTc
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             having(buildConfigurationHavingBuilder);
 
-            var buildWrapper = m_TeamCityCaller.GetFormat<BuildTypeWrapper>("/app/rest/buildTypes/{0}",
-                buildConfigurationHavingBuilder.GetLocator());
-
-            if (buildWrapper == null || buildWrapper.BuildType == null) return new List<BuildConfiguration>();
-
-            return buildWrapper.BuildType;
+            try
+            {
+                var buildWrapper = m_TeamCityCaller.GetFormat<BuildTypeWrapper>("/app/rest/buildTypes?locator={0}",
+                    buildConfigurationHavingBuilder.GetLocator());
+                if (buildWrapper == null || buildWrapper.BuildType == null) return new List<BuildConfiguration>();
+                return buildWrapper.BuildType;
+            }
+            catch (HttpException httpException)
+            {
+                if (httpException.StatusCode == HttpStatusCode.NotFound) return new List<BuildConfiguration>();
+                throw;
+            }
         }
 
         public BuildConfiguration GetSingleBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)

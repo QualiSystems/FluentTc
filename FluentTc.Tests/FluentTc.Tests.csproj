@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="AcceptanceTests.cs" />
     <Compile Include="BootstrapperTests.cs" />
+    <Compile Include="BuildConfigurationRetrieverTests.cs" />
     <Compile Include="BuildsRetrieverTests.cs" />
     <Compile Include="ConnectedTcTests.cs" />
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />

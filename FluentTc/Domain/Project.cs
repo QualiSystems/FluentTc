@@ -17,5 +17,6 @@
         public BuildTypeWrapper BuildTypes { get; set; }
         public ProjectWrapper Projects { get; set; }
         public Parameters Parameters { get; set; }
+        public bool IsRoot { get { return !string.IsNullOrEmpty(Id) && Id.Equals("_Root"); } }
     }
 }

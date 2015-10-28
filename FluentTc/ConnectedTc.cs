@@ -32,6 +32,7 @@ namespace FluentTc
         void AttachBuildConfigurationToTemplate(Action<IBuildConfigurationHavingBuilder> having, string buildTemplateId);
         Project GetProjectById(string projectId);
         IList<BuildConfiguration> GetBuildConfigurationsRecursively(string projectId);
+        IList<Project> GetAllProjects();
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -180,6 +181,11 @@ namespace FluentTc
             return project.BuildTypes.BuildType.Concat(
                 project.Projects.Project.SelectMany(p => GetBuildConfigurationsRecursively(p.Id)))
                 .ToList();
+        }
+
+        public IList<Project> GetAllProjects()
+        {
+            return m_ProjectsRetriever.GetProjects();
         }
     }
 }
