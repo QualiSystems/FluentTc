@@ -96,10 +96,11 @@ namespace FluentTc.Tests
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
             var build = new Build {Id = 987};
+
             A.CallTo(
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
-                        "/app/rest/builds?locator=sinceDate:20151026T162200%2b0200,count:-1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
+                        "/app/rest/builds?locator=sinceDate:20151026T142200%2b0000,count:-1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
                 .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {build})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);

@@ -30,7 +30,7 @@ namespace FluentTc.Locators
 
     public class BuildHavingBuilder : IBuildHavingBuilder
     {
-        private const string DateFormat = "yyyyMMddTHHmmsszz00";
+        private const string DateFormat = "yyyyMMddTHHmmss+0000";
 
         private readonly List<string> m_Having = new List<string>();
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
@@ -164,7 +164,7 @@ namespace FluentTc.Locators
 
         public IBuildHavingBuilder SinceDate(DateTime dateTime)
         {
-            m_Having.Add("sinceDate:" + HttpUtility.UrlEncode(dateTime.ToString(DateFormat)));
+            m_Having.Add("sinceDate:" + HttpUtility.UrlEncode(dateTime.ToUniversalTime().ToString(DateFormat)));
             return this;
         }
 
