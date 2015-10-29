@@ -319,6 +319,21 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.Delete("/app/rest/buildQueue/?locator=project:id:FluentTc")).MustHaveHappened();
+        }          
+        
+        [Test]
+        public void RemoveBuildFromQueue_BuildId()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.RemoveBuildFromQueue(_ => _.Id(123));
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Delete("/app/rest/buildQueue/id:123")).MustHaveHappened();
         }   
 
         [Test]

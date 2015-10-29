@@ -105,6 +105,7 @@
     <Compile Include="Domain\VcsRootEntry.cs" />
     <Compile Include="ConnectedTc.cs" />
     <Compile Include="Engine\BuildQueueRemover.cs" />
+    <Compile Include="Engine\BuildQueueIdHavingBuilderFactory.cs" />
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="HttpClientWrapperFactory.cs" />
     <Compile Include="IProjectsRetriever.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="ITeamCityConnectionDetails.cs" />
+    <Compile Include="Locators\BuildQueueIdHavingBuilder.cs" />
     <Compile Include="Locators\LocatorBuilder.cs" />
     <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\StringExtensions.cs" />

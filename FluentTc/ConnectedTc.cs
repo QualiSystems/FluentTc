@@ -25,6 +25,7 @@ namespace FluentTc
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having, string buildConfigurationName);
         List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null);
         void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having);
+        void RemoveBuildFromQueue(Action<IBuildQueueIdHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
         void DisableAgent(Action<IAgentHavingBuilder> having);
         void EnableAgent(Action<IAgentHavingBuilder> having);
@@ -143,6 +144,11 @@ namespace FluentTc
         }
 
         public void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having)
+        {
+            m_BuildQueueRemover.RemoveBuildFromQueue(having);
+        }
+
+        public void RemoveBuildFromQueue(Action<IBuildQueueIdHavingBuilder> having)
         {
             m_BuildQueueRemover.RemoveBuildFromQueue(having);
         }
