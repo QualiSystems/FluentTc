@@ -69,6 +69,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.117, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\FluentTc\packages\System.IO.Abstractions.2.0.0.117\lib\net40\System.IO.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers, Version=2.0.0.117, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\FluentTc\packages\System.IO.Abstractions.TestingHelpers.2.0.0.117\lib\net40\System.IO.Abstractions.TestingHelpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,6 +90,7 @@
     <Compile Include="BuildsRetrieverTests.cs" />
     <Compile Include="ConnectedTcTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
+    <Compile Include="BuildParametersTests.cs" />
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />
     <Compile Include="Locators\Auto.cs" />
     <Compile Include="Locators\BranchHavingBuilderTests.cs" />

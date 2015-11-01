@@ -399,7 +399,13 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk")).MustHaveHappened();
-        }    
+        }
+
+        [Test]
+        public void LocalTc_AgentName()
+        {
+            new LocalTc().BuildParameters.AgentName.Should().NotBeEmpty();
+        }
 
         private static ITeamCityCaller CreateTeamCityCaller()
         {
