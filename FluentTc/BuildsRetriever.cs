@@ -11,6 +11,7 @@ namespace FluentTc
             Action<IBuildIncludeBuilder> include);
 
         List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null);
+        Build GetBuild(long buildId);
     }
 
     internal class BuildsRetriever : IBuildsRetriever
@@ -67,6 +68,11 @@ namespace FluentTc
                 return buildWrapper.Build;
             }
             return new List<Build>();
+        }
+
+        public Build GetBuild(long buildId)
+        {
+            return m_Caller.GetFormat<Build>("/app/rest/builds/id:{0}", buildId);
         }
 
         private string GetLocator(Action<IQueueHavingBuilder> having)

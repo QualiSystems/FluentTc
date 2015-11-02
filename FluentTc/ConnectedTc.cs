@@ -15,6 +15,7 @@ namespace FluentTc
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
         Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         Build GetBuild(Action<IBuildHavingBuilder> having);
+        Build GetBuild(long buildId);
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
         void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
@@ -91,6 +92,11 @@ namespace FluentTc
         public Build GetBuild(Action<IBuildHavingBuilder> having)
         {
             return GetBuild(having, _ => _.IncludeDefaults());
+        }
+
+        public Build GetBuild(long buildId)
+        {
+            return m_BuildsRetriever.GetBuild(buildId);
         }
 
         public BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)

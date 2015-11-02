@@ -68,6 +68,22 @@ namespace FluentTc.Tests
             // Assert
             build.Id.Should().Be(987);
         }        
+
+        [Test]
+        public void GetBuildFullResponse_Id_Build()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(() => teamCityCaller.Get<Build>("/app/rest/builds/id:123")).Returns(new Build { Id = 123 });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var build = connectedTc.GetBuild(123);
+
+            // Assert
+            build.Id.Should().Be(123);
+        }        
         
         [Test]
         public void GetBuilds_BuildConfigurationName()
@@ -401,6 +417,9 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk")).MustHaveHappened();
         }
 
+        /// <summary>
+        /// The test passes only on TeamCity agent
+        /// </summary>
         [Test]
         public void LocalTc_AgentName()
         {
@@ -410,6 +429,7 @@ namespace FluentTc.Tests
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.GetFormat<Build>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildTypeWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
