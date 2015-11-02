@@ -7,19 +7,6 @@ namespace FluentTc.Tests
     [TestFixture]
     public class RemoteTcTests
     {
-        [Test]
-        public void Connect_Guest_NotNull()
-        {
-            // Arrange
-            var remoteTc = new RemoteTc();
-
-            // Act
-            var connectedTc = remoteTc.Connect(_ => _.AsGuest());
-
-            // Assert
-            connectedTc.Should().NotBeNull();
-        }
-
         public void Sample_Usage()
         {
             // Agents
@@ -49,7 +36,7 @@ namespace FluentTc.Tests
                     __ =>
                         __.Project(___ => ___.Id("Branch6_4_Red_NightlyCi_RedWebTests"))
                             .BuildConfiguration(b => b.Name("Trunk")));
-            
+
             // Remove builds from queue by project Id recursively 
             var connectedTc = new RemoteTc().Connect(_ => _.ToHost("tc"));
             connectedTc.GetBuildConfigurationsRecursively("ProjectId")
@@ -120,6 +107,19 @@ namespace FluentTc.Tests
             // Retrieves all the projects
             var allProjects = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
                 .GetAllProjects();
+        }
+
+        [Test]
+        public void Connect_Guest_NotNull()
+        {
+            // Arrange
+            var remoteTc = new RemoteTc();
+
+            // Act
+            var connectedTc = remoteTc.Connect(_ => _.AsGuest());
+
+            // Assert
+            connectedTc.Should().NotBeNull();
         }
     }
 }

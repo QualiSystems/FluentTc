@@ -13,8 +13,9 @@ namespace FluentTc.Domain
         public string StatusText { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
+        public DateTime QueuedDate { get; set; }
 
-        public BuildConfig BuildConfig { get; set; }
+        public BuildConfiguration BuildType { get; set; }
         public Agent Agent { get; set; }
         public ChangesList LastChanges { get; set; }
         public ChangesWrapper Changes { get; set; }

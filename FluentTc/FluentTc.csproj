@@ -77,7 +77,6 @@
     <Compile Include="Domain\ArtifactDependencies.cs" />
     <Compile Include="Domain\ArtifactDependency.cs" />
     <Compile Include="Domain\Build.cs" />
-    <Compile Include="Domain\BuildConfig.cs" />
     <Compile Include="Domain\BuildConfiguration.cs" />
     <Compile Include="Domain\BuildStep.cs" />
     <Compile Include="Domain\BuildSteps.cs" />
