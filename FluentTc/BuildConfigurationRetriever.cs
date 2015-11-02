@@ -56,7 +56,12 @@ namespace FluentTc
             var buildConfigurations = RetrieveBuildConfigurations(having, i=>i.IncludeDefaults());
             if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
             if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
-            return buildConfigurations.Single();
+            return GetSingleBuildConfiguration(buildConfigurations.Single().Id);
+        }
+
+        private BuildConfiguration GetSingleBuildConfiguration(string buildTypeId)
+        {
+            return m_TeamCityCaller.GetFormat<BuildConfiguration>("/app/rest/buildTypes/id:{0}", buildTypeId);
         }
 
         public void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)

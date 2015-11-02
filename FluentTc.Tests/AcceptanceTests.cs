@@ -288,6 +288,25 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void GetBuildConfiguration_Id()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(() => teamCityCaller.Get<BuildTypeWrapper>("/app/rest/buildTypes?locator=id:bt123"))
+                .Returns(new BuildTypeWrapper { BuildType = new List<BuildConfiguration>(new[] { new BuildConfiguration { Id = "bt123" } }) });
+            A.CallTo(() => teamCityCaller.Get<BuildConfiguration>("/app/rest/buildTypes/id:bt123"))
+                .Returns(new BuildConfiguration { Id = "bt123", SnapshotDependencies = new SnapshotDependencies { SnapshotDependency = new List<SnapshotDependency>(new[] { new SnapshotDependency() { Id = "dep.bt123" } }) } });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var buildConfiguration = connectedTc.GetBuildConfiguration(_ => _.Id("bt123"));
+
+            // Assert
+            buildConfiguration.SnapshotDependencies.SnapshotDependency.Single().Id.Should().Be("dep.bt123");
+        }
+
+        [Test]
         public void CreateBuildConfiguration_ByName()
         {
             // Arrange
@@ -430,6 +449,7 @@ namespace FluentTc.Tests
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
             A.CallTo(() => teamCityCaller.GetFormat<Build>(A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.GetFormat<BuildConfiguration>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildTypeWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
