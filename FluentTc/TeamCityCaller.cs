@@ -1,11 +1,9 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Authentication;
 using System.Web;
 using EasyHttp.Http;
-using EasyHttp.Infrastructure;
 using HttpException = EasyHttp.Infrastructure.HttpException;
 using HttpResponse = EasyHttp.Http.HttpResponse;
 
@@ -14,8 +12,6 @@ namespace FluentTc
     internal interface ITeamCityCaller
     {
         T GetFormat<T>(string urlPart, params object[] parts);
-
-        void GetFormat(string urlPart, params object[] parts);
 
         T PostFormat<T>(object data, string contenttype, string accept, string urlPart, params object[] parts);
 
@@ -63,11 +59,6 @@ namespace FluentTc
             return Get<T>(string.Format(urlPart, parts));
         }
 
-        public void GetFormat(string urlPart, params object[] parts)
-        {
-            Get(string.Format(urlPart, parts));
-        }
-
         public virtual T PostFormat<T>(object data, string contenttype, string accept, string urlPart, params object[] parts)
         {
             return Post<T>(data.ToString(), contenttype, string.Format(urlPart, parts), accept);
@@ -102,7 +93,7 @@ namespace FluentTc
 
             if (urlPart.Contains("+"))
             {
-                urlPart = System.Web.HttpUtility.UrlEncode(urlPart);
+                urlPart = HttpUtility.UrlEncode(urlPart);
             }
 
             if (downloadHandler == null)

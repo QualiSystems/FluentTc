@@ -53,7 +53,7 @@ namespace FluentTc.Tests
                             .Branch(b => b.Name("aa")));
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.Personal(), _ => _.All(),
+                .GetBuilds(_ => _.Personal(), _ => _.DefaultCount(),
                     _ => _.IncludeStartDate().IncludeFinishDate().IncludeStatusText());
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))

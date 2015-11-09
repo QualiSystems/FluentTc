@@ -44,17 +44,28 @@ namespace FluentTc
             var buildIncludeBuilder = m_BuildIncludeBuilderFactory.CreateBuildIncludeBuilder();
             include(buildIncludeBuilder);
 
-            var locator = buildHavingBuilder.GetLocator();
-            var parts = countBuilder.GetCount();
-            var columns = buildIncludeBuilder.GetColumns();
-            var buildWrapper =
-                m_Caller.GetFormat<BuildWrapper>("/app/rest/builds?locator={0},{1},&fields=count,build({2})",
-                    locator, parts, columns);
+            var buildWrapper = GetBuildWrapper(buildHavingBuilder, countBuilder, buildIncludeBuilder);
             if (int.Parse(buildWrapper.Count) > 0)
             {
                 return buildWrapper.Build;
             }
             return new List<Build>();
+        }
+
+        private BuildWrapper GetBuildWrapper(IBuildHavingBuilder buildHavingBuilder, ICountBuilder countBuilder,
+            IBuildIncludeBuilder buildIncludeBuilder)
+        {
+            var locator = buildHavingBuilder.GetLocator();
+            var count = countBuilder.GetCount();
+            var columns = buildIncludeBuilder.GetColumns();
+            
+            if (string.IsNullOrEmpty(count))
+            {
+                return m_Caller.GetFormat<BuildWrapper>("/app/rest/builds?locator={0},&fields=count,build({1})", locator, columns);
+            }
+
+            return m_Caller.GetFormat<BuildWrapper>("/app/rest/builds?locator={0},{1},&fields=count,build({2})",
+                locator, count, columns);
         }
 
         public List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null)

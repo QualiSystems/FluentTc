@@ -9,10 +9,10 @@ namespace FluentTc
 {
     public interface IConnectedTc
     {
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include);
         List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
         Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         Build GetBuild(Action<IBuildHavingBuilder> having);
         Build GetBuild(long buildId);
@@ -73,12 +73,12 @@ namespace FluentTc
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
         {
-            return m_BuildsRetriever.GetBuilds(having, _ => _.All(), include);
+            return m_BuildsRetriever.GetBuilds(having, _ => _.DefaultCount(), include);
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having)
         {
-            return m_BuildsRetriever.GetBuilds(having, _ => _.All(), _ => _.IncludeDefaults());
+            return m_BuildsRetriever.GetBuilds(having, _ => _.DefaultCount(), _ => _.IncludeDefaults());
         }
 
         public Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)

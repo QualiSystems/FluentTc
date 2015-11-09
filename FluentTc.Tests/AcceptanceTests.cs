@@ -57,7 +57,7 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
-                        "/app/rest/builds?locator=id:123,count:-1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
+                        "/app/rest/builds?locator=id:123,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
                 .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {new Build {Id = 987}})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
@@ -91,10 +91,8 @@ namespace FluentTc.Tests
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
             var build = new Build {Id = 987};
-            A.CallTo(
-                () =>
-                    teamCityCaller.Get<BuildWrapper>(
-                        "/app/rest/builds?locator=buildType:name:FluentTc,count:-1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
+
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>("/app/rest/builds?locator=buildType:name:FluentTc,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
                 .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {build})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
@@ -116,7 +114,7 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
-                        "/app/rest/builds?locator=sinceDate:20151026T142200%2b0000,count:-1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
+                        "/app/rest/builds?locator=sinceDate:20151026T142200%2b0000,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
                 .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {build})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
@@ -454,6 +452,7 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildTypeWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.GetFormat<BuildWrapper>(A<string>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<string>(A<string>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();

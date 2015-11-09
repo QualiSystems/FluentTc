@@ -14,9 +14,9 @@ namespace FluentTc.Tests.Locators
             var countBuilder = new CountBuilder();
             
             // Act
-            var builder = countBuilder.All();
+            var builder = countBuilder.DefaultCount();
 
-            builder.GetCount().Should().Be("count:-1");
+            builder.GetCount().Should().BeEmpty();
         }
 
         [Test]
