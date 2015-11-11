@@ -79,7 +79,7 @@ namespace FluentTc
             Delete(string.Format(urlPart, parts));
         }
 
-        public void GetDownloadFormat(Action<string> downloadHandler, string urlPart, params object[] parts)
+        public virtual void GetDownloadFormat(Action<string> downloadHandler, string urlPart, params object[] parts)
         {
             if (CheckForUserNameAndPassword())
             {

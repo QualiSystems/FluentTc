@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO.Abstractions;
+using System.Linq;
 using Autofac;
 
 namespace FluentTc
@@ -17,6 +18,7 @@ namespace FluentTc
         public IConnectedTc GetConnectedTc()
         {
             var builder = new ContainerBuilder();
+            builder.RegisterType<FileSystem>().As<IFileSystem>();
             builder.RegisterAssemblyTypes(typeof(Bootstrapper).Assembly).AsImplementedInterfaces();
             builder.RegisterInstance(m_TeamCityConnectionDetails).AsImplementedInterfaces();
             OverrideRegistrations(builder, m_Overrides);

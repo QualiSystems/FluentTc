@@ -432,6 +432,40 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk")).MustHaveHappened();
+        }        
+        
+        [Test]
+        public void DownloadArtifacts_ByBuildId()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk"))
+                .Returns(new BuildWrapper {Count = "0"});
+
+            // Act
+            connectedTc.DownloadArtifacts(123, @"C:\DownloadArtifacts_ByBuildId");
+
+            // Assert
+            A.CallTo(() => teamCityCaller.GetDownloadFormat(A<Action<string>>.Ignored,"/downloadArtifacts.html?buildId={0}", 123)).MustHaveHappened();
+        }        
+        
+        [Test]
+        public void DownloadArtifacts_SpecificFileByBuildId()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+            A.CallTo(() => teamCityCaller.Get<BuildWrapper>(@"/app/rest/buildQueue?locator=project:id:Trunk"))
+                .Returns(new BuildWrapper {Count = "0"});
+
+            // Act
+            connectedTc.DownloadArtifact(123, @"C:\DownloadArtifacts_ByBuildId", "Logs.zip");
+
+            // Assert
+            A.CallTo(() => teamCityCaller.GetDownloadFormat(A<Action<string>>.Ignored, "/app/rest/builds/id:{0}/artifacts/content/{1}", 123, "Logs.zip")).MustHaveHappened();
         }
 
         /// <summary>

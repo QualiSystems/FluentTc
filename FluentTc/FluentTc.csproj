@@ -40,6 +40,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\EasyHttp.1.6.67.0\lib\net40\EasyHttp.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
@@ -108,8 +112,10 @@
     <Compile Include="Domain\VcsRootEntries.cs" />
     <Compile Include="Domain\VcsRootEntry.cs" />
     <Compile Include="ConnectedTc.cs" />
+    <Compile Include="Engine\ArtifactsDownloader.cs" />
     <Compile Include="Engine\BuildQueueRemover.cs" />
     <Compile Include="Engine\BuildQueueIdHavingBuilderFactory.cs" />
+    <Compile Include="Engine\ZipExtractor.cs" />
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="HttpClientWrapperFactory.cs" />
     <Compile Include="IProjectsRetriever.cs" />

@@ -34,6 +34,8 @@ namespace FluentTc
         Project GetProjectById(string projectId);
         IList<BuildConfiguration> GetBuildConfigurationsRecursively(string projectId);
         IList<Project> GetAllProjects();
+        IList<string> DownloadArtifacts(int buildId, string destinationPath);
+        string DownloadArtifact(int buildId, string destinationPath, string fileToDownload);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -47,8 +49,9 @@ namespace FluentTc
         private readonly IBuildConfigurationCreator m_BuildConfigurationCreator;
         private readonly IBuildTemplateAttacher m_BuildTemplateAttacher;
         private readonly IBuildQueueRemover m_BuildQueueRemover;
+        private readonly IArtifactsDownloader m_ArtifactsDownloader;
 
-        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator, IBuildTemplateAttacher buildTemplateAttacher, IBuildQueueRemover buildQueueRemover)
+        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator, IBuildTemplateAttacher buildTemplateAttacher, IBuildQueueRemover buildQueueRemover, IArtifactsDownloader artifactsDownloader)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -59,6 +62,7 @@ namespace FluentTc
             m_BuildConfigurationCreator = buildConfigurationCreator;
             m_BuildTemplateAttacher = buildTemplateAttacher;
             m_BuildQueueRemover = buildQueueRemover;
+            m_ArtifactsDownloader = artifactsDownloader;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -192,6 +196,16 @@ namespace FluentTc
         public IList<Project> GetAllProjects()
         {
             return m_ProjectsRetriever.GetProjects();
+        }
+
+        public IList<string> DownloadArtifacts(int buildId, string destinationPath)
+        {
+            return m_ArtifactsDownloader.DownloadArtifacts(buildId, destinationPath);
+        }
+
+        public string DownloadArtifact(int buildId, string destinationPath, string fileToDownload)
+        {
+            return m_ArtifactsDownloader.DownloadArtifact(buildId, destinationPath, fileToDownload);
         }
     }
 }

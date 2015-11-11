@@ -107,6 +107,12 @@ namespace FluentTc.Tests
             // Retrieves all the projects
             var allProjects = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
                 .GetAllProjects();
+
+            var downloadedFiles = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .DownloadArtifacts(123, @"C:\DownloadedArtifacts");
+
+            string downloadedFile = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .DownloadArtifact(759688, @"C:\DownloadedArtifacts", "Logs.zip");
         }
 
         [Test]
