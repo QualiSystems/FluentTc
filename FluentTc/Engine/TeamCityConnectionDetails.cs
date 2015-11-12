@@ -1,5 +1,14 @@
-namespace FluentTc
+namespace FluentTc.Engine
 {
+    internal interface ITeamCityConnectionDetails
+    {
+        string TeamCityHost { get; }
+        string Username { get; }
+        string Password { get; }
+        bool ActAsGuest { get; }
+        bool UseSSL { get; }
+    }
+
     internal class TeamCityConnectionDetails : ITeamCityConnectionDetails
     {
         private readonly string m_Password;

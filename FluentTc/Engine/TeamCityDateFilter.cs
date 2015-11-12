@@ -6,7 +6,7 @@ using JsonFx.Model;
 using JsonFx.Model.Filters;
 using JsonFx.Serialization;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public class TeamCityDateFilter : ModelFilter<DateTime>
     {

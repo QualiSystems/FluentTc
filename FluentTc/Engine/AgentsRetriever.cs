@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentTc.Domain;
+using FluentTc.Exceptions;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     internal interface IAgentsRetriever
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     internal interface IBuildsRetriever
     {

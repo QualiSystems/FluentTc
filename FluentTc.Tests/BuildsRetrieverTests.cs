@@ -1,5 +1,6 @@
 ﻿using FakeItEasy;
 using FluentTc.Domain;
+using FluentTc.Engine;
 using FluentTc.Locators;
 using NUnit.Framework;
 

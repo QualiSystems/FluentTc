@@ -1,5 +1,6 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
+using FluentTc.Engine;
 using NUnit.Framework;
 
 namespace FluentTc.Tests

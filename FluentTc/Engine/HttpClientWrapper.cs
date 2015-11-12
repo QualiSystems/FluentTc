@@ -1,6 +1,6 @@
 using EasyHttp.Http;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public interface IHttpClientWrapper
     {

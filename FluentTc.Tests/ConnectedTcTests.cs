@@ -4,6 +4,8 @@ using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Domain;
+using FluentTc.Engine;
+using FluentTc.Exceptions;
 using FluentTc.Locators;
 using FluentTc.Tests.Locators;
 using NUnit.Framework;

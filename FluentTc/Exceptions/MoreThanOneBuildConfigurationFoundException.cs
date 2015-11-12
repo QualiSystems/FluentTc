@@ -1,6 +1,6 @@
 using System;
 
-namespace FluentTc
+namespace FluentTc.Exceptions
 {
     public class MoreThanOneBuildConfigurationFoundException : Exception
     {

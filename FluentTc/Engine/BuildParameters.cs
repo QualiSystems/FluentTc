@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public interface IBuildParameters
     {
@@ -25,7 +25,7 @@ namespace FluentTc
         string TeamCityVersion { get; }
     }
 
-    public class BuildParameters : IBuildParameters
+    internal class BuildParameters : IBuildParameters
     {
         private readonly Dictionary<string, string> m_Parameters;
 

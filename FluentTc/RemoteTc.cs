@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentTc.Engine;
 using FluentTc.Locators;
 
 namespace FluentTc

@@ -1,8 +1,8 @@
-﻿using System.IO.Abstractions;
+using System.IO.Abstractions;
 using System.Linq;
 using Autofac;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     internal class Bootstrapper
     {

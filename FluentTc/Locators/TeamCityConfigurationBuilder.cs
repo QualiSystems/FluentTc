@@ -1,3 +1,5 @@
+using FluentTc.Engine;
+
 namespace FluentTc.Locators
 {
     public class TeamCityConfigurationBuilder

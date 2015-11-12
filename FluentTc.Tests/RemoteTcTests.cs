@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using MoreLinq;
 using NUnit.Framework;
 
@@ -7,6 +8,21 @@ namespace FluentTc.Tests
     [TestFixture]
     public class RemoteTcTests
     {
+        [Test]
+        [Ignore]
+        public void MyMethod()
+        {
+            try
+            {
+                new RemoteTc().Connect(_ => _.ToHost("tc").AsUser("buser", "qaz$9512"))
+                    .DownloadArtifact(763230, @"C:\TestTrunk\", "Binaries.zip");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         public void Sample_Usage()
         {
             // Agents

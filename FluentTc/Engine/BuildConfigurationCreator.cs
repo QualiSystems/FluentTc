@@ -3,7 +3,7 @@ using EasyHttp.Http;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public interface IBuildConfigurationCreator
     {

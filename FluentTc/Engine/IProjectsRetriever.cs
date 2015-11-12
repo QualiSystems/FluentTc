@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
-    public interface IProjectsRetriever
+    internal interface IProjectsRetriever
     {
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having = null);
         Project GetProject(string projectId);

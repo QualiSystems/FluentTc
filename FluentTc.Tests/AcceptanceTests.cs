@@ -5,6 +5,7 @@ using EasyHttp.Http;
 using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Domain;
+using FluentTc.Engine;
 using FluentTc.Locators;
 using NUnit.Framework;
 

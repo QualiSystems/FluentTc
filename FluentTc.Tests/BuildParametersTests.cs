@@ -1,5 +1,6 @@
 ﻿using System.IO.Abstractions.TestingHelpers;
 using FluentAssertions;
+using FluentTc.Engine;
 using NUnit.Framework;
 
 namespace FluentTc.Tests

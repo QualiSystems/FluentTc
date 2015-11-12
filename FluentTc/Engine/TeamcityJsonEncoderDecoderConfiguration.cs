@@ -5,7 +5,7 @@ using EasyHttp.Configuration;
 using JsonFx.Json;
 using JsonFx.Serialization;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public class TeamcityJsonEncoderDecoderConfiguration : IEncoderDecoderConfiguration
     {

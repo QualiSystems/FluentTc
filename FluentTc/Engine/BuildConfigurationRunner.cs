@@ -5,9 +5,9 @@ using EasyHttp.Http;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
-    public interface IBuildConfigurationRunner
+    internal interface IBuildConfigurationRunner
     {
         void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null);
     }

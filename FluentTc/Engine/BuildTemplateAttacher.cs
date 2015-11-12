@@ -2,7 +2,7 @@ using System;
 using EasyHttp.Http;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public interface IBuildTemplateAttacher
     {

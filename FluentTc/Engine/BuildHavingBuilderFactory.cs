@@ -1,8 +1,8 @@
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
-    public interface IBuildHavingBuilderFactory
+    internal interface IBuildHavingBuilderFactory
     {
         IBuildHavingBuilder CreateBuildHavingBuilder();
     }

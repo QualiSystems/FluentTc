@@ -3,6 +3,7 @@ using EasyHttp.Infrastructure;
 using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Domain;
+using FluentTc.Engine;
 using FluentTc.Tests.Locators;
 using NUnit.Framework;
 using Ploeh.AutoFixture;

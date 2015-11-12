@@ -1,6 +1,6 @@
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     internal interface IQueueHavingBuilderFactory
     {

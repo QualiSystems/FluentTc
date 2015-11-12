@@ -7,7 +7,7 @@ using EasyHttp.Http;
 using HttpException = EasyHttp.Infrastructure.HttpException;
 using HttpResponse = EasyHttp.Http.HttpResponse;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     internal interface ITeamCityCaller
     {

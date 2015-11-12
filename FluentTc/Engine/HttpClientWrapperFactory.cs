@@ -1,4 +1,4 @@
-namespace FluentTc
+namespace FluentTc.Engine
 {
     public interface IHttpClientWrapperFactory
     {

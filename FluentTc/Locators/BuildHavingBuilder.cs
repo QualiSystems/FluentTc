@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using FluentTc.Engine;
 
 namespace FluentTc.Locators
 {
@@ -28,7 +29,7 @@ namespace FluentTc.Locators
         string GetLocator();
     }
 
-    public class BuildHavingBuilder : IBuildHavingBuilder
+    internal class BuildHavingBuilder : IBuildHavingBuilder
     {
         private const string DateFormat = "yyyyMMddTHHmmss+0000";
 

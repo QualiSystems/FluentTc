@@ -5,9 +5,10 @@ using System.Net;
 using EasyHttp.Http;
 using EasyHttp.Infrastructure;
 using FluentTc.Domain;
+using FluentTc.Exceptions;
 using FluentTc.Locators;
 
-namespace FluentTc
+namespace FluentTc.Engine
 {
     internal interface IBuildConfigurationRetriever
     {
