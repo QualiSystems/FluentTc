@@ -67,6 +67,7 @@
     <Compile Include="Domain\AgentRequirements.cs" />
     <Compile Include="Domain\ArtifactDependencies.cs" />
     <Compile Include="Domain\ArtifactDependency.cs" />
+    <Compile Include="Domain\Assignment.cs" />
     <Compile Include="Domain\Build.cs" />
     <Compile Include="Domain\BuildConfiguration.cs" />
     <Compile Include="Domain\BuildStep.cs" />
@@ -83,15 +84,21 @@
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\FileWrapper.cs" />
     <Compile Include="Domain\Group.cs" />
+    <Compile Include="Domain\Investigation.cs" />
+    <Compile Include="Domain\InvestigationWrapper.cs" />
     <Compile Include="Domain\Parameters.cs" />
     <Compile Include="Domain\Project.cs" />
     <Compile Include="Domain\ProjectWrapper.cs" />
     <Compile Include="Domain\Properties.cs" />
     <Compile Include="Domain\Property.cs" />
+    <Compile Include="Domain\ResolutionWrapper.cs" />
     <Compile Include="Domain\Role.cs" />
     <Compile Include="Domain\RoleWrapper.cs" />
     <Compile Include="Domain\SnapshotDependencies.cs" />
     <Compile Include="Domain\SnapshotDependency.cs" />
+    <Compile Include="Domain\Test.cs" />
+    <Compile Include="Domain\TestOccurrence.cs" />
+    <Compile Include="Domain\TestOccurrenceWrapper.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\UserGroupWrapper.cs" />
     <Compile Include="Domain\UserWrapper.cs" />
@@ -115,6 +122,7 @@
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="InvestigationRetriever.cs" />
     <Compile Include="Engine\HttpClientWrapper.cs" />
     <Compile Include="Engine\HttpClientWrapperFactory.cs" />
     <Compile Include="Engine\IProjectsRetriever.cs" />

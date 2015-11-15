@@ -481,6 +481,7 @@ namespace FluentTc.Tests
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.GetFormat<InvestigationWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Build>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildConfiguration>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
@@ -494,6 +495,44 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.DeleteFormat(A<string>._, A<object[]>._)).CallsBaseMethod();
             return teamCityCaller;
+        }
+
+        [Test]
+        public void GetAssinedResponsibilityFromBuildConfiguration()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+            A.CallTo(
+                () =>
+                    buildConfigurationRetriever.GetSingleBuildConfiguration(
+                        A<Action<IBuildConfigurationHavingBuilder>>.Ignored))
+                .Returns(new BuildConfiguration {Id = "bt2"});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            Investigation investigation = connectedTc.GetInvestigation(_ => _.Id("bt2"));
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<InvestigationWrapper>(@"/app/rest/investigations?locator=buildType:(id:bt2)")).MustHaveHappened();
+        }
+
+        [Test]
+        public void GetAssinedResponsibilityFromTestNameId()
+        {
+            ///app/rest/investigations?locator=test:(id:-1884830467297296372)
+
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            Investigation investigation = connectedTc.GetTestinvestigationByTestNameId("reallyLongNumberHere");
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<InvestigationWrapper>(@"/app/rest/investigations?locator=test:(id:reallyLongNumberHere)")).MustHaveHappened();
         }
     }
 }

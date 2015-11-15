@@ -37,6 +37,8 @@ namespace FluentTc
         IList<Project> GetAllProjects();
         IList<string> DownloadArtifacts(int buildId, string destinationPath);
         string DownloadArtifact(int buildId, string destinationPath, string fileToDownload);
+        Investigation GetInvestigation(Action<IBuildConfigurationHavingBuilder> havingBuildConfig);
+        Investigation GetTestinvestigationByTestNameId(string testNameId);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -51,8 +53,19 @@ namespace FluentTc
         private readonly IBuildTemplateAttacher m_BuildTemplateAttacher;
         private readonly IBuildQueueRemover m_BuildQueueRemover;
         private readonly IArtifactsDownloader m_ArtifactsDownloader;
+        private readonly IInvestigationRetriever m_InvestigationRetriever;
 
-        public ConnectedTc(IBuildsRetriever buildsRetriever, IAgentsRetriever agentsRetriever, IProjectsRetriever projectsRetriever, IBuildConfigurationRetriever buildConfigurationRetriever, IAgentEnabler agentEnabler, IBuildConfigurationRunner buildConfigurationRunner, IBuildConfigurationCreator buildConfigurationCreator, IBuildTemplateAttacher buildTemplateAttacher, IBuildQueueRemover buildQueueRemover, IArtifactsDownloader artifactsDownloader)
+        public ConnectedTc(IBuildsRetriever buildsRetriever,
+            IAgentsRetriever agentsRetriever,
+            IProjectsRetriever projectsRetriever,
+            IBuildConfigurationRetriever buildConfigurationRetriever,
+            IAgentEnabler agentEnabler,
+            IBuildConfigurationRunner buildConfigurationRunner,
+            IBuildConfigurationCreator buildConfigurationCreator,
+            IBuildTemplateAttacher buildTemplateAttacher,
+            IBuildQueueRemover buildQueueRemover,
+            IArtifactsDownloader artifactsDownloader,
+            IInvestigationRetriever investigationRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -64,6 +77,7 @@ namespace FluentTc
             m_BuildTemplateAttacher = buildTemplateAttacher;
             m_BuildQueueRemover = buildQueueRemover;
             m_ArtifactsDownloader = artifactsDownloader;
+            m_InvestigationRetriever = investigationRetriever;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -207,6 +221,21 @@ namespace FluentTc
         public string DownloadArtifact(int buildId, string destinationPath, string fileToDownload)
         {
             return m_ArtifactsDownloader.DownloadArtifact(buildId, destinationPath, fileToDownload);
+        }
+
+        public Investigation GetInvestigation(Action<IBuildConfigurationHavingBuilder> havingBuildConfig)
+        {
+            return m_InvestigationRetriever.GetInvestigation(havingBuildConfig);
+        }
+
+        /// <summary>
+        /// gets the investigator of the test
+        /// </summary>
+        /// <param name="testNameId">testNameId </param>
+        /// <returns></returns>
+        public Investigation GetTestinvestigationByTestNameId(string testNameId)
+        {
+            return m_InvestigationRetriever.GetTestInvestigationByTestNameId(testNameId);
         }
     }
 }

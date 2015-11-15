@@ -8,21 +8,6 @@ namespace FluentTc.Tests
     [TestFixture]
     public class RemoteTcTests
     {
-        [Test]
-        [Ignore]
-        public void MyMethod()
-        {
-            try
-            {
-                new RemoteTc().Connect(_ => _.ToHost("tc").AsUser("buser", "qaz$9512"))
-                    .DownloadArtifact(763230, @"C:\TestTrunk\", "Binaries.zip");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
         public void Sample_Usage()
         {
             // Agents
@@ -129,6 +114,12 @@ namespace FluentTc.Tests
 
             string downloadedFile = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .DownloadArtifact(759688, @"C:\DownloadedArtifacts", "Logs.zip");
+
+            var testInvestigation = new RemoteTc().Connect(_ => _.ToHost("tc"))
+                    .GetTestinvestigationByTestNameId("-1884830467297296372");
+
+            var investigation = new RemoteTc().Connect(_ => _.ToHost("tc"))
+                .GetInvestigation(_=> _.Id("fluentTc"));
         }
 
         [Test]
