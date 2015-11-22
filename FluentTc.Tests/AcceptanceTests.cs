@@ -481,6 +481,7 @@ namespace FluentTc.Tests
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.GetFormat<UserWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<InvestigationWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Build>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildConfiguration>(A<string>._, A<object[]>._)).CallsBaseMethod();
@@ -498,7 +499,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void GetAssinedResponsibilityFromBuildConfiguration()
+        public void GetAssignedResponsibilityFromBuildConfiguration()
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
@@ -519,7 +520,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void GetAssinedResponsibilityFromTestNameId()
+        public void GetAssignedResponsibilityFromTestNameId()
         {
             ///app/rest/investigations?locator=test:(id:-1884830467297296372)
 
@@ -533,6 +534,21 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<InvestigationWrapper>(@"/app/rest/investigations?locator=test:(id:reallyLongNumberHere)")).MustHaveHappened();
+        }
+
+        [Test]
+        public void GetAllUsers()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            List<User> users = connectedTc.GetAllUsers();
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<UserWrapper>(@"/app/rest/users/")).MustHaveHappened();
         }
     }
 }
