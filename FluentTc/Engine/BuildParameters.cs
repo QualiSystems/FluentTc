@@ -27,16 +27,18 @@ namespace FluentTc.Engine
 
     internal class BuildParameters : IBuildParameters
     {
+        private const string TeamcityBuildPropertiesFile = "TEAMCITY_BUILD_PROPERTIES_FILE";
+
         private readonly Dictionary<string, string> m_Parameters;
 
         public BuildParameters()
-            : this(Environment.GetEnvironmentVariable("TEAMCITY_BUILD_PROPERTIES_FILE"), new FileSystem())
+            : this(Environment.GetEnvironmentVariable(TeamcityBuildPropertiesFile), new FileSystem())
         {
         }
 
         internal BuildParameters(string teamCityBuildPropertiesFile, IFileSystem fileSystem)
         {
-            m_Parameters =
+            m_Parameters = teamCityBuildPropertiesFile == null ? new Dictionary<string, string>() : 
                 fileSystem.File.ReadAllLines(teamCityBuildPropertiesFile)
                     .Select(ParseLine)
                     .Where(t => t != null)

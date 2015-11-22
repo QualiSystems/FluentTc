@@ -15,8 +15,7 @@ namespace FluentTc
 
         public LocalTc()
         {
-            m_BuildParameters = new BuildParameters(
-                Environment.GetEnvironmentVariable("TEAMCITY_BUILD_PROPERTIES_FILE"), new FileSystem());
+            m_BuildParameters = new BuildParameters();
         }
 
         public IBuildParameters BuildParameters

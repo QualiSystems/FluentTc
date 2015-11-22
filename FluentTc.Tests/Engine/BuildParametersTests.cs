@@ -1,9 +1,10 @@
-﻿using System.IO.Abstractions.TestingHelpers;
+using System;
+using System.IO.Abstractions.TestingHelpers;
 using FluentAssertions;
 using FluentTc.Engine;
 using NUnit.Framework;
 
-namespace FluentTc.Tests
+namespace FluentTc.Tests.Engine
 {
     [TestFixture]
     public class BuildParametersTests
@@ -24,6 +25,19 @@ agent.home.dir=C\:\\BuildAgent
             // Act + Assert
             teamCityContext.GetParameterValue("agent.home.dir").Should().Be(@"C:\BuildAgent");
             teamCityContext.AgentHomeDir.Should().Be(@"C:\BuildAgent");
+        }
+
+        [Test]
+        public void Constructor_EnvironmentVariableIsNull_NoExceptionThrown()
+        {
+            // Arrange
+            var fileSystem = new MockFileSystem();
+
+            // Act
+            Action action = () => new BuildParameters(null, fileSystem);
+
+            // Assert
+            action.ShouldNotThrow<Exception>();
         }
     }
 }
