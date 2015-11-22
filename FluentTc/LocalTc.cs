@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO.Abstractions;
-using FluentTc.Engine;
+﻿using FluentTc.Engine;
 
 namespace FluentTc
 {
