@@ -4,16 +4,16 @@ namespace FluentTc.Locators
 {
     public interface IUserHavingBuilder
     {
-        UserHavingBuilder InternalUserId(string internalUserId);
+        UserHavingBuilder Id(string internalUserId);
         UserHavingBuilder Username(string username);
         string GetLocator();
     }
 
     public class UserHavingBuilder : IUserHavingBuilder
     {
-        readonly List<string> m_Havings = new List<string>();
+        private readonly List<string> m_Havings = new List<string>();
 
-        public UserHavingBuilder InternalUserId(string internalUserId)
+        public UserHavingBuilder Id(string internalUserId)
         {
             m_Havings.Add("id:" + internalUserId);
             return this;

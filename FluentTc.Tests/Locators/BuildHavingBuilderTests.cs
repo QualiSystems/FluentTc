@@ -301,7 +301,7 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.TriggeredBy(_ => _.InternalUserId("123"));
+            var havingBuilder = buildHavingBuilder.TriggeredBy(_ => _.Id("123"));
 
             // Assert
             havingBuilder.GetLocator().Should().Be("user:id:123");
