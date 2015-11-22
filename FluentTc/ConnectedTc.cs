@@ -40,6 +40,7 @@ namespace FluentTc
         Investigation GetInvestigation(Action<IBuildConfigurationHavingBuilder> havingBuildConfig);
         Investigation GetTestinvestigationByTestNameId(string testNameId);
         List<User> GetAllUsers();
+        User GetUser(Action<IUserHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -244,6 +245,11 @@ namespace FluentTc
         public List<User> GetAllUsers()
         {
             return m_UserRetriever.GetAllUsers();
+        }
+
+        public User GetUser(Action<IUserHavingBuilder> having)
+        {
+            return m_UserRetriever.GetUser(having);
         }
     }
 }

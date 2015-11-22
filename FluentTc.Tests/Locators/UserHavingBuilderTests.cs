@@ -11,7 +11,7 @@ namespace FluentTc.Tests.Locators
         public void InternalUserId()
         {
             var userHavingBuilder = new UserHavingBuilder();
-            var havingBuilder = userHavingBuilder.InternalUserId("123");
+            var havingBuilder = userHavingBuilder.Id("123");
 
             var locator = ((IUserHavingBuilder) havingBuilder).GetLocator();
 

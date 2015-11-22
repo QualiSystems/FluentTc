@@ -481,6 +481,7 @@ namespace FluentTc.Tests
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
+            A.CallTo(() => teamCityCaller.GetFormat<User>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<UserWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<InvestigationWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Build>(A<string>._, A<object[]>._)).CallsBaseMethod();
@@ -549,6 +550,21 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<UserWrapper>(@"/app/rest/users/")).MustHaveHappened();
+        }
+
+        [Test]
+        public void GetUser_ByUsername()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            User user = connectedTc.GetUser(_ => _.Username("boris.m"));
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<User>(@"/app/rest/users/username:boris.m")).MustHaveHappened();
         }
     }
 }
