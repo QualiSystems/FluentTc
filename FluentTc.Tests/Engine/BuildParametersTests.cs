@@ -2,6 +2,7 @@ using System;
 using System.IO.Abstractions.TestingHelpers;
 using FluentAssertions;
 using FluentTc.Engine;
+using FluentTc.Tests.TestingTools;
 using NUnit.Framework;
 
 namespace FluentTc.Tests.Engine
@@ -38,6 +39,25 @@ agent.home.dir=C\:\\BuildAgent
 
             // Assert
             action.ShouldNotThrow<Exception>();
+        }
+
+        [Test]
+        public void GetParameter_RealFile_Parsed()
+        {
+            string resource = new EmbeddedResourceReader().GetResource("PropertiesFile.txt");
+
+            // Arrange
+            var mockFileSystem = new MockFileSystem();
+            var propertiesFile = @"C:\BuildAgent\temp\buildTmp\teamcity.build322130465402584030.properties";
+            mockFileSystem.AddFile(propertiesFile, resource);
+
+            var teamCityContext = new BuildParameters(propertiesFile, mockFileSystem);
+
+            // Act 
+            var teamCityVersion = teamCityContext.TeamCityVersion;
+
+            // Assert
+            teamCityVersion.Should().Be(@"9.1.2 (build 37168)");
         }
     }
 }

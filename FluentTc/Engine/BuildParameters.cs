@@ -134,7 +134,7 @@ namespace FluentTc.Engine
 
         public string TeamCityVersion
         {
-            get { throw new NotImplementedException(); }
+            get { return GetParameterValue("teamcity.version"); }
         }
     }
 }

@@ -1,0 +1,36 @@
+#TeamCity build properties without 'system.' prefix
+#Sun Nov 22 10:50:03 IST 2015
+agent.home.dir=C\:\\BuildAgent
+agent.name=BUILDS8
+agent.ownPort=9090
+agent.work.dir=C\:\\BuildAgent\\work
+build.number=4
+FxCopCmdFileVersion=12.0.21005.1
+FxCopRoot=C\:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Team Tools\\Static Analysis Tools\\FxCop
+java.io.tmpdir=C\:\\BuildAgent\\temp\\buildTmp
+teamcity.agent.cpuBenchmark=637
+teamcity.agent.dotnet.agent_url=http\://localhost\:9090/RPC2
+teamcity.agent.dotnet.build_id=781682
+teamcity.agent.ensure.free.space=10Gb
+teamcity.auth.password=iHC4MiyFceXU5aKGWM4yeaBEjZWVdd7v
+teamcity.auth.userId=TeamCityBuildId\=781682
+teamcity.build.changedFiles.file=C\:\\BuildAgent\\temp\\buildTmp\\changedFiles5455301907873295404.txt
+teamcity.build.checkoutDir=C\:\\BuildAgent\\work\\78d85da0b512507
+teamcity.build.id=781682
+teamcity.build.properties.file=C\:\\BuildAgent\\temp\\buildTmp\\teamcity.build7041482380633247652.properties
+teamcity.build.tempDir=C\:\\BuildAgent\\temp\\buildTmp
+teamcity.build.workingDir=C\:\\BuildAgent\\work\\78d85da0b512507
+teamcity.buildConfName=Trying by Boris
+teamcity.buildType.id=Misc_Tryout_TryingByBoris
+teamcity.configuration.properties.file=C\:\\BuildAgent\\temp\\buildTmp\\teamcity.config1948038384398008623.properties
+teamcity.dotnet.nunitaddin=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.TeamCity.NUnitAddin-NUnit
+teamcity.dotnet.nunitlauncher=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.BuildServer.NUnitLauncher.exe
+teamcity.dotnet.nunitlauncher.msbuild.task=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.BuildServer.MSBuildLoggers.dll
+teamcity.dotnet.nunitlauncher1.1=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.BuildServer.NUnitLauncher1.1.exe
+teamcity.dotnet.nunitlauncher2.0=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.BuildServer.NUnitLauncher2.0.exe
+teamcity.dotnet.nunitlauncher2.0.vsts=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.BuildServer.NUnitLauncher2.0.VSTS.exe
+teamcity.dotnet.platform=C\:\\BuildAgent\\plugins\\dotnetPlugin\\bin\\JetBrains.TeamCity.PlatformProcessRunner.1.1.exe
+teamcity.projectName=Tryout
+teamcity.runner.properties.file=C\:\\BuildAgent\\temp\\buildTmp\\teamcity.runner5136921864276882166.properties
+teamcity.tests.recentlyFailedTests.file=C\:\\BuildAgent\\temp\\buildTmp\\testsToRunFirst1331030541797073503.txt
+teamcity.version=9.1.2 (build 37168)
