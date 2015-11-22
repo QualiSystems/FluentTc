@@ -39,6 +39,7 @@ namespace FluentTc
         string DownloadArtifact(int buildId, string destinationPath, string fileToDownload);
         Investigation GetInvestigation(Action<IBuildConfigurationHavingBuilder> havingBuildConfig);
         Investigation GetTestinvestigationByTestNameId(string testNameId);
+        List<User> GetAllUsers();
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -54,6 +55,7 @@ namespace FluentTc
         private readonly IBuildQueueRemover m_BuildQueueRemover;
         private readonly IArtifactsDownloader m_ArtifactsDownloader;
         private readonly IInvestigationRetriever m_InvestigationRetriever;
+        private readonly IUserRetriever m_UserRetriever;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -65,7 +67,7 @@ namespace FluentTc
             IBuildTemplateAttacher buildTemplateAttacher,
             IBuildQueueRemover buildQueueRemover,
             IArtifactsDownloader artifactsDownloader,
-            IInvestigationRetriever investigationRetriever)
+            IInvestigationRetriever investigationRetriever, IUserRetriever userRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -78,6 +80,7 @@ namespace FluentTc
             m_BuildQueueRemover = buildQueueRemover;
             m_ArtifactsDownloader = artifactsDownloader;
             m_InvestigationRetriever = investigationRetriever;
+            m_UserRetriever = userRetriever;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -236,6 +239,11 @@ namespace FluentTc
         public Investigation GetTestinvestigationByTestNameId(string testNameId)
         {
             return m_InvestigationRetriever.GetTestInvestigationByTestNameId(testNameId);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return m_UserRetriever.GetAllUsers();
         }
     }
 }

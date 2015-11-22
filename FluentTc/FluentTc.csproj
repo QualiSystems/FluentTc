@@ -122,6 +122,7 @@
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="Engine\UserRetriever.cs" />
     <Compile Include="InvestigationRetriever.cs" />
     <Compile Include="Engine\HttpClientWrapper.cs" />
     <Compile Include="Engine\HttpClientWrapperFactory.cs" />
