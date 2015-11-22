@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FluentTc.Exceptions;
+using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
 namespace FluentTc.Engine
 {
@@ -30,19 +32,23 @@ namespace FluentTc.Engine
     {
         private const string TeamcityBuildPropertiesFile = "TEAMCITY_BUILD_PROPERTIES_FILE";
         private static readonly Regex ParsingRegex = new Regex(@"^(?<Name>(\w+\.)*\w+)=(?<Value>.*)$", RegexOptions.Compiled | RegexOptions.Multiline);
-
+        private readonly bool m_IsTeamCityMode = true;
 
         private readonly Dictionary<string, string> m_Parameters = new Dictionary<string, string>();
+        private readonly ITeamCityWriter m_TeamCityWriter;
 
         public BuildParameters()
-            : this(Environment.GetEnvironmentVariable(TeamcityBuildPropertiesFile), new FileSystem())
+            : this(Environment.GetEnvironmentVariable(TeamcityBuildPropertiesFile), new FileSystem(), new TeamCityWriterFactory(new TeamCityServiceMessages()))
         {
         }
 
-        internal BuildParameters(string teamCityBuildPropertiesFile, IFileSystem fileSystem)
+        internal BuildParameters(string teamCityBuildPropertiesFile, IFileSystem fileSystem, ITeamCityWriterFactory teamCityWriterFactory)
         {
+            m_TeamCityWriter = teamCityWriterFactory.CreateTeamCityWriter();
+
             if (teamCityBuildPropertiesFile == null)
             {
+                m_IsTeamCityMode = false;
                 return;
             }
 
@@ -53,6 +59,11 @@ namespace FluentTc.Engine
                 if (!match.Success) continue;
                 m_Parameters.Add(match.Groups["Name"].Value, DecodeValue(match.Groups["Value"].Value));
             }
+        }
+
+        public BuildParameters(ITeamCityWriterFactory teamCityBuildPropertiesFile)
+        {
+            throw new NotImplementedException();
         }
 
         private static string DecodeValue(string parameterValue)
@@ -138,6 +149,17 @@ namespace FluentTc.Engine
         public string TeamCityVersion
         {
             get { return GetParameterValue("teamcity.version"); }
+        }
+
+        public void SetParameterValue(string parameterName, string parameterValue)
+        {
+            if (!m_Parameters.ContainsKey(parameterName) && !m_IsTeamCityMode)
+            {
+                throw new MissingBuildParameterException(parameterName);
+            }
+
+            m_Parameters[parameterName] = parameterValue;
+            m_TeamCityWriter.WriteBuildParameter(parameterName, parameterValue);
         }
     }
 }

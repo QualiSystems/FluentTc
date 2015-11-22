@@ -1,8 +1,12 @@
 using System;
 using System.IO.Abstractions.TestingHelpers;
+using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Engine;
+using FluentTc.Exceptions;
+using FluentTc.Tests.Locators;
 using FluentTc.Tests.TestingTools;
+using JetBrains.TeamCity.ServiceMessages.Write.Special;
 using NUnit.Framework;
 
 namespace FluentTc.Tests.Engine
@@ -21,7 +25,7 @@ namespace FluentTc.Tests.Engine
 agent.home.dir=C\:\\BuildAgent
 ");
 
-            var teamCityContext = new BuildParameters(propertiesFile, mockFileSystem);
+            var teamCityContext = new BuildParameters(propertiesFile, mockFileSystem, A.Fake<ITeamCityWriterFactory>());
 
             // Act + Assert
             teamCityContext.GetParameterValue("agent.home.dir").Should().Be(@"C:\BuildAgent");
@@ -35,7 +39,7 @@ agent.home.dir=C\:\\BuildAgent
             var fileSystem = new MockFileSystem();
 
             // Act
-            Action action = () => new BuildParameters(null, fileSystem);
+            Action action = () => new BuildParameters(null, fileSystem, A.Fake<ITeamCityWriterFactory>());
 
             // Assert
             action.ShouldNotThrow<Exception>();
@@ -51,7 +55,7 @@ agent.home.dir=C\:\\BuildAgent
             var propertiesFile = @"C:\BuildAgent\temp\buildTmp\teamcity.build322130465402584030.properties";
             mockFileSystem.AddFile(propertiesFile, resource);
 
-            var teamCityContext = new BuildParameters(propertiesFile, mockFileSystem);
+            var teamCityContext = new BuildParameters(propertiesFile, mockFileSystem, A.Fake<ITeamCityWriterFactory>());
 
             // Act + Assert
             teamCityContext.AgentHomeDir.Should().Be(@"C:\BuildAgent");
@@ -62,6 +66,37 @@ agent.home.dir=C\:\\BuildAgent
             teamCityContext.GetParameterValue("FxCopRoot").Should().Be(@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Team Tools\Static Analysis Tools\FxCop");
             teamCityContext.GetParameterValue("teamcity.agent.dotnet.agent_url").Should().Be(@"http://localhost:9090/RPC2");
             teamCityContext.GetParameterValue("teamcity.auth.userId").Should().Be(@"TeamCityBuildId=781682");
+        }
+
+        [Test]
+        public void SetParameterValue_NotTeamCityMode_ValueSet()
+        {
+            var mockFileSystem = new MockFileSystem();
+            var propertiesFile = @"C:\BuildAgent\temp\buildTmp\teamcity.build322130465402584030.properties";
+            mockFileSystem.AddFile(propertiesFile, MockFileData.NullObject);
+
+            var teamCityWriter = A.Fake<ITeamCityWriter>();
+
+            var teamCityWriterFactory = A.Fake<ITeamCityWriterFactory>();
+            A.CallTo(() => teamCityWriterFactory.CreateTeamCityWriter()).Returns(teamCityWriter);
+
+            var buildParameters = new BuildParameters(propertiesFile, mockFileSystem, teamCityWriterFactory);
+            buildParameters.SetParameterValue("param1", "newValue");
+            var parameterValue = buildParameters.GetParameterValue("param1");
+
+            // Assert
+            parameterValue.Should().Be("newValue");
+            A.CallTo(() => teamCityWriter.WriteBuildParameter("param1", "newValue")).MustHaveHappened();
+        }
+
+        [Test]
+        public void SetParameterValue_TeamCityMode_ExceptionThrown()
+        {
+            var buildParameters = new BuildParameters();
+            Action action = () => buildParameters.SetParameterValue("param1", "newValue");
+
+            // Assert
+            action.ShouldThrow<MissingBuildParameterException>();
         }
     }
 }
