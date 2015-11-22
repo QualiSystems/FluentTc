@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/borismod/FluentTc.png?label=ready&title=Ready)](https://waffle.io/borismod/FluentTc)
 # FluentTc
 Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity
 
