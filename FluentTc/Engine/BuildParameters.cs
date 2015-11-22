@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace FluentTc.Engine
 {
@@ -28,8 +29,10 @@ namespace FluentTc.Engine
     internal class BuildParameters : IBuildParameters
     {
         private const string TeamcityBuildPropertiesFile = "TEAMCITY_BUILD_PROPERTIES_FILE";
+        private static readonly Regex ParsingRegex = new Regex(@"^(?<Name>(\w+\.)*\w+)=(?<Value>.*)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        private readonly Dictionary<string, string> m_Parameters;
+
+        private readonly Dictionary<string, string> m_Parameters = new Dictionary<string, string>();
 
         public BuildParameters()
             : this(Environment.GetEnvironmentVariable(TeamcityBuildPropertiesFile), new FileSystem())
@@ -38,23 +41,23 @@ namespace FluentTc.Engine
 
         internal BuildParameters(string teamCityBuildPropertiesFile, IFileSystem fileSystem)
         {
-            m_Parameters = teamCityBuildPropertiesFile == null ? new Dictionary<string, string>() : 
-                fileSystem.File.ReadAllLines(teamCityBuildPropertiesFile)
-                    .Select(ParseLine)
-                    .Where(t => t != null)
-                    .ToDictionary(t => t.Item1, t => t.Item2);
+            if (teamCityBuildPropertiesFile == null)
+            {
+                return;
+            }
+
+            var allLines = fileSystem.File.ReadAllLines(teamCityBuildPropertiesFile);
+            foreach (var line in allLines)
+            {
+                var match = ParsingRegex.Match(line);
+                if (!match.Success) continue;
+                m_Parameters.Add(match.Groups["Name"].Value, DecodeValue(match.Groups["Value"].Value));
+            }
         }
 
-        private static Tuple<string, string> ParseLine(string line)
+        private static string DecodeValue(string parameterValue)
         {
-            if (string.IsNullOrEmpty(line)) return null;
-            if (line.StartsWith("#")) return null;
-
-            var indexOf = line.IndexOf("=", StringComparison.InvariantCultureIgnoreCase);
-            if (indexOf < 0) return null;
-            var parameterName = line.Substring(0, indexOf);
-            var parameterValue = line.Substring(indexOf + 1, line.Length - indexOf - 1);
-            return new Tuple<string, string>(parameterName, parameterValue.Replace(@"\:",@":").Replace(@"\\", @"\"));
+            return parameterValue.Replace(@"\:",@":").Replace(@"\\", @"\").Replace(@"\=", @"=");
         }
 
         public string GetParameterValue(string parameterName)

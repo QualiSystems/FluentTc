@@ -168,7 +168,7 @@ namespace FluentTc.Engine
                 throw new ArgumentException("If you are not acting as a guest you must supply userName and password");
 
             if (string.IsNullOrEmpty(urlPart))
-                throw new ArgumentException("Url must be specfied");
+                throw new ArgumentException("Url must be specified");
 
             var url = CreateUrl(urlPart);
 

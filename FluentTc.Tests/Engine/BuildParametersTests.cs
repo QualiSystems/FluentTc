@@ -53,11 +53,15 @@ agent.home.dir=C\:\\BuildAgent
 
             var teamCityContext = new BuildParameters(propertiesFile, mockFileSystem);
 
-            // Act 
-            var teamCityVersion = teamCityContext.TeamCityVersion;
-
-            // Assert
-            teamCityVersion.Should().Be(@"9.1.2 (build 37168)");
+            // Act + Assert
+            teamCityContext.AgentHomeDir.Should().Be(@"C:\BuildAgent");
+            teamCityContext.AgentName.Should().Be(@"BUILDS8");
+            teamCityContext.AgentOwnPort.Should().Be(@"9090");
+            teamCityContext.AgentWorkDir.Should().Be(@"C:\BuildAgent\work");
+            teamCityContext.BuildNumber.Should().Be(@"4");
+            teamCityContext.GetParameterValue("FxCopRoot").Should().Be(@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Team Tools\Static Analysis Tools\FxCop");
+            teamCityContext.GetParameterValue("teamcity.agent.dotnet.agent_url").Should().Be(@"http://localhost:9090/RPC2");
+            teamCityContext.GetParameterValue("teamcity.auth.userId").Should().Be(@"TeamCityBuildId=781682");
         }
     }
 }
