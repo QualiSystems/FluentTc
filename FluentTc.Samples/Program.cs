@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using FluentTc.Locators;
 
 namespace FluentTc.Samples
 {
-    internal class Program
+    internal static class Program
     {
         private const string TeamCityHost = "";
         private static readonly string Username = "";
@@ -11,11 +12,22 @@ namespace FluentTc.Samples
 
         private static void Main(string[] args)
         {
+            #region RemoteTc
+
             PrintEnabledAuthorizedDisconnectedAgents();
             PrintAllUsers();
             PrintAllUserEmails();
             PrintUserDetails();
             GetBuildsTriggeredByUser();
+
+            #endregion
+
+            #region LocalTc
+
+            new LocalTc().ChangeBuildStatus(BuildStatus.Success);
+
+            #endregion
+
             Console.ReadKey();
         }
 

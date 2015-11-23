@@ -1,30 +1,34 @@
 using System.IO.Abstractions;
 using System.Linq;
 using Autofac;
+using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
 namespace FluentTc.Engine
 {
     internal class Bootstrapper
     {
-        private readonly ITeamCityConnectionDetails m_TeamCityConnectionDetails;
         private readonly object[] m_Overrides;
 
-        public Bootstrapper(ITeamCityConnectionDetails teamCityConnectionDetails, params object[] overrides)
+        internal Bootstrapper(params object[] overrides)
         {
-            m_TeamCityConnectionDetails = teamCityConnectionDetails;
             m_Overrides = overrides;
         }
 
-        public IConnectedTc GetConnectedTc()
+        internal IConnectedTc GetConnectedTc()
+        {
+            return Get<IConnectedTc>();
+        }
+
+        internal T Get<T>()
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<FileSystem>().As<IFileSystem>();
+            builder.RegisterType<TeamCityServiceMessages>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterAssemblyTypes(typeof(Bootstrapper).Assembly).AsImplementedInterfaces();
-            builder.RegisterInstance(m_TeamCityConnectionDetails).AsImplementedInterfaces();
             OverrideRegistrations(builder, m_Overrides);
             var container = builder.Build();
 
-            return container.Resolve<IConnectedTc>();
+            return container.Resolve<T>();
         }
 
         private static void OverrideRegistrations(ContainerBuilder builder, params object[] overrides)
