@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentTc.Engine;
 using FluentTc.Locators;
 
@@ -20,7 +21,15 @@ namespace FluentTc
         {
             var teamCityConfigurationBuilder = new TeamCityConfigurationBuilder();
             connect(teamCityConfigurationBuilder);
-            var bootstrapper = new Bootstrapper(teamCityConfigurationBuilder.GetITeamCityConnectionDetails(), overrides);
+            if (overrides == null)
+            {
+                overrides = new object[] {teamCityConfigurationBuilder.GetITeamCityConnectionDetails()};
+            }
+            else
+            {
+                overrides = overrides.Concat(new[] { teamCityConfigurationBuilder.GetITeamCityConnectionDetails() }).ToArray();
+            }
+            var bootstrapper = new Bootstrapper(overrides);
             return bootstrapper.GetConnectedTc();
         }
     }

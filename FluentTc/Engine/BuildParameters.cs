@@ -61,11 +61,6 @@ namespace FluentTc.Engine
             }
         }
 
-        public BuildParameters(ITeamCityWriterFactory teamCityBuildPropertiesFile)
-        {
-            throw new NotImplementedException();
-        }
-
         private static string DecodeValue(string parameterValue)
         {
             return parameterValue.Replace(@"\:",@":").Replace(@"\\", @"\").Replace(@"\=", @"=");
