@@ -120,7 +120,7 @@ var allProjects = new RemoteTc().Connect(_ => _.ToHost("tc").AsGuest())
 * Contribute 
 
 # TeamCity REST API reference
-hhttps://confluence.jetbrains.com/display/TCD9/REST+API
+https://confluence.jetbrains.com/display/TCD9/REST+API
 
 ## Dependencies
 * Autofac http://autofac.org/ (≥ 3.5.2)
