@@ -5,7 +5,7 @@ using FluentTc.Locators;
 
 namespace FluentTc.Engine
 {
-    public interface IBuildConfigurationCreator
+    internal interface IBuildConfigurationCreator
     {
         BuildConfiguration Create(Action<IBuildProjectHavingBuilder> having, string buildConfigurationName);
     }
