@@ -54,5 +54,20 @@ namespace FluentTc.Tests
                 m.GetValue(m.Keys.Single()) == "FAILURE") ))
                 .MustHaveHappened();
         }
+
+        [Test]
+        public void SetBuildParameter_ParameterNameValue_WriteBuildParameterCalled()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            localTc.SetBuildParameter("parameter.name", "value1");
+
+            // Assert
+            A.CallTo(() => buildParameters.SetParameterValue("parameter.name", "value1")).MustHaveHappened();
+        }
     }
 }

@@ -7,8 +7,9 @@ namespace FluentTc
 {
     public interface ILocalTc
     {
-        IBuildParameters BuildParameters { get; }
         void ChangeBuildStatus(BuildStatus buildStatus);
+        string GetBuildParameter(string buildParameterName);
+        void SetBuildParameter(string buildParameterName, string buildParameterValue);
     }
 
     public class LocalTc : ILocalTc
@@ -42,6 +43,16 @@ namespace FluentTc
             {
                 {"status", buildStatus.ToString().ToUpper()}
             });
+        }
+
+        public string GetBuildParameter(string buildParameterName)
+        {
+            return m_BuildParameters.GetParameterValue(buildParameterName);
+        }
+
+        public void SetBuildParameter(string buildParameterName, string buildParameterValue)
+        {
+            m_BuildParameters.SetParameterValue(buildParameterName, buildParameterValue);
         }
     }
 }

@@ -24,7 +24,11 @@ namespace FluentTc.Samples
 
             #region LocalTc
 
-            new LocalTc().ChangeBuildStatus(BuildStatus.Success);
+            var localTc = new LocalTc();
+
+            var buildId = localTc.GetBuildParameter("build.id");
+            localTc.SetBuildParameter("parameter.name", "value1");
+            localTc.ChangeBuildStatus(BuildStatus.Success);
 
             #endregion
 

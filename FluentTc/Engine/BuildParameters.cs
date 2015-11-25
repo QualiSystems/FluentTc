@@ -26,6 +26,7 @@ namespace FluentTc.Engine
         string TeamcityBuildTypeId { get; }
         string TeamcityProjectName { get; }
         string TeamCityVersion { get; }
+        void SetParameterValue(string parameterName, string parameterValue);
     }
 
     internal class BuildParameters : IBuildParameters
