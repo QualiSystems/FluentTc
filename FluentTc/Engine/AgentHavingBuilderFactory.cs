@@ -2,7 +2,7 @@ using FluentTc.Locators;
 
 namespace FluentTc.Engine
 {
-    public interface IAgentHavingBuilderFactory
+    internal interface IAgentHavingBuilderFactory
     {
         AgentHavingBuilder CreateAgentHavingBuilder();
     }
