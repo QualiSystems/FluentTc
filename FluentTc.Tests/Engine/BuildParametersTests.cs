@@ -87,6 +87,28 @@ agent.home.dir=C\:\\BuildAgent
             // Assert
             parameterValue.Should().Be("newValue");
             A.CallTo(() => teamCityWriter.WriteBuildParameter("param1", "newValue")).MustHaveHappened();
+        }        
+        
+        [Test]
+        public void SetParameterValue_GetParameterValue_ValueThatWasSetReturned()
+        {
+            var mockFileSystem = new MockFileSystem();
+            var propertiesFile = @"C:\BuildAgent\temp\buildTmp\teamcity.build322130465402584030.properties";
+            mockFileSystem.AddFile(propertiesFile, MockFileData.NullObject);
+
+            var teamCityWriter = A.Fake<ITeamCityWriter>();
+
+            var teamCityWriterFactory = A.Fake<ITeamCityWriterFactory>();
+            A.CallTo(() => teamCityWriterFactory.CreateTeamCityWriter()).Returns(teamCityWriter);
+
+            var buildParameters = new BuildParameters(propertiesFile, mockFileSystem, teamCityWriterFactory);
+
+            // Act
+            buildParameters.SetParameterValue("param1", "newValue");
+            var parameterValue = buildParameters.GetParameterValue("param1");
+
+            // Assert
+            parameterValue.Should().Be("newValue");
         }
 
         [Test]
