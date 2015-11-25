@@ -6,7 +6,7 @@ Easy-to-use, readable and comprehensive library for consuming TeamCity REST API.
 install-package FluentTc
 
 # How to use
-Read the [https://github.com/QualiSystems/FluentTc/wiki](wiki)
+Read the https://github.com/QualiSystems/FluentTc/wiki
 
 # How can I help
 * Vote  http://nugetmusthaves.com/Package/FluentTc
