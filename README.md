@@ -20,7 +20,7 @@ Read the https://github.com/QualiSystems/FluentTc/wiki
 * Submit Pull Request
 
 ## License
-Apache License 2.0
+[Apache License 2.0](https://github.com/QualiSystems/FluentTc/blob/master/LICENSE)
 
 
 
