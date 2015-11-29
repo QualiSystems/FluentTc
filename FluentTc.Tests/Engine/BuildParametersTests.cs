@@ -1,4 +1,5 @@
 using System;
+using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using FakeItEasy;
 using FluentAssertions;
@@ -112,9 +113,9 @@ agent.home.dir=C\:\\BuildAgent
         }
 
         [Test]
-        public void SetParameterValue_TeamCityMode_ExceptionThrown()
+        public void SetParameterValue_NotTeamCityMode_ExceptionThrown()
         {
-            var buildParameters = new BuildParameters();
+            var buildParameters = new BuildParameters(null, A.Fake<IFileSystem>(), A.Fake<ITeamCityWriterFactory>());
             Action action = () => buildParameters.SetParameterValue("param1", "newValue");
 
             // Assert
