@@ -4,7 +4,7 @@ Easy-to-use, readable and comprehensive library for consuming TeamCity REST API.
 # Build Status
 
 The build is generously hosted and run on the "CodeBetter TeamCity":http://codebetter.com/codebetter-ci/ infrastructure.
-Latest build status: !http://teamcity.codebetter.com/app/rest/builds/buildType:(id:BizArk_FluentTc)/statusIcon!:http://teamcity.codebetter.com/viewType.html?buildTypeId=BizArk_FluentTc&guest=1
+Latest build status: [!(http://teamcity.codebetter.com/app/rest/builds/buildType:(id:BizArk_FluentTc)/statusIcon)]
 
 # How to get
 install-package FluentTc
