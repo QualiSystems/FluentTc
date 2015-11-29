@@ -1,5 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/borismod/FluentTc.png?label=ready&title=Ready)](https://waffle.io/borismod/FluentTc)
-# FluentTc
+# FluentTc [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc)
 Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity
 
 # How to get
@@ -14,7 +13,7 @@ Read the https://github.com/QualiSystems/FluentTc/wiki
 
 ## Guidelines for contributors
 * Fork this repository 
-* Choose issue from open issues 
+* Choose issue from open issues on Waffle board [![Stories in Ready](https://badge.waffle.io/borismod/FluentTc.png?label=ready&title=Ready)](https://waffle.io/borismod/FluentTc)
 * Develop using (A)TDD, Clean Code principles, SOLID
 * Strive to fluent, readable, easy to discover API
 * Use (A)TDD, Clean Code
