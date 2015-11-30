@@ -105,8 +105,6 @@ namespace FluentTc.Tests
             builds.ShouldAllBeEquivalentTo(new [] { build });
         }
 
-        [Test]
-        [Ignore]
         public void GetBuilds_SinceDate()
         {
             // Arrange
@@ -147,7 +145,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationName()
         {
             // Arrange
@@ -173,7 +171,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationNameWithParameters()
         {
             // Arrange
@@ -202,7 +200,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_OnAgentName()
         {
             // Arrange
@@ -234,7 +232,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_OnAgentNameWithParameters()
         {
             // Arrange
