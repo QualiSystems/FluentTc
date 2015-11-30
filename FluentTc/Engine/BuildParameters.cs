@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO.Abstractions;
 using FluentTc.Exceptions;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
@@ -33,7 +32,7 @@ namespace FluentTc.Engine
         private readonly Dictionary<string, string> m_Parameters = new Dictionary<string, string>();
         private readonly ITeamCityWriter m_TeamCityWriter;
 
-        internal BuildParameters(ITeamCityBuildPropertiesFileRetriever teamCityBuildPropertiesFileRetriever, ITeamCityWriterFactory teamCityWriterFactory, IPropertiesFileParser propertiesFileParser)
+        public BuildParameters(ITeamCityBuildPropertiesFileRetriever teamCityBuildPropertiesFileRetriever, ITeamCityWriterFactory teamCityWriterFactory, IPropertiesFileParser propertiesFileParser)
         {
             m_TeamCityWriter = teamCityWriterFactory.CreateTeamCityWriter();
 

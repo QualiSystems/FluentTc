@@ -93,5 +93,18 @@ namespace FluentTc.Tests.Engine
             parameterValue.Should().Be("newValue");
             A.CallTo(() => teamCityWriter.WriteBuildParameter("param1", "newValue")).MustHaveHappened();
         }
+
+        [Test]
+        public void ResolveBuildParameters_BuildParameters_NotNull()
+        {
+            // Arrange
+            var bootstrapper = new Bootstrapper();
+
+            // Act
+            var buildParameters = bootstrapper.Get<IBuildParameters>();
+
+            // Assert
+            buildParameters.Should().NotBeNull();
+        }
     }
 }
