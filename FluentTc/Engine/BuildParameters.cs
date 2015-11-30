@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Text.RegularExpressions;
 using FluentTc.Exceptions;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
@@ -31,21 +28,16 @@ namespace FluentTc.Engine
 
     internal class BuildParameters : IBuildParameters
     {
-        private const string TeamcityBuildPropertiesFile = "TEAMCITY_BUILD_PROPERTIES_FILE";
-        private static readonly Regex ParsingRegex = new Regex(@"^(?<Name>(\w+\.)*\w+)=(?<Value>.*)$", RegexOptions.Compiled | RegexOptions.Multiline);
         private readonly bool m_IsTeamCityMode = true;
 
         private readonly Dictionary<string, string> m_Parameters = new Dictionary<string, string>();
         private readonly ITeamCityWriter m_TeamCityWriter;
 
-        public BuildParameters()
-            : this(Environment.GetEnvironmentVariable(TeamcityBuildPropertiesFile), new FileSystem(), new TeamCityWriterFactory(new TeamCityServiceMessages()))
-        {
-        }
-
-        internal BuildParameters(string teamCityBuildPropertiesFile, IFileSystem fileSystem, ITeamCityWriterFactory teamCityWriterFactory)
+        internal BuildParameters(ITeamCityBuildPropertiesFileRetriever teamCityBuildPropertiesFileRetriever, ITeamCityWriterFactory teamCityWriterFactory, IPropertiesFileParser propertiesFileParser)
         {
             m_TeamCityWriter = teamCityWriterFactory.CreateTeamCityWriter();
+
+            string teamCityBuildPropertiesFile = teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath();
 
             if (teamCityBuildPropertiesFile == null)
             {
@@ -53,18 +45,7 @@ namespace FluentTc.Engine
                 return;
             }
 
-            var allLines = fileSystem.File.ReadAllLines(teamCityBuildPropertiesFile);
-            foreach (var line in allLines)
-            {
-                var match = ParsingRegex.Match(line);
-                if (!match.Success) continue;
-                m_Parameters.Add(match.Groups["Name"].Value, DecodeValue(match.Groups["Value"].Value));
-            }
-        }
-
-        private static string DecodeValue(string parameterValue)
-        {
-            return parameterValue.Replace(@"\:",@":").Replace(@"\\", @"\").Replace(@"\=", @"=");
+            m_Parameters = propertiesFileParser.ParsePropertiesFile(teamCityBuildPropertiesFile);
         }
 
         public string GetParameterValue(string parameterName)
@@ -149,7 +130,7 @@ namespace FluentTc.Engine
 
         public void SetParameterValue(string parameterName, string parameterValue)
         {
-            if (!m_Parameters.ContainsKey(parameterName) && !m_IsTeamCityMode)
+            if (!m_Parameters.ContainsKey(parameterName) && m_IsTeamCityMode)
             {
                 throw new MissingBuildParameterException(parameterName);
             }
