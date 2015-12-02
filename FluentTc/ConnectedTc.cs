@@ -41,6 +41,7 @@ namespace FluentTc
         Investigation GetTestinvestigationByTestNameId(string testNameId);
         List<User> GetAllUsers();
         User GetUser(Action<IUserHavingBuilder> having);
+        Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -57,6 +58,7 @@ namespace FluentTc
         private readonly IArtifactsDownloader m_ArtifactsDownloader;
         private readonly IInvestigationRetriever m_InvestigationRetriever;
         private readonly IUserRetriever m_UserRetriever;
+        private readonly IProjectCreator m_ProjectCreator;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -68,7 +70,9 @@ namespace FluentTc
             IBuildTemplateAttacher buildTemplateAttacher,
             IBuildQueueRemover buildQueueRemover,
             IArtifactsDownloader artifactsDownloader,
-            IInvestigationRetriever investigationRetriever, IUserRetriever userRetriever)
+            IInvestigationRetriever investigationRetriever, 
+            IUserRetriever userRetriever, 
+            IProjectCreator projectCreator)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -82,6 +86,7 @@ namespace FluentTc
             m_ArtifactsDownloader = artifactsDownloader;
             m_InvestigationRetriever = investigationRetriever;
             m_UserRetriever = userRetriever;
+            m_ProjectCreator = projectCreator;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -250,6 +255,11 @@ namespace FluentTc
         public User GetUser(Action<IUserHavingBuilder> having)
         {
             return m_UserRetriever.GetUser(having);
+        }
+
+        public Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction)
+        {
+            return m_ProjectCreator.CreateProject(newProjectDetailsBuilderAction);
         }
     }
 }

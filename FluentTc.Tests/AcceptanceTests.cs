@@ -320,6 +320,57 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.Post("NewConfig", HttpContentTypes.TextPlain, "/app/rest/projects/name:OpenSource/buildTypes", HttpContentTypes.ApplicationJson)).MustHaveHappened();
         }
 
+        //[Test]
+        //public void CreateBuildProject_ByName()
+        //{
+        //    // Arrange
+        //    var teamCityCaller = CreateTeamCityCaller();
+
+        //    var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+        //    // Act
+        //    Project project = connectedTc.CreateProject("NewProject");
+
+        //    // Assert
+        //    A.CallTo(() => teamCityCaller.Post("NewProject", HttpContentTypes.TextPlain, "/app/rest/projects/", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        //}
+
+        [Test]
+        public void CreateProject_NameIdParent()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            Project project = connectedTc.CreateProject(with => with.Name("New Project Name")
+                .Id("newProjectId")
+                .ParentProject(parent => parent.Id("parentProjectId")));
+
+            var data = @"<newProjectDescription name='New Project Name' id='newProjectId'><parentProject locator='id:parentProjectId'/></newProjectDescription>";
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Post(data, HttpContentTypes.ApplicationXml, "/app/rest/projects/", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        }
+
+        [Test]
+        public void CreateProject_Name()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            Project project = connectedTc.CreateProject(with => with.Name("New Project Name"));
+
+            var data = @"<newProjectDescription name='New Project Name'></newProjectDescription>";
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Post(data, HttpContentTypes.ApplicationXml, "/app/rest/projects/", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        }
+
         [Test]
         public void AttachBuildConfigurationToTemplate()
         {
@@ -493,6 +544,7 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<string>(A<string>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.PostFormat<Project>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.DeleteFormat(A<string>._, A<object[]>._)).CallsBaseMethod();
             return teamCityCaller;

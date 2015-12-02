@@ -127,6 +127,8 @@
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="Engine\NewProjectDetailsBuilder.cs" />
+    <Compile Include="Engine\ProjectCreator.cs" />
     <Compile Include="Engine\PropertiesFileParser.cs" />
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />

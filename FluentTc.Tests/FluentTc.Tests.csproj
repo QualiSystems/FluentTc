@@ -105,6 +105,7 @@
     <Compile Include="ConnectedTcTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
+    <Compile Include="Engine\NewProjectDetailsBuilderTests.cs" />
     <Compile Include="Engine\PropertiesFileParserTests.cs" />
     <Compile Include="LocalTcTests.cs" />
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />
