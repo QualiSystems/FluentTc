@@ -24,7 +24,7 @@ Read the https://github.com/QualiSystems/FluentTc/wiki
 
 ## Guidelines for contributors
 * Fork this repository 
-* Choose an issue from Waffle board [![Stories in Ready](https://badge.waffle.io/QualiSystems/FluentTc.png?label=ready&title=Ready)](https://waffle.io/borismod/FluentTc)
+* Choose an issue from Waffle board [![Stories in Ready](https://badge.waffle.io/QualiSystems/FluentTc.png?label=ready&title=Ready)](https://waffle.io/QualiSystems/FluentTc)
 * Develop using (A)TDD, Clean Code principles, SOLID
 * Strive to fluent, readable, easy to discover API
 * Use (A)TDD, Clean Code
