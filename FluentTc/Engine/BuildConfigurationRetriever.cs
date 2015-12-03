@@ -73,7 +73,7 @@ namespace FluentTc.Engine
 
             BuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
-            buildParameterValueBuilder.GetParameters().ToList()
+            buildParameterValueBuilder.GetParameters()
                 .ForEach(
                     p =>
                         m_TeamCityCaller.PutFormat(p.Value, HttpContentTypes.TextPlain,

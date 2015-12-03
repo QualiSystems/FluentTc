@@ -137,7 +137,7 @@
     <Compile Include="InvestigationRetriever.cs" />
     <Compile Include="Engine\HttpClientWrapper.cs" />
     <Compile Include="Engine\HttpClientWrapperFactory.cs" />
-    <Compile Include="Engine\IProjectsRetriever.cs" />
+    <Compile Include="Engine\ProjectsRetriever.cs" />
     <Compile Include="Engine\QueueHavingBuilderFactory.cs" />
     <Compile Include="Engine\TeamCityCaller.cs" />
     <Compile Include="Engine\TeamCityConnectionDetails.cs" />

@@ -8,7 +8,7 @@ using JsonFx.Serialization;
 
 namespace FluentTc.Engine
 {
-    public class TeamCityDateFilter : ModelFilter<DateTime>
+    internal class TeamCityDateFilter : ModelFilter<DateTime>
     {
         private const string DateFormat = "yyyyMMddTHHmmsszz00";
 

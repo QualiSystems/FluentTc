@@ -2,7 +2,7 @@ using FluentTc.Locators;
 
 namespace FluentTc.Engine
 {
-    public interface IBuildQueueIdHavingBuilderFactory
+    internal interface IBuildQueueIdHavingBuilderFactory
     {
         BuildQueueIdHavingBuilder CreateBuildQueueIdHavingBuilder();
     }

@@ -9,7 +9,7 @@ using HttpResponse = EasyHttp.Http.HttpResponse;
 
 namespace FluentTc.Engine
 {
-    public interface ITeamCityCaller
+    internal interface ITeamCityCaller
     {
         T GetFormat<T>(string urlPart, params object[] parts);
 
