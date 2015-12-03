@@ -19,7 +19,8 @@ namespace FluentTc
         Build GetBuild(long buildId);
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
-        void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
+        void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
+        void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent);
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters);
@@ -59,6 +60,7 @@ namespace FluentTc
         private readonly IInvestigationRetriever m_InvestigationRetriever;
         private readonly IUserRetriever m_UserRetriever;
         private readonly IProjectCreator m_ProjectCreator;
+        private readonly IProjectPropertySetter m_ProjectPropertySetter;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -72,7 +74,7 @@ namespace FluentTc
             IArtifactsDownloader artifactsDownloader,
             IInvestigationRetriever investigationRetriever, 
             IUserRetriever userRetriever, 
-            IProjectCreator projectCreator)
+            IProjectCreator projectCreator, IProjectPropertySetter projectPropertySetter)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -87,6 +89,7 @@ namespace FluentTc
             m_InvestigationRetriever = investigationRetriever;
             m_UserRetriever = userRetriever;
             m_ProjectCreator = projectCreator;
+            m_ProjectPropertySetter = projectPropertySetter;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -137,9 +140,14 @@ namespace FluentTc
             return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having, null);
         }
 
-        public void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
+        public void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
         {
             m_BuildConfigurationRetriever.SetParameters(having, parameters);
+        }
+
+        public void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
+        {
+            m_ProjectPropertySetter.SetProjectParameters(having, parameters);
         }
 
         public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)

@@ -135,7 +135,7 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetParameters(_ => _.Name("FluentTc"), p=>p.Parameter("name","newVal"));
+            connectedTc.SetBuildConfigurationParameters(_ => _.Name("FluentTc"), p=>p.Parameter("name","newVal"));
 
             // Assert
             A.CallTo(
@@ -616,6 +616,24 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<User>(@"/app/rest/users/username:boris.m")).MustHaveHappened();
+        }
+
+        [Test]
+        public void SetProjectParameters_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetProjectParameters(_ => _.Id("ProjectId"), __ => __.Parameter("param1", "value1"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put("value1", HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
 }

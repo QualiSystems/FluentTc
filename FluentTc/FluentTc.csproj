@@ -127,6 +127,7 @@
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="Engine\IProjectPropertySetter.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilder.cs" />
     <Compile Include="Engine\ProjectCreator.cs" />
     <Compile Include="Engine\PropertiesFileParser.cs" />
