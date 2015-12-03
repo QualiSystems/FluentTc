@@ -10,78 +10,74 @@ namespace FluentTc.Tests.Locators
         [Test]
         public void Name()
         {
+            // Arrange
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.Name("Branch1");
 
-            var locator = havingBuilder.GetLocator();
+            // Act
+            branchHavingBuilder.Name("Branch1");
 
-            locator.Should().Be("name:Branch1");
+            // Assert
+            branchHavingBuilder.GetLocator().Should().Be("name:Branch1");
         }
 
         [Test]
         public void Branched()
         {
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.Branched();
 
-            var locator = havingBuilder.GetLocator();
+            branchHavingBuilder.Branched();
 
-            locator.Should().Be("branched:True");
+            branchHavingBuilder.GetLocator().Should().Be("branched:True");
         }
 
         [Test]
         public void NotBranched()
         {
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.NotBranched();
 
-            var locator = havingBuilder.GetLocator();
+            branchHavingBuilder.NotBranched();
 
-            locator.Should().Be("branched:False");
+            branchHavingBuilder.GetLocator().Should().Be("branched:False");
         }
 
         [Test]
         public void Default()
         {
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.Default();
 
-            var locator = havingBuilder.GetLocator();
+            branchHavingBuilder.Default();
 
-            locator.Should().Be("default:True");
+            branchHavingBuilder.GetLocator().Should().Be("default:True");
         }
 
         [Test]
         public void DefaultFalse()
         {
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.NotDefault();
 
-            var locator = havingBuilder.GetLocator();
+            branchHavingBuilder.NotDefault();
 
-            locator.Should().Be("default:False");
+            branchHavingBuilder.GetLocator().Should().Be("default:False");
         }
 
         [Test]
         public void Unspecified()
         {
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.Unspecified();
 
-            var locator = havingBuilder.GetLocator();
+            branchHavingBuilder.Unspecified();
 
-            locator.Should().Be("unspecified:True");
+            branchHavingBuilder.GetLocator().Should().Be("unspecified:True");
         }
 
         [Test]
         public void NotUnspecified()
         {
             var branchHavingBuilder = new BranchHavingBuilder();
-            var havingBuilder = branchHavingBuilder.NotUnspecified();
 
-            var locator = havingBuilder.GetLocator();
+            branchHavingBuilder.NotUnspecified();
 
-            locator.Should().Be("unspecified:False");
+            branchHavingBuilder.GetLocator().Should().Be("unspecified:False");
         }
     }
 }

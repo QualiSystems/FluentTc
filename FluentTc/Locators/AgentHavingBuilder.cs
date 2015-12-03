@@ -2,17 +2,17 @@ using System.Collections.Generic;
 
 namespace FluentTc.Locators
 {
-    public interface IAgentHavingBuilder : ILocator
+    public interface IAgentHavingBuilder
     {
         IAgentHavingBuilder Id(int agentId);
         IAgentHavingBuilder Name(string agentName);
-        AgentHavingBuilder Connected();
-        AgentHavingBuilder Disconnected();
-        AgentHavingBuilder Enabled();
-        AgentHavingBuilder Disabled();
-        AgentHavingBuilder Authorized();
-        AgentHavingBuilder NotAuthorized();
-        AgentHavingBuilder Ip(string ip);
+        IAgentHavingBuilder Connected();
+        IAgentHavingBuilder Disconnected();
+        IAgentHavingBuilder Enabled();
+        IAgentHavingBuilder Disabled();
+        IAgentHavingBuilder Authorized();
+        IAgentHavingBuilder NotAuthorized();
+        IAgentHavingBuilder Ip(string ip);
     }
 
     public class AgentHavingBuilder : IAgentHavingBuilder
@@ -25,42 +25,42 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public AgentHavingBuilder Connected()
+        public IAgentHavingBuilder Connected()
         {
             m_Having.Add("connected:" + bool.TrueString);
             return this;
         }
 
-        public AgentHavingBuilder Disconnected()
+        public IAgentHavingBuilder Disconnected()
         {
             m_Having.Add("connected:" + bool.FalseString);
             return this;
         }
 
-        public AgentHavingBuilder Disabled()
+        public IAgentHavingBuilder Disabled()
         {
             throw new System.NotImplementedException();
         }
 
-        public AgentHavingBuilder Authorized()
+        public IAgentHavingBuilder Authorized()
         {
             m_Having.Add("authorized:" + bool.TrueString);
             return this;
         }
 
-        public AgentHavingBuilder NotAuthorized()
+        public IAgentHavingBuilder NotAuthorized()
         {
             m_Having.Add("authorized:" + bool.FalseString);
             return this;
         }
 
-        public AgentHavingBuilder Ip(string ip)
+        public IAgentHavingBuilder Ip(string ip)
         {
             m_Having.Add("ip:" + ip);
             return this;
         }
 
-        public AgentHavingBuilder Enabled()
+        public IAgentHavingBuilder Enabled()
         {
             m_Having.Add("enabled:" + bool.TrueString);
             return this;

@@ -14,9 +14,10 @@ namespace FluentTc.Tests.Locators
             var countBuilder = new CountBuilder();
             
             // Act
-            var builder = countBuilder.DefaultCount();
+            countBuilder.DefaultCount();
 
-            builder.GetCount().Should().BeEmpty();
+            // Assert
+            countBuilder.GetCount().Should().BeEmpty();
         }
 
         [Test]
@@ -26,9 +27,10 @@ namespace FluentTc.Tests.Locators
             var countBuilder = new CountBuilder();
             
             // Act
-            var builder = countBuilder.Count(5);
+            countBuilder.Count(5);
 
-            builder.GetCount().Should().Be("count:5");
+            // Assert
+            countBuilder.GetCount().Should().Be("count:5");
         }
 
         [Test]
@@ -38,9 +40,10 @@ namespace FluentTc.Tests.Locators
             var countBuilder = new CountBuilder();
             
             // Act
-            var builder = countBuilder.Start(2).Count(5);
+            countBuilder.Start(2).Count(5);
 
-            builder.GetCount().Should().Be("start:2,count:5");
+            // Assert
+            countBuilder.GetCount().Should().Be("start:2,count:5");
         }
     }
 }

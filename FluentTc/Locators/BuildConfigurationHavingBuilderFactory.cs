@@ -2,7 +2,7 @@ namespace FluentTc.Locators
 {
     public interface IBuildConfigurationHavingBuilderFactory
     {
-        IBuildConfigurationHavingBuilder CreateBuildConfigurationHavingBuilder();
+        BuildConfigurationHavingBuilder CreateBuildConfigurationHavingBuilder();
     }
 
     public class BuildConfigurationHavingBuilderFactory : IBuildConfigurationHavingBuilderFactory
@@ -14,7 +14,7 @@ namespace FluentTc.Locators
             m_BuildProjectHavingBuilderFactory = buildProjectHavingBuilderFactory;
         }
 
-        public IBuildConfigurationHavingBuilder CreateBuildConfigurationHavingBuilder()
+        public BuildConfigurationHavingBuilder CreateBuildConfigurationHavingBuilder()
         {
             return new BuildConfigurationHavingBuilder(m_BuildProjectHavingBuilderFactory);
         }

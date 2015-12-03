@@ -5,11 +5,10 @@ namespace FluentTc.Locators
 {
     public interface IBuildIncludeBuilder
     {
-        BuildIncludeBuilder IncludeStartDate();
-        BuildIncludeBuilder IncludeFinishDate();
-        BuildIncludeBuilder IncludeStatusText();
-        BuildIncludeBuilder IncludeDefaults();
-        string GetColumns();
+        IBuildIncludeBuilder IncludeStartDate();
+        IBuildIncludeBuilder IncludeFinishDate();
+        IBuildIncludeBuilder IncludeStatusText();
+        IBuildIncludeBuilder IncludeDefaults();
     }
 
     public class BuildIncludeBuilder : IBuildIncludeBuilder
@@ -19,17 +18,17 @@ namespace FluentTc.Locators
             "buildTypeId", "href", "id", "number", "state", "status","webUrl"
         });
 
-        public BuildIncludeBuilder IncludeStartDate()
+        public IBuildIncludeBuilder IncludeStartDate()
         {
             return IncludeProperty();
         }
 
-        public BuildIncludeBuilder IncludeFinishDate()
+        public IBuildIncludeBuilder IncludeFinishDate()
         {
             return IncludeProperty();
         }
 
-        public BuildIncludeBuilder IncludeStatusText()
+        public IBuildIncludeBuilder IncludeStatusText()
         {
             return IncludeProperty();
         }
@@ -41,12 +40,12 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public BuildIncludeBuilder IncludeDefaults()
+        public IBuildIncludeBuilder IncludeDefaults()
         {
             return this;
         }
 
-        string IBuildIncludeBuilder.GetColumns()
+        public virtual string GetColumns()
         {
             return string.Join(",", m_Properties);
         }

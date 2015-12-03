@@ -4,12 +4,12 @@ namespace FluentTc.Engine
 {
     internal interface ICountBuilderFactory
     {
-        ICountBuilder CreateCountBuilder();
+        CountBuilder CreateCountBuilder();
     }
 
     internal class CountBuilderFactory : ICountBuilderFactory
     {
-        public ICountBuilder CreateCountBuilder()
+        public CountBuilder CreateCountBuilder()
         {
             return new CountBuilder();
         }

@@ -52,8 +52,8 @@ namespace FluentTc.Engine
             return new List<Build>();
         }
 
-        private BuildWrapper GetBuildWrapper(IBuildHavingBuilder buildHavingBuilder, ICountBuilder countBuilder,
-            IBuildIncludeBuilder buildIncludeBuilder)
+        private BuildWrapper GetBuildWrapper(BuildHavingBuilder buildHavingBuilder, CountBuilder countBuilder,
+            BuildIncludeBuilder buildIncludeBuilder)
         {
             var locator = buildHavingBuilder.GetLocator();
             var count = countBuilder.GetCount();

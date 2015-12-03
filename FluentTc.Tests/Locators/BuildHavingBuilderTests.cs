@@ -18,10 +18,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.AgentName("bond");
+            buildHavingBuilder.AgentName("bond");
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("agentName:bond");
+            buildHavingBuilder.GetLocator().Should().Be("agentName:bond");
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace FluentTc.Tests.Locators
         {
             // Arrange
             var fixture = Auto.Fixture();
-            var branchHavingBuilder = A.Fake<IBranchHavingBuilder>();
+            var branchHavingBuilder = A.Fake<BranchHavingBuilder>();
             A.CallTo(() => branchHavingBuilder.GetLocator()).Returns("name:Branch1");
 
             var userHavingBuilderFactory = fixture.Freeze<IBranchHavingBuilderFactory>();
@@ -38,10 +38,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Branch(_ => _.Name("Branch1"));
+            buildHavingBuilder.Branch(_ => _.Name("Branch1"));
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("branch:name:Branch1");
+            buildHavingBuilder.GetLocator().Should().Be("branch:name:Branch1");
         }
 
         [Test]
@@ -57,10 +57,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.BuildConfiguration(havingBuildConfig);
+            buildHavingBuilder.BuildConfiguration(havingBuildConfig);
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("buildType:id:bt2");
+            buildHavingBuilder.GetLocator().Should().Be("buildType:id:bt2");
         }
 
         [Test]
@@ -71,10 +71,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Cancelled();
+            buildHavingBuilder.Cancelled();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("cancelled:True");
+            buildHavingBuilder.GetLocator().Should().Be("cancelled:True");
         }
 
         [Test]
@@ -85,10 +85,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Id(123);
+            buildHavingBuilder.Id(123);
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("id:123");
+            buildHavingBuilder.GetLocator().Should().Be("id:123");
         }
 
         [Test]
@@ -99,10 +99,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Id(123L);
+            buildHavingBuilder.Id(123L);
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("id:123");
+            buildHavingBuilder.GetLocator().Should().Be("id:123");
         }
 
         [Test]
@@ -113,10 +113,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.NotCancelled();
+            buildHavingBuilder.NotCancelled();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("cancelled:False");
+            buildHavingBuilder.GetLocator().Should().Be("cancelled:False");
         }
 
         [Test]
@@ -127,10 +127,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.NotPersonal();
+            buildHavingBuilder.NotPersonal();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("personal:False");
+            buildHavingBuilder.GetLocator().Should().Be("personal:False");
         }
 
         [Test]
@@ -141,10 +141,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.NotPinned();
+            buildHavingBuilder.NotPinned();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("pinned:False");
+            buildHavingBuilder.GetLocator().Should().Be("pinned:False");
         }
 
         [Test]
@@ -155,10 +155,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.NotRunning();
+            buildHavingBuilder.NotRunning();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("running:False");
+            buildHavingBuilder.GetLocator().Should().Be("running:False");
         }
 
         [Test]
@@ -169,10 +169,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Personal();
+            buildHavingBuilder.Personal();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("personal:True");
+            buildHavingBuilder.GetLocator().Should().Be("personal:True");
         }
 
         [Test]
@@ -183,10 +183,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Pinned();
+            buildHavingBuilder.Pinned();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("pinned:True");
+            buildHavingBuilder.GetLocator().Should().Be("pinned:True");
         }
 
         [Test]
@@ -197,10 +197,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Running();
+            buildHavingBuilder.Running();
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("running:True");
+            buildHavingBuilder.GetLocator().Should().Be("running:True");
         }
 
         [Test]
@@ -212,10 +212,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.SinceDate(new DateTime(2015, 10, 18, 16, 56, 0));
+            buildHavingBuilder.SinceDate(new DateTime(2015, 10, 18, 16, 56, 0));
 
             // Assert
-            havingBuilder.GetLocator().Should().StartWith("sinceDate:20151018T135600%2b0000");
+            buildHavingBuilder.GetLocator().Should().StartWith("sinceDate:20151018T135600%2b0000");
         }
 
         [Test]
@@ -226,10 +226,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Status(BuildStatus.Error);
+            buildHavingBuilder.Status(BuildStatus.Error);
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("status:ERROR");
+            buildHavingBuilder.GetLocator().Should().Be("status:ERROR");
         }
 
         [Test]
@@ -240,10 +240,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Status(BuildStatus.Failure);
+            buildHavingBuilder.Status(BuildStatus.Failure);
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("status:FAILURE");
+            buildHavingBuilder.GetLocator().Should().Be("status:FAILURE");
         }
 
         [Test]
@@ -254,10 +254,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Status(BuildStatus.Success);
+            buildHavingBuilder.Status(BuildStatus.Success);
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("status:SUCCESS");
+            buildHavingBuilder.GetLocator().Should().Be("status:SUCCESS");
         }
 
         [Test]
@@ -268,10 +268,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Tags("tag1");
+            buildHavingBuilder.Tags("tag1");
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("tags:tag1");
+            buildHavingBuilder.GetLocator().Should().Be("tags:tag1");
         }
 
         [Test]
@@ -282,10 +282,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.Tags("tag1", "tag2");
+            buildHavingBuilder.Tags("tag1", "tag2");
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("tags:tag1,tag2");
+            buildHavingBuilder.GetLocator().Should().Be("tags:tag1,tag2");
         }
 
         [Test]
@@ -302,10 +302,10 @@ namespace FluentTc.Tests.Locators
             var buildHavingBuilder = fixture.Create<BuildHavingBuilder>();
 
             // Act
-            var havingBuilder = buildHavingBuilder.TriggeredBy(_ => _.Id("123"));
+            buildHavingBuilder.TriggeredBy(_ => _.Id("123"));
 
             // Assert
-            havingBuilder.GetLocator().Should().Be("user:id:123");
+            buildHavingBuilder.GetLocator().Should().Be("user:id:123");
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentTc.Locators
 {
-    public interface IQueueHavingBuilder : ILocator
+    public interface IQueueHavingBuilder
     {
         IQueueHavingBuilder BuildConfiguration(Action<IBuildConfigurationHavingBuilder> havingBuildConfig);
         IQueueHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilder);
@@ -33,8 +33,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-
-        string ILocator.GetLocator()
+        public string GetLocator()
         {
             return string.Join(",", m_Having);
         }

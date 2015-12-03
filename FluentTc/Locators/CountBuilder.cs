@@ -30,8 +30,6 @@ namespace FluentTc.Locators
         /// <param name="lookupLimit"></param>
         /// <returns></returns>
         ICountBuilder LookupLimit(int lookupLimit);
-
-        string GetCount();
     }
 
     public class CountBuilder : ICountBuilder
@@ -62,7 +60,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public string GetCount()
+        public virtual string GetCount()
         {
             return string.Join(",", m_Counts);
         }

@@ -11,7 +11,6 @@ namespace FluentTc.Locators
         IBranchHavingBuilder NotUnspecified();
         IBranchHavingBuilder Branched();
         IBranchHavingBuilder NotBranched();
-        string GetLocator();
     }
 
     public class BranchHavingBuilder : IBranchHavingBuilder
@@ -60,7 +59,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        string IBranchHavingBuilder.GetLocator()
+        public virtual string GetLocator()
         {
             return string.Join(",", m_Having);
         }

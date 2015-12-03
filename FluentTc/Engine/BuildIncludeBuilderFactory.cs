@@ -4,12 +4,12 @@ namespace FluentTc.Engine
 {
     internal interface IBuildIncludeBuilderFactory
     {
-        IBuildIncludeBuilder CreateBuildIncludeBuilder();
+        BuildIncludeBuilder CreateBuildIncludeBuilder();
     }
 
     internal class BuildIncludeBuilderFactory : IBuildIncludeBuilderFactory
     {
-        public IBuildIncludeBuilder CreateBuildIncludeBuilder()
+        public BuildIncludeBuilder CreateBuildIncludeBuilder()
         {
             return new BuildIncludeBuilder();
         }

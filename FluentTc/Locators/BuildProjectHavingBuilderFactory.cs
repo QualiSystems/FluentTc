@@ -2,12 +2,12 @@ namespace FluentTc.Locators
 {
     public interface IBuildProjectHavingBuilderFactory
     {
-        IBuildProjectHavingBuilder CreateBuildProjectHavingBuilder();
+        BuildProjectHavingBuilder CreateBuildProjectHavingBuilder();
     }
 
     public class BuildProjectHavingBuilderFactory : IBuildProjectHavingBuilderFactory
     {
-        public IBuildProjectHavingBuilder CreateBuildProjectHavingBuilder()
+        public BuildProjectHavingBuilder CreateBuildProjectHavingBuilder()
         {
             return new BuildProjectHavingBuilder();
         }

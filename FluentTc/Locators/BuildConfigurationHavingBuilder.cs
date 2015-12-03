@@ -3,18 +3,13 @@ using System.Collections.Generic;
 
 namespace FluentTc.Locators
 {
-    public interface IBuildConfigurationHavingBuilder : ILocator
+    public interface IBuildConfigurationHavingBuilder 
     {
         IBuildConfigurationHavingBuilder Id(string buildConfigurationId);
         IBuildConfigurationHavingBuilder Name(string buildConfigurationName);
         IBuildConfigurationHavingBuilder InternalId(string internalId);
         IBuildConfigurationHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilderAction);
         IBuildConfigurationHavingBuilder ProjectRecursively(Action<IBuildProjectHavingBuilder> projectHavingBuilderAction);
-    }
-
-    public interface ILocator
-    {
-        string GetLocator();
     }
 
     public class BuildConfigurationHavingBuilder : IBuildConfigurationHavingBuilder
@@ -61,7 +56,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        string ILocator.GetLocator()
+        public string GetLocator()
         {
             return string.Join(",", m_Having);
         }

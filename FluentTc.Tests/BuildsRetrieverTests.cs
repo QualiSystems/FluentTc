@@ -21,19 +21,19 @@ namespace FluentTc.Tests
                         A<object[]>._))
                 .Returns(new BuildWrapper() {Count = "0"});
 
-            var buildHavingBuilder = A.Fake<IBuildHavingBuilder>();
+            var buildHavingBuilder = A.Fake<BuildHavingBuilder>();
             A.CallTo(() => buildHavingBuilder.GetLocator()).Returns("id:123");
 
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
             A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(buildHavingBuilder);
 
-            var countBuilder = A.Fake<ICountBuilder>();
+            var countBuilder = A.Fake<CountBuilder>();
             A.CallTo(() => countBuilder.GetCount()).Returns(string.Empty);
 
             var countBuilderFactory = A.Fake<ICountBuilderFactory>();
             A.CallTo(() => countBuilderFactory.CreateCountBuilder()).Returns(countBuilder);
 
-            var buildIncludeBuilder = A.Fake<IBuildIncludeBuilder>();
+            var buildIncludeBuilder = A.Fake<BuildIncludeBuilder>();
             A.CallTo(() => buildIncludeBuilder.GetColumns()).Returns("buildTypeId,href,id,number,state,status,webUrl");
 
             var buildIncludeBuilderFactory = A.Fake<IBuildIncludeBuilderFactory>();
@@ -65,19 +65,19 @@ namespace FluentTc.Tests
                         A<object[]>._))
                 .Returns(new BuildWrapper() {Count = "0"});
 
-            var buildHavingBuilder = A.Fake<IBuildHavingBuilder>();
+            var buildHavingBuilder = A.Fake<BuildHavingBuilder>();
             A.CallTo(() => buildHavingBuilder.GetLocator()).Returns("buildType:name:FluentTc");
 
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
             A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(buildHavingBuilder);
 
-            var countBuilder = A.Fake<ICountBuilder>();
+            var countBuilder = A.Fake<CountBuilder>();
             A.CallTo(() => countBuilder.GetCount()).Returns("count:5");
 
             var countBuilderFactory = A.Fake<ICountBuilderFactory>();
             A.CallTo(() => countBuilderFactory.CreateCountBuilder()).Returns(countBuilder);
 
-            var buildIncludeBuilder = A.Fake<IBuildIncludeBuilder>();
+            var buildIncludeBuilder = A.Fake<BuildIncludeBuilder>();
             A.CallTo(() => buildIncludeBuilder.GetColumns()).Returns("buildTypeId,href,id,number,state,status,webUrl");
 
             var buildIncludeBuilderFactory = A.Fake<IBuildIncludeBuilderFactory>();

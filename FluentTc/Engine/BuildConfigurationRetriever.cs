@@ -71,7 +71,7 @@ namespace FluentTc.Engine
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             having(buildConfigurationHavingBuilder);
 
-            IBuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
+            BuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
             buildParameterValueBuilder.GetParameters().ToList()
                 .ForEach(

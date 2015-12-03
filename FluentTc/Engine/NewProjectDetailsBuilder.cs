@@ -31,7 +31,7 @@ namespace FluentTc.Engine
 
         public INewProjectDetailsBuilder ParentProject(Action<IBuildProjectHavingBuilder> parentProject)
         {
-            IBuildProjectHavingBuilder buildProjectHavingBuilder = new BuildProjectHavingBuilder();
+            var buildProjectHavingBuilder = new BuildProjectHavingBuilder();
             parentProject(buildProjectHavingBuilder);
             m_ParentLocator = buildProjectHavingBuilder.GetLocator();
             return this;

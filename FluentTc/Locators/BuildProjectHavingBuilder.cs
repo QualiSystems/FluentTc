@@ -6,7 +6,6 @@ namespace FluentTc.Locators
     {
         IBuildProjectHavingBuilder Id(string projectId);
         IBuildProjectHavingBuilder Name(string projectName);
-        string GetLocator();
     }
 
     public class BuildProjectHavingBuilder : IBuildProjectHavingBuilder
@@ -25,7 +24,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        string IBuildProjectHavingBuilder.GetLocator()
+        public string GetLocator()
         {
             return string.Join(",", m_Having);
         }

@@ -10,27 +10,27 @@ namespace FluentTc.Tests.Locators
         [Test]
         public void Id()
         {
+            // Arrange
             var buildProjectHavingBuilder = new BuildProjectHavingBuilder();
-            var projectHavingBuilder = buildProjectHavingBuilder.Id("ProjectId1");
 
             // Act
-            var locator = projectHavingBuilder.GetLocator();
+            buildProjectHavingBuilder.Id("ProjectId1");
 
             // Assert
-            locator.Should().Be("id:ProjectId1");
+            buildProjectHavingBuilder.GetLocator().Should().Be("id:ProjectId1");
         }
 
         [Test]
         public void Name()
         {
+            // Arrange
             var buildProjectHavingBuilder = new BuildProjectHavingBuilder();
-            var projectHavingBuilder = buildProjectHavingBuilder.Name("ProjectName1");
 
             // Act
-            var locator = projectHavingBuilder.GetLocator();
+            buildProjectHavingBuilder.Name("ProjectName1");
 
             // Assert
-            locator.Should().Be("name:ProjectName1");
+            buildProjectHavingBuilder.GetLocator().Should().Be("name:ProjectName1");
         }
     }
 }
