@@ -452,6 +452,40 @@ namespace FluentTc.Tests
         }    
 
         [Test]
+        public void GetAllBuildConfigurationTemplates()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.GetAllBuildConfigurationTemplates();
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<BuildTypeWrapper>(@"/app/rest/buildTypes?locator=templateFlag:true")).MustHaveHappened();
+        }    
+
+        [Test]
+        public void GetBuildConfigurationTemplate_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildConfiguration>("/app/rest/buildTypes/id:TemplateId"))
+                .Returns(new BuildConfiguration { Id = "TemplateId" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.GetBuildConfigurationTemplate(_ => _.Id("TemplateId"));
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<BuildConfiguration>(@"/app/rest/buildTypes/id:TemplateId")).MustHaveHappened();
+        }    
+
+        [Test]
         public void GetBuildsQueue_All()
         {
             // Arrange

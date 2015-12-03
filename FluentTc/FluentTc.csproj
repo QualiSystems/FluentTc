@@ -127,6 +127,7 @@
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="Engine\BuildConfigurationTemplateRetriever.cs" />
     <Compile Include="Engine\IProjectPropertySetter.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilder.cs" />
     <Compile Include="Engine\ProjectCreator.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilder.cs" />
+    <Compile Include="Locators\BuildConfigurationTemplateHavingBuilder.cs" />
     <Compile Include="Locators\LocatorBuilder.cs" />
     <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\StringExtensions.cs" />

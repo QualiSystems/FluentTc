@@ -43,6 +43,8 @@ namespace FluentTc
         List<User> GetAllUsers();
         User GetUser(Action<IUserHavingBuilder> having);
         Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction);
+        List<BuildConfiguration> GetAllBuildConfigurationTemplates();
+        BuildConfiguration GetBuildConfigurationTemplate(Action<IBuildConfigurationTemplateHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -61,6 +63,7 @@ namespace FluentTc
         private readonly IUserRetriever m_UserRetriever;
         private readonly IProjectCreator m_ProjectCreator;
         private readonly IProjectPropertySetter m_ProjectPropertySetter;
+        private readonly IBuildConfigurationTemplateRetriever m_BuildConfigurationTemplateRetriever;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -74,7 +77,7 @@ namespace FluentTc
             IArtifactsDownloader artifactsDownloader,
             IInvestigationRetriever investigationRetriever, 
             IUserRetriever userRetriever, 
-            IProjectCreator projectCreator, IProjectPropertySetter projectPropertySetter)
+            IProjectCreator projectCreator, IProjectPropertySetter projectPropertySetter, IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -90,6 +93,7 @@ namespace FluentTc
             m_UserRetriever = userRetriever;
             m_ProjectCreator = projectCreator;
             m_ProjectPropertySetter = projectPropertySetter;
+            m_BuildConfigurationTemplateRetriever = buildConfigurationTemplateRetriever;
         }
 
         public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
@@ -268,6 +272,16 @@ namespace FluentTc
         public Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction)
         {
             return m_ProjectCreator.CreateProject(newProjectDetailsBuilderAction);
+        }
+
+        public List<BuildConfiguration> GetAllBuildConfigurationTemplates()
+        {
+            return m_BuildConfigurationTemplateRetriever.GetAllBuildConfigurationTemplates();
+        }
+
+        public BuildConfiguration GetBuildConfigurationTemplate(Action<IBuildConfigurationTemplateHavingBuilder> having)
+        {
+            return m_BuildConfigurationTemplateRetriever.GetBuildConfigurationTemplate(having);
         }
     }
 }
