@@ -33,5 +33,13 @@ Read the https://github.com/QualiSystems/FluentTc/wiki
 ## License
 [Apache License 2.0](https://github.com/QualiSystems/FluentTc/blob/master/LICENSE)
 
+## Credits
+[![Continuous Integration powered by TeamC](https://www.jetbrains.com/img/banners/Codebetter.png)](http://www.jetbrains.com/teamcity)
+
+
+</div> 
+
+
+
 
 
