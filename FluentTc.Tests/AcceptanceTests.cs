@@ -127,7 +127,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void SetParameters_ConfigurationName()
+        public void SetBuildConfigurationParameters_ConfigurationName()
         {
             // Arrange
             var teamCityCaller = A.Fake<TeamCityCaller>();
@@ -141,6 +141,24 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.PutFormat("newVal", HttpContentTypes.TextPlain, "/app/rest/buildTypes/{0}/parameters/{1}", A<object[]>.That.IsSameSequenceAs(new[] {"name:FluentTc", "name"})))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void DeleteBuildConfigurationParameter_ConfigurationName()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.DeleteBuildConfigurationParameter(_ => _.Name("FluentTc"), p => p.ParameterName("paramName"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Delete("/app/rest/buildTypes/name:FluentTc/parameters/paramName"))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -667,6 +685,24 @@ namespace FluentTc.Tests
             A.CallTo(
                 () =>
                     teamCityCaller.Put("value1", HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void DeleteProjectParameter_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.DeleteProjectParameter(_ => _.Id("ProjectId"), __ => __.ParameterName("param1"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Delete("/app/rest/projects/id:ProjectId/parameters/param1"))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
     }

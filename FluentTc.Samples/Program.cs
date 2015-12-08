@@ -20,6 +20,8 @@ namespace FluentTc.Samples
             PrintAllUserEmails();
             PrintUserDetails();
             GetBuildsTriggeredByUser();
+            DeleteBuildConfigurationParameter();
+            DeleteProjectParameter();
 
             #endregion
 
@@ -34,6 +36,20 @@ namespace FluentTc.Samples
             #endregion
 
             Console.ReadKey();
+        }
+
+        private static void DeleteBuildConfigurationParameter()
+        {
+            new RemoteTc()
+                .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
+                .DeleteBuildConfigurationParameter(_ => _.Id("buildConfigId"), __ => __.ParameterName("parameter.name"));
+        }
+
+        private static void DeleteProjectParameter()
+        {
+            new RemoteTc()
+                .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
+                .DeleteProjectParameter(_ => _.Id("projectId"), __ => __.ParameterName("parameter.name"));
         }
 
         private static void GetBuildsTriggeredByUser()

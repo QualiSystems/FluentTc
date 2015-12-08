@@ -45,6 +45,20 @@ namespace FluentTc
         Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction);
         List<BuildConfiguration> GetAllBuildConfigurationTemplates();
         BuildConfiguration GetBuildConfigurationTemplate(Action<IBuildConfigurationTemplateHavingBuilder> having);
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="project">Project to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        void DeleteProjectParameter(Action<IBuildProjectHavingBuilder> project, Action<IBuildParameterHavingBuilder> parameterName);
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="buildConfigurationOrTemplate">Build configuration or template to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -282,6 +296,26 @@ namespace FluentTc
         public BuildConfiguration GetBuildConfigurationTemplate(Action<IBuildConfigurationTemplateHavingBuilder> having)
         {
             return m_BuildConfigurationTemplateRetriever.GetBuildConfigurationTemplate(having);
+        }
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="project">Project to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        public void DeleteProjectParameter(Action<IBuildProjectHavingBuilder> project, Action<IBuildParameterHavingBuilder> parameterName)
+        {
+            m_ProjectPropertySetter.DeleteProjectParameter(project, parameterName);
+        }
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="buildConfigurationOrTemplate">Build configuration or template to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        public void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName)
+        {
+            m_BuildConfigurationRetriever.DeleteBuildConfigurationParameter(buildConfigurationOrTemplate, parameterName);
         }
     }
 }
