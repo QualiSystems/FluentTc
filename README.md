@@ -20,6 +20,7 @@ Read the https://github.com/QualiSystems/FluentTc/wiki
 
 # How can I help
 * Vote  http://nugetmusthaves.com/Package/FluentTc
+* Support via GratiPay [![Stories in Ready](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/~borismod/)
 * Contribute 
 
 ## Guidelines for contributors
