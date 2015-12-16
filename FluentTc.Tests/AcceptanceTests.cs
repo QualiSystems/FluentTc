@@ -577,7 +577,7 @@ namespace FluentTc.Tests
         [Test]
         public void LocalTc_AgentName()
         {
-            new LocalTc().BuildParameters.AgentName.Should().NotBeEmpty();
+            new LocalTc().AgentName.Should().NotBeEmpty();
         }
 
         private static ITeamCityCaller CreateTeamCityCaller()

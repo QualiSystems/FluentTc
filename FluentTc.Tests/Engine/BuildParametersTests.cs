@@ -45,8 +45,8 @@ namespace FluentTc.Tests.Engine
                 A.Fake<IPropertiesFileParser>());
 
             // Act
-            buildParameters.SetParameterValue("param1", "newValue");
-            var parameterValue = buildParameters.GetParameterValue("param1");
+            buildParameters.SetBuildParameter("param1", "newValue");
+            var parameterValue = buildParameters.GetBuildParameter("param1");
 
             // Assert
             parameterValue.Should().Be("newValue");
@@ -64,7 +64,7 @@ namespace FluentTc.Tests.Engine
 
             var buildParameters = new BuildParameters(teamCityBuildPropertiesFileRetriever,
                 A.Fake<ITeamCityWriterFactory>(), propertiesFileParser);
-            Action action = () => buildParameters.SetParameterValue("param1", "newValue");
+            Action action = () => buildParameters.SetBuildParameter("param1", "newValue");
 
             // Assert
             action.ShouldThrow<MissingBuildParameterException>();
@@ -86,8 +86,8 @@ namespace FluentTc.Tests.Engine
                 A.Fake<IPropertiesFileParser>());
             
             // Act
-            buildParameters.SetParameterValue("param1", "newValue");
-            var parameterValue = buildParameters.GetParameterValue("param1");
+            buildParameters.SetBuildParameter("param1", "newValue");
+            var parameterValue = buildParameters.GetBuildParameter("param1");
 
             // Assert
             parameterValue.Should().Be("newValue");

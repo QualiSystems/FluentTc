@@ -5,11 +5,9 @@ using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
 namespace FluentTc
 {
-    public interface ILocalTc
+    public interface ILocalTc : IBuildParameters
     {
         void ChangeBuildStatus(BuildStatus buildStatus);
-        string GetBuildParameter(string buildParameterName);
-        void SetBuildParameter(string buildParameterName, string buildParameterValue);
     }
 
     public class LocalTc : ILocalTc
@@ -32,11 +30,6 @@ namespace FluentTc
             m_TeamCityWriter = teamCityWriterFactory.CreateTeamCityWriter();
         }
 
-        public IBuildParameters BuildParameters
-        {
-            get { return m_BuildParameters; }
-        }
-
         public void ChangeBuildStatus(BuildStatus buildStatus)
         {
             m_TeamCityWriter.WriteRawMessage(new ServiceMessage("buildStatus")
@@ -47,12 +40,87 @@ namespace FluentTc
 
         public string GetBuildParameter(string buildParameterName)
         {
-            return m_BuildParameters.GetParameterValue(buildParameterName);
+            return m_BuildParameters.GetBuildParameter(buildParameterName);
         }
 
         public void SetBuildParameter(string buildParameterName, string buildParameterValue)
         {
-            m_BuildParameters.SetParameterValue(buildParameterName, buildParameterValue);
+            m_BuildParameters.SetBuildParameter(buildParameterName, buildParameterValue);
+        }
+
+        public string AgentHomeDir
+        {
+            get { return m_BuildParameters.AgentHomeDir; }
+        }
+
+        public string AgentName
+        {
+            get { return m_BuildParameters.AgentName; }
+        }
+
+        public string AgentOwnPort
+        {
+            get { return m_BuildParameters.AgentOwnPort; }
+        }
+
+        public string AgentWorkDir
+        {
+            get { return m_BuildParameters.AgentWorkDir; }
+        }
+
+        public string BuildNumber
+        {
+            get { return m_BuildParameters.BuildNumber; }
+        }
+
+        public string TeamcityAgentCpuBenchmark
+        {
+            get { return m_BuildParameters.TeamcityAgentCpuBenchmark; }
+        }
+
+        public string TeamcityBuildChangedFilesFile
+        {
+            get { return m_BuildParameters.TeamcityBuildChangedFilesFile; }
+        }
+
+        public string TeamcityBuildCheckoutDir
+        {
+            get { return m_BuildParameters.TeamcityBuildCheckoutDir; }
+        }
+
+        public string TeamcityBuildId
+        {
+            get { return m_BuildParameters.TeamcityBuildId; }
+        }
+
+        public string TeamcityBuildTempDir
+        {
+            get { return m_BuildParameters.TeamcityBuildTempDir; }
+        }
+
+        public string TeamcityBuildWorkingDir
+        {
+            get { return m_BuildParameters.TeamcityBuildWorkingDir; }
+        }
+
+        public string TeamcityBuildConfName
+        {
+            get { return m_BuildParameters.TeamcityBuildConfName; }
+        }
+
+        public string TeamcityBuildTypeId
+        {
+            get { return m_BuildParameters.TeamcityBuildTypeId; }
+        }
+
+        public string TeamcityProjectName
+        {
+            get { return m_BuildParameters.TeamcityProjectName; }
+        }
+
+        public string TeamCityVersion
+        {
+            get { return m_BuildParameters.TeamCityVersion; }
         }
     }
 }

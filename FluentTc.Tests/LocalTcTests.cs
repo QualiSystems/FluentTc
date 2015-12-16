@@ -67,7 +67,7 @@ namespace FluentTc.Tests
             localTc.SetBuildParameter("parameter.name", "value1");
 
             // Assert
-            A.CallTo(() => buildParameters.SetParameterValue("parameter.name", "value1")).MustHaveHappened();
+            A.CallTo(() => buildParameters.SetBuildParameter("parameter.name", "value1")).MustHaveHappened();
         }
     }
 }

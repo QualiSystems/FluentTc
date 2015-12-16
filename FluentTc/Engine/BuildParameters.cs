@@ -6,7 +6,7 @@ namespace FluentTc.Engine
 {
     public interface IBuildParameters
     {
-        string GetParameterValue(string parameterName);
+        string GetBuildParameter(string parameterName);
         string AgentHomeDir { get; }
         string AgentName { get; }
         string AgentOwnPort { get; }
@@ -22,7 +22,7 @@ namespace FluentTc.Engine
         string TeamcityBuildTypeId { get; }
         string TeamcityProjectName { get; }
         string TeamCityVersion { get; }
-        void SetParameterValue(string parameterName, string parameterValue);
+        void SetBuildParameter(string parameterName, string parameterValue);
     }
 
     internal class BuildParameters : IBuildParameters
@@ -47,87 +47,87 @@ namespace FluentTc.Engine
             m_Parameters = propertiesFileParser.ParsePropertiesFile(teamCityBuildPropertiesFile);
         }
 
-        public string GetParameterValue(string parameterName)
+        public string GetBuildParameter(string parameterName)
         {
             return m_Parameters[parameterName];
         }
 
         public string AgentHomeDir
         {
-            get { return GetParameterValue("agent.home.dir"); }
+            get { return GetBuildParameter("agent.home.dir"); }
         }
 
         public string AgentName
         {
-            get { return GetParameterValue("agent.name"); }
+            get { return GetBuildParameter("agent.name"); }
         }
 
         public string AgentOwnPort
         {
-            get { return GetParameterValue("agent.ownPort"); }
+            get { return GetBuildParameter("agent.ownPort"); }
         }
 
         public string AgentWorkDir
         {
-            get { return GetParameterValue("agent.work.dir"); }
+            get { return GetBuildParameter("agent.work.dir"); }
         }
 
         public string BuildNumber
         {
-            get { return GetParameterValue("build.number"); }
+            get { return GetBuildParameter("build.number"); }
         }
 
         public string TeamcityAgentCpuBenchmark
         {
-            get { return GetParameterValue("teamcity.agent.cpuBenchmark"); }
+            get { return GetBuildParameter("teamcity.agent.cpuBenchmark"); }
         }
 
         public string TeamcityBuildChangedFilesFile
         {
-            get { return GetParameterValue("teamcity.build.changedFiles.file"); }
+            get { return GetBuildParameter("teamcity.build.changedFiles.file"); }
         }
 
         public string TeamcityBuildCheckoutDir
         {
-            get { return GetParameterValue("teamcity.build.checkoutDir"); }
+            get { return GetBuildParameter("teamcity.build.checkoutDir"); }
         }
 
         public string TeamcityBuildId
         {
-            get { return GetParameterValue("teamcity.build.id"); }
+            get { return GetBuildParameter("teamcity.build.id"); }
         }
 
         public string TeamcityBuildTempDir
         {
-            get { return GetParameterValue("teamcity.build.tempDir"); }
+            get { return GetBuildParameter("teamcity.build.tempDir"); }
         }
 
         public string TeamcityBuildWorkingDir
         {
-            get { return GetParameterValue("teamcity.build.workingDir"); }
+            get { return GetBuildParameter("teamcity.build.workingDir"); }
         }
 
         public string TeamcityBuildConfName
         {
-            get { return GetParameterValue("teamcity.buildConfNam"); }
+            get { return GetBuildParameter("teamcity.buildConfNam"); }
         }
 
         public string TeamcityBuildTypeId
         {
-            get { return GetParameterValue("teamcity.buildType.id"); }
+            get { return GetBuildParameter("teamcity.buildType.id"); }
         }
 
         public string TeamcityProjectName
         {
-            get { return GetParameterValue("teamcity.projectName"); }
+            get { return GetBuildParameter("teamcity.projectName"); }
         }
 
         public string TeamCityVersion
         {
-            get { return GetParameterValue("teamcity.version"); }
+            get { return GetBuildParameter("teamcity.version"); }
         }
 
-        public void SetParameterValue(string parameterName, string parameterValue)
+        public void SetBuildParameter(string parameterName, string parameterValue)
         {
             if (!m_Parameters.ContainsKey(parameterName) && m_IsTeamCityMode)
             {
