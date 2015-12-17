@@ -571,20 +571,6 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.GetDownloadFormat(A<Action<string>>.Ignored, "/app/rest/builds/id:{0}/artifacts/content/{1}", 123, "Logs.zip")).MustHaveHappened();
         }
 
-        [Test]
-        public void LocalTc_SetGetBuildParameter_ValueStored()
-        {
-            // Assert
-            var localTc = new LocalTc();
-
-            // Act
-            localTc.SetBuildParameter("localtc.test", "1.0.0");
-            var buildParameter = localTc.GetBuildParameter("localtc.test");
-
-            // Assert
-            buildParameter.Should().Be("1.0.0");
-        }
-
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
