@@ -571,13 +571,18 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.GetDownloadFormat(A<Action<string>>.Ignored, "/app/rest/builds/id:{0}/artifacts/content/{1}", 123, "Logs.zip")).MustHaveHappened();
         }
 
-        /// <summary>
-        /// The test passes only on TeamCity agent
-        /// </summary>
         [Test]
-        public void LocalTc_AgentName()
+        public void LocalTc_SetGetBuildParameter_ValueStored()
         {
-            new LocalTc().AgentName.Should().NotBeEmpty();
+            // Assert
+            var localTc = new LocalTc();
+
+            // Act
+            localTc.SetBuildParameter("version.number", "1.0.0");
+            var buildParameter = localTc.GetBuildParameter("version.number");
+
+            // Assert
+            buildParameter.Should().Be("1.0.0");
         }
 
         private static ITeamCityCaller CreateTeamCityCaller()

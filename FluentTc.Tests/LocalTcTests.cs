@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using FakeItEasy;
+using FluentAssertions;
 using FluentTc.Engine;
 using FluentTc.Locators;
 using JetBrains.TeamCity.ServiceMessages;
@@ -68,6 +71,20 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => buildParameters.SetBuildParameter("parameter.name", "value1")).MustHaveHappened();
+        }
+
+        [Test]
+        public void Ctor_DefaultCtor_TakesLessThanSecond()
+        {
+            Time(() => new LocalTc()).Should().BeLessThan(1.Seconds());
+        }
+
+        private TimeSpan Time(Action toTime)
+        {
+            var timer = Stopwatch.StartNew();
+            toTime();
+            timer.Stop();
+            return timer.Elapsed;
         }
     }
 }

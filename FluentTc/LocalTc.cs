@@ -5,9 +5,26 @@ using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
 namespace FluentTc
 {
-    public interface ILocalTc : IBuildParameters
+    public interface ILocalTc
     {
         void ChangeBuildStatus(BuildStatus buildStatus);
+        string GetBuildParameter(string parameterName);
+        string AgentHomeDir { get; }
+        string AgentName { get; }
+        string AgentOwnPort { get; }
+        string AgentWorkDir { get; }
+        string BuildNumber { get; }
+        string TeamcityAgentCpuBenchmark { get; }
+        string TeamcityBuildChangedFilesFile { get; }
+        string TeamcityBuildCheckoutDir { get; }
+        string TeamcityBuildId { get; }
+        string TeamcityBuildTempDir { get; }
+        string TeamcityBuildWorkingDir { get; }
+        string TeamcityBuildConfName { get; }
+        string TeamcityBuildTypeId { get; }
+        string TeamcityProjectName { get; }
+        string TeamCityVersion { get; }
+        void SetBuildParameter(string parameterName, string parameterValue);
     }
 
     public class LocalTc : ILocalTc
