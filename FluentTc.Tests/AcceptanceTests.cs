@@ -578,8 +578,8 @@ namespace FluentTc.Tests
             var localTc = new LocalTc();
 
             // Act
-            localTc.SetBuildParameter("version.number", "1.0.0");
-            var buildParameter = localTc.GetBuildParameter("version.number");
+            localTc.SetBuildParameter("conf.localtc.test", "1.0.0");
+            var buildParameter = localTc.GetBuildParameter("conf.localtc.test");
 
             // Assert
             buildParameter.Should().Be("1.0.0");
