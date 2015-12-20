@@ -5,7 +5,7 @@ Easy-to-use, readable and comprehensive library for consuming TeamCity REST API.
 
 The build is generously hosted and run on the "CodeBetter TeamCity":http://codebetter.com/codebetter-ci/ infrastructure.
 
-# How to get [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc)
+# How to get [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc) [![NuGet downloads](https://img.shields.io/nuget/dt/FluentTc.svg)](https://www.nuget.org/packages/FluentTc/)
 
 Manage Nuget packages -> Search 
 __FluentTc__
