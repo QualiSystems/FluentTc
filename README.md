@@ -1,4 +1,6 @@
 # FluentTc 
+
+[![Join the chat at https://gitter.im/QualiSystems/FluentTc](https://badges.gitter.im/QualiSystems/FluentTc.svg)](https://gitter.im/QualiSystems/FluentTc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity
 
 # Build Status [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)
