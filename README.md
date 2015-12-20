@@ -17,6 +17,7 @@ __install-package FluentTc__
 
 # How to use
 Read the Wiki https://github.com/QualiSystems/FluentTc/wiki
+
 Chat on Gitter [![Chat on gitter](https://img.shields.io/gitter/room/QualiSystems/FluentTc.svg)](https://gitter.im/QualiSystems/FluentTc)
 
 # How can I help
