@@ -49,7 +49,12 @@ namespace FluentTc.Engine
 
         public string GetBuildParameter(string parameterName)
         {
-            return m_Parameters[parameterName];
+            string parameterValue;
+            if (!m_Parameters.TryGetValue(parameterName, out parameterValue))
+            {
+                throw new MissingBuildParameterException(parameterName);
+            }
+            return parameterValue;
         }
 
         public string AgentHomeDir
@@ -109,7 +114,7 @@ namespace FluentTc.Engine
 
         public string TeamcityBuildConfName
         {
-            get { return GetBuildParameter("teamcity.buildConfNam"); }
+            get { return GetBuildParameter("teamcity.buildConfName"); }
         }
 
         public string TeamcityBuildTypeId
