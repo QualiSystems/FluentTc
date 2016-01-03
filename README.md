@@ -1,11 +1,11 @@
 # FluentTc 
 Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity
 
-# Build Status [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)
+# Build Status [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)
 
 The build is generously hosted and run on the "CodeBetter TeamCity":http://codebetter.com/codebetter-ci/ infrastructure.
 
-# How to get [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc)
+# How to get [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc) [![NuGet downloads](https://img.shields.io/nuget/dt/FluentTc.svg)](https://www.nuget.org/packages/FluentTc/)
 
 Manage Nuget packages -> Search 
 __FluentTc__
@@ -16,7 +16,9 @@ From Nuget Package Manager Console:
 __install-package FluentTc__
 
 # How to use
-Read the https://github.com/QualiSystems/FluentTc/wiki
+Read the Wiki https://github.com/QualiSystems/FluentTc/wiki
+
+Chat on Gitter [![Chat on gitter](https://img.shields.io/gitter/room/QualiSystems/FluentTc.svg)](https://gitter.im/QualiSystems/FluentTc)
 
 # How can I help
 * Vote  http://nugetmusthaves.com/Package/FluentTc
