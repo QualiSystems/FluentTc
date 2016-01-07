@@ -113,6 +113,7 @@
     <Compile Include="Locators\BranchHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildHavingBuilderTests.cs" />
+    <Compile Include="Locators\BuildIncludeBuilderTests.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilderTests.cs" />
     <Compile Include="Locators\CountBuilderTests.cs" />

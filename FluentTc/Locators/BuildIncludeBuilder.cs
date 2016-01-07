@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace FluentTc.Locators
 {
@@ -20,23 +19,19 @@ namespace FluentTc.Locators
 
         public IBuildIncludeBuilder IncludeStartDate()
         {
-            return IncludeProperty();
+            m_Properties.Add("startDate");
+            return this;
         }
 
         public IBuildIncludeBuilder IncludeFinishDate()
         {
-            return IncludeProperty();
+            m_Properties.Add("finishDate");
+            return this;
         }
 
         public IBuildIncludeBuilder IncludeStatusText()
         {
-            return IncludeProperty();
-        }
-
-        private BuildIncludeBuilder IncludeProperty()
-        {
-            var methodName = new StackFrame(1).GetMethod().Name.Remove(0, 7);
-            m_Properties.Add(methodName.FirstCharacterToLower());
+            m_Properties.Add("statusText");
             return this;
         }
 
