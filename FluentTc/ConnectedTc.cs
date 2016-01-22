@@ -91,7 +91,9 @@ namespace FluentTc
             IArtifactsDownloader artifactsDownloader,
             IInvestigationRetriever investigationRetriever, 
             IUserRetriever userRetriever, 
-            IProjectCreator projectCreator, IProjectPropertySetter projectPropertySetter, IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever)
+            IProjectCreator projectCreator, 
+            IProjectPropertySetter projectPropertySetter, 
+            IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;

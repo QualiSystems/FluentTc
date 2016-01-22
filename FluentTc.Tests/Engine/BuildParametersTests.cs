@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
+using FluentTc.Domain;
 using FluentTc.Engine;
 using FluentTc.Exceptions;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;

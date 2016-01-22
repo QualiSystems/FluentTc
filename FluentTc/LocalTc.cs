@@ -1,4 +1,6 @@
-﻿using FluentTc.Engine;
+﻿using System.Collections.Generic;
+using FluentTc.Domain;
+using FluentTc.Engine;
 using FluentTc.Locators;
 using JetBrains.TeamCity.ServiceMessages.Write;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;
@@ -24,6 +26,7 @@ namespace FluentTc
         string TeamcityBuildTypeId { get; }
         string TeamcityProjectName { get; }
         string TeamCityVersion { get; }
+        IList<IChangedFile> ChangedFiles { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
     }
 
@@ -31,20 +34,28 @@ namespace FluentTc
     {
         private readonly IBuildParameters m_BuildParameters;
         private readonly ITeamCityWriter m_TeamCityWriter;
+        private readonly IList<IChangedFile> m_ChangedFiles;
 
         public LocalTc() : this(null)
         {
         }
 
-        internal LocalTc(object[] overrides)
-            : this(new Bootstrapper(overrides).Get<IBuildParameters>(), new Bootstrapper(overrides).Get<ITeamCityWriterFactory>())
+        internal LocalTc(IBuildParameters buildParameters = null, ITeamCityWriterFactory teamCityWriterFactory = null, params object[] overrides)
         {
-        }
-
-        internal LocalTc(IBuildParameters buildParameters, ITeamCityWriterFactory teamCityWriterFactory)
-        {
-            m_BuildParameters = buildParameters;
+            var bootstrapper = new Bootstrapper(overrides);
+            m_BuildParameters = buildParameters ?? bootstrapper.Get<IBuildParameters>();
+            teamCityWriterFactory = teamCityWriterFactory ?? bootstrapper.Get<ITeamCityWriterFactory>();
             m_TeamCityWriter = teamCityWriterFactory.CreateTeamCityWriter();
+
+            var changedFilesPath = GetBuildParameter("build.changedFiles.file");
+            if (!string.IsNullOrEmpty(changedFilesPath))
+            {
+                m_ChangedFiles = bootstrapper.Get<IChangedFilesParser>().ParseChangedFiles(changedFilesPath);
+            }
+            else
+            {
+                m_ChangedFiles = new List<IChangedFile>();
+            }
         }
 
         public void ChangeBuildStatus(BuildStatus buildStatus)
@@ -138,6 +149,11 @@ namespace FluentTc
         public string TeamCityVersion
         {
             get { return m_BuildParameters.TeamCityVersion; }
+        }
+
+        public IList<IChangedFile> ChangedFiles
+        {
+            get { return m_ChangedFiles; }
         }
     }
 }

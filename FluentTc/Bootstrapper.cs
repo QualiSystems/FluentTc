@@ -3,7 +3,7 @@ using System.Linq;
 using Autofac;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;
 
-namespace FluentTc.Engine
+namespace FluentTc
 {
     internal class Bootstrapper
     {

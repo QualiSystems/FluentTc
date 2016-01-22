@@ -1,6 +1,6 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using FluentTc.Engine;
+using FluentTc.Locators;
 using NUnit.Framework;
 
 namespace FluentTc.Tests

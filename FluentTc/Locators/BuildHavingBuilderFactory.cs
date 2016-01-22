@@ -1,6 +1,4 @@
-using FluentTc.Locators;
-
-namespace FluentTc.Engine
+namespace FluentTc.Locators
 {
     internal interface IBuildHavingBuilderFactory
     {

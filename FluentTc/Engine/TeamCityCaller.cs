@@ -4,6 +4,7 @@ using System.Net;
 using System.Security.Authentication;
 using System.Web;
 using EasyHttp.Http;
+using FluentTc.Locators;
 using HttpException = EasyHttp.Infrastructure.HttpException;
 using HttpResponse = EasyHttp.Http.HttpResponse;
 

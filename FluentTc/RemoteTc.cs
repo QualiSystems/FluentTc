@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentTc.Domain;
 using FluentTc.Engine;
 using FluentTc.Locators;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using FluentTc.Engine;
 
 namespace FluentTc.Locators
 {
