@@ -157,7 +157,7 @@ namespace FluentTc
 
         public IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having)
         {
-            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having, null);
+            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having);
         }
 
         public void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)

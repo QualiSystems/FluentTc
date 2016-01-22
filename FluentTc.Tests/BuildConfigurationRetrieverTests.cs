@@ -26,8 +26,7 @@ namespace FluentTc.Tests
 
             // Act
             var retrieveBuildConfigurations =
-                buildConfigurationRetriever.RetrieveBuildConfigurations(h => h.Project(i => i.Id("projId")),
-                    i => i.IncludeDefaults());
+                buildConfigurationRetriever.RetrieveBuildConfigurations(h => h.Project(i => i.Id("projId")));
 
             // Assert
             retrieveBuildConfigurations.Should().BeEmpty();

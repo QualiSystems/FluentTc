@@ -12,8 +12,7 @@ namespace FluentTc.Engine
 {
     internal interface IBuildConfigurationRetriever
     {
-        IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having,
-            Action<BuildConfigurationPropertyBuilder> include);
+        IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
         void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         BuildConfiguration GetSingleBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterHavingBuilder> parameterName);
@@ -32,8 +31,7 @@ namespace FluentTc.Engine
             m_TeamCityCaller = teamCityCaller;
         }
 
-        public IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having,
-            Action<BuildConfigurationPropertyBuilder> include)
+        public IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having)
         {
             var buildConfigurationHavingBuilder =
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
@@ -55,7 +53,7 @@ namespace FluentTc.Engine
 
         public BuildConfiguration GetSingleBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)
         {
-            var buildConfigurations = RetrieveBuildConfigurations(having, i=>i.IncludeDefaults());
+            var buildConfigurations = RetrieveBuildConfigurations(having);
             if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
             if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
             return GetSingleBuildConfiguration(buildConfigurations.Single().Id);
