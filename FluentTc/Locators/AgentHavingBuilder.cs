@@ -17,40 +17,47 @@ namespace FluentTc.Locators
 
     public class AgentHavingBuilder : IAgentHavingBuilder
     {
+        private const string EnabledPrefix = "enabled:";
+        private const string AuthorizedPrefix = "authorized:";
+        private const string NamePrefix = "name:";
+        private const string ConnectedPrefix = "connected:";
+        private const string IdPrefix = "id:";
+
         private readonly List<string> m_Having = new List<string>();
 
         public IAgentHavingBuilder Name(string agentName)
         {
-            m_Having.Add("name:" + agentName);
+            m_Having.Add(NamePrefix + agentName);
             return this;
         }
 
         public IAgentHavingBuilder Connected()
         {
-            m_Having.Add("connected:" + bool.TrueString);
+            m_Having.Add(ConnectedPrefix + bool.TrueString);
             return this;
         }
 
         public IAgentHavingBuilder Disconnected()
         {
-            m_Having.Add("connected:" + bool.FalseString);
+            m_Having.Add(ConnectedPrefix + bool.FalseString);
             return this;
         }
 
         public IAgentHavingBuilder Disabled()
         {
-            throw new System.NotImplementedException();
+            m_Having.Add(EnabledPrefix + bool.FalseString);
+            return this;
         }
 
         public IAgentHavingBuilder Authorized()
         {
-            m_Having.Add("authorized:" + bool.TrueString);
+            m_Having.Add(AuthorizedPrefix + bool.TrueString);
             return this;
         }
 
         public IAgentHavingBuilder NotAuthorized()
         {
-            m_Having.Add("authorized:" + bool.FalseString);
+            m_Having.Add(AuthorizedPrefix + bool.FalseString);
             return this;
         }
 
@@ -62,13 +69,13 @@ namespace FluentTc.Locators
 
         public IAgentHavingBuilder Enabled()
         {
-            m_Having.Add("enabled:" + bool.TrueString);
+            m_Having.Add(EnabledPrefix + bool.TrueString);
             return this;
         }
 
         public IAgentHavingBuilder Id(int agentId)
         {
-            m_Having.Add("id:" + agentId);
+            m_Having.Add(IdPrefix + agentId);
             return this;
         }
 

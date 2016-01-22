@@ -23,6 +23,20 @@ namespace FluentTc.Tests.Locators
         }
 
         [Test]
+        public void Disabled()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
+
+            // Act
+            agentHavingBuilder.Disabled();
+
+            // Assert
+            agentHavingBuilder.GetLocator().Should().Be("enabled:False");
+        }
+
+        [Test]
         public void Authorized()
         {
             // Arrange

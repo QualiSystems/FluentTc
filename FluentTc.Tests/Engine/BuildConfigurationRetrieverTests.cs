@@ -8,7 +8,7 @@ using FluentTc.Tests.Locators;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 
-namespace FluentTc.Tests
+namespace FluentTc.Tests.Engine
 {
     [TestFixture]
     public class BuildConfigurationRetrieverTests

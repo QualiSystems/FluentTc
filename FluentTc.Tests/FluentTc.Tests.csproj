@@ -100,9 +100,9 @@
   <ItemGroup>
     <Compile Include="AcceptanceTests.cs" />
     <Compile Include="BootstrapperTests.cs" />
-    <Compile Include="BuildConfigurationRetrieverTests.cs" />
     <Compile Include="BuildsRetrieverTests.cs" />
     <Compile Include="ConnectedTcTests.cs" />
+    <Compile Include="Engine\BuildConfigurationRetrieverTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilderTests.cs" />
