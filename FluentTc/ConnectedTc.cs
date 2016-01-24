@@ -10,13 +10,36 @@ namespace FluentTc
 {
     public interface IConnectedTc
     {
+        /// <summary>
+        /// Retrieves builds matching the criteria
+        /// </summary>
+        /// <param name="having">Criteria to retrieve builds</param>
+        /// <returns>Builds matching the criteria</returns>
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
+
+        /// <summary>
+        /// Retrieves builds matching the criteria
+        /// </summary>
+        /// <param name="having">Criteria to retrieve builds</param>
+        /// <param name="include">Specifies which additional properties to retrieve</param>
+        /// <returns>Builds matching the criteria</returns>
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include);
-        List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
+
+        /// <summary>
+        /// Retrieves builds matching the criteria
+        /// </summary>
+        /// <param name="having">Criteria to retrieve builds</param>
+        /// <param name="include">Specifies which additional properties to retrieve</param>
+        /// <param name="count">Allow retrieving specific amount of results with paging</param>
+        /// <returns>Builds matching the criteria</returns>
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count);
+
         Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
         Build GetBuild(Action<IBuildHavingBuilder> having);
         Build GetBuild(long buildId);
+
+        List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
+
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
         void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
@@ -112,7 +135,7 @@ namespace FluentTc
             m_BuildConfigurationTemplateRetriever = buildConfigurationTemplateRetriever;
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<ICountBuilder> count, Action<IBuildIncludeBuilder> include)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);
         }

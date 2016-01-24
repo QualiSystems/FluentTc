@@ -64,15 +64,15 @@ namespace FluentTc.Tests
                             .Branch(b => b.Name("aa")));
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.Personal(), _ => _.DefaultCount(),
-                    _ => _.IncludeStartDate().IncludeFinishDate().IncludeStatusText());
+                .GetBuilds(_ => _.Personal(),
+                    _ => _.IncludeStartDate().IncludeFinishDate().IncludeStatusText(), _ => _.DefaultCount());
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.Personal(), _ => _.Count(5), _ => _.IncludeDefaults());
+                .GetBuilds(_ => _.Personal(), _ => _.IncludeDefaults(), _ => _.Count(5));
 
             builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .GetBuilds(_ => _.BuildConfiguration(x => x.Id("bt2")).NotPersonal().NotRunning(), _ => _.Count(5),
-                    _ => _.IncludeDefaults());
+                .GetBuilds(_ => _.BuildConfiguration(x => x.Id("bt2")).NotPersonal().NotRunning(),
+                    _ => _.IncludeDefaults(), _ => _.Count(5));
 
             var build = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuild(_ => _.Id(123456), _ => _.IncludeDefaults());

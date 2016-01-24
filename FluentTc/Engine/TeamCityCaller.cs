@@ -28,8 +28,6 @@ namespace FluentTc.Engine
 
         T Get<T>(string urlPart);
 
-        void Get(string urlPart);
-
         T Post<T>(string data, string contenttype, string urlPart, string accept);
 
         bool Authenticate(string urlPart);
@@ -156,11 +154,6 @@ namespace FluentTc.Engine
         {
             var response = GetResponse(urlPart);
             return response.StaticBody<T>();
-        }
-
-        public virtual void Get(string urlPart)
-        {
-            GetResponse(urlPart);
         }
 
         private HttpResponse GetResponse(string urlPart)

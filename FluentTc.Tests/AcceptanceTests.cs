@@ -696,5 +696,31 @@ namespace FluentTc.Tests
                     teamCityCaller.Delete("/app/rest/projects/id:ProjectId/parameters/param1"))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
+
+        [Test]
+        public void GetSingleSuccessfulFinishedBuild()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildWrapper>(
+                        @"/app/rest/builds?locator=buildType:id:FluentTc,running:False,status:SUCCESS,count:1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl,finishDate,startDate)"))
+                .Returns(new BuildWrapper {Build = new List<Build>(new [] {new Build {Id = 123}}),Count = "1"});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var builds = connectedTc.GetBuilds(which => which
+                                        .BuildConfiguration(b => b.Id("FluentTc"))
+                                        .NotRunning()
+                                        .Status(BuildStatus.Success), 
+                                    with => with.IncludeFinishDate()
+                                        .IncludeStartDate(), 
+                                    count => count.Count(1));
+
+            // Assert
+            builds.Single().Id.Should().Be(123);
+        }
     }
 }
