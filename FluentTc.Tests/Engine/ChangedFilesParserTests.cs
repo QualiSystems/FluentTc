@@ -21,6 +21,7 @@ namespace FluentTc.Tests.Engine
             // Act
             var changedFiles = changedFilesParser.ParseChangedFiles("changes.txt");
 
+
             // Assert
             var changedFile = changedFiles.Single();
             changedFile.RelativeFilePath.Should().Be(@"VCE Drivers\Cisco NxOS\Debug.tsdrv");
