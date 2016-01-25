@@ -137,7 +137,9 @@
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />
     <Compile Include="Engine\UserRetriever.cs" />
+    <Compile Include="Exceptions\AgentNotFoundException.cs" />
     <Compile Include="Exceptions\MissingBuildParameterException.cs" />
+    <Compile Include="Exceptions\MoreThanOneAgentFoundException.cs" />
     <Compile Include="InvestigationRetriever.cs" />
     <Compile Include="Engine\HttpClientWrapper.cs" />
     <Compile Include="Engine\HttpClientWrapperFactory.cs" />
