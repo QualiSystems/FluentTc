@@ -41,5 +41,4 @@ namespace FluentTc.Engine
             return m_TeamCityCaller.GetFormat<Project>("/app/rest/projects/id:{0}", projectId);
         }
     }
-
 }

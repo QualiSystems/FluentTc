@@ -153,8 +153,6 @@
     <Compile Include="Exceptions\BuildNotFoundException.cs" />
     <Compile Include="Exceptions\MoreThanOneBuildConfigurationFoundException.cs" />
     <Compile Include="Exceptions\MoreThanOneBuildFoundException.cs" />
-    <Compile Include="Exceptions\MoreThanOneProjectFoundException.cs" />
-    <Compile Include="Exceptions\ProjectNotFoundException.cs" />
     <Compile Include="LocalTc.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilderFactory.cs" />
