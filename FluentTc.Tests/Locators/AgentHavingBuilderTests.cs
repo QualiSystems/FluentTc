@@ -49,5 +49,62 @@ namespace FluentTc.Tests.Locators
             // Assert
             agentHavingBuilder.GetLocator().Should().Be("authorized:True");
         }
+
+        [Test]
+        public void Name()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
+
+            // Act
+            agentHavingBuilder.Name("agent1");
+
+            // Assert
+            agentHavingBuilder.GetLocator().Should().Be("name:agent1");
+        }
+
+        [Test]
+        public void Disconnected()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
+
+            // Act
+            agentHavingBuilder.Disconnected();
+
+            // Assert
+            agentHavingBuilder.GetLocator().Should().Be("connected:False");
+
+        
+        }
+        [Test]
+        public void NotAuthorized()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
+
+            // Act
+            agentHavingBuilder.NotAuthorized();
+
+            // Assert
+            agentHavingBuilder.GetLocator().Should().Be("authorized:False");
+        }
+
+        [Test]
+        public void Ip()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var agentHavingBuilder = fixture.Create<AgentHavingBuilder>();
+
+            // Act
+            agentHavingBuilder.Ip("127.0.0.1");
+
+            // Assert
+            agentHavingBuilder.GetLocator().Should().Be("ip:127.0.0.1");
+        }
     }
 }

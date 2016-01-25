@@ -24,11 +24,11 @@ namespace FluentTc
             connect(teamCityConfigurationBuilder);
             if (overrides == null)
             {
-                overrides = new object[] {teamCityConfigurationBuilder.GetITeamCityConnectionDetails()};
+                overrides = new object[] {teamCityConfigurationBuilder.GetTeamCityConnectionDetails()};
             }
             else
             {
-                overrides = overrides.Concat(new[] { teamCityConfigurationBuilder.GetITeamCityConnectionDetails() }).ToArray();
+                overrides = overrides.Concat(new[] { teamCityConfigurationBuilder.GetTeamCityConnectionDetails() }).ToArray();
             }
             var bootstrapper = new Bootstrapper(overrides);
             return bootstrapper.GetConnectedTc();

@@ -168,13 +168,11 @@
     <Compile Include="Locators\BuildIncludeBuilder.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildStatus.cs" />
-    <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationTemplateHavingBuilder.cs" />
     <Compile Include="Locators\LocatorBuilder.cs" />
     <Compile Include="Locators\QueueHavingBuilder.cs" />
-    <Compile Include="Locators\StringExtensions.cs" />
     <Compile Include="Locators\AgentHavingBuilder.cs" />
     <Compile Include="Locators\TeamCityConnectionDetails.cs" />
     <Compile Include="Locators\UserHavingBuilder.cs" />
