@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
-using FluentTc.Domain;
 using FluentTc.Engine;
 using FluentTc.Exceptions;
+using FluentTc.Tests.Locators;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace FluentTc.Tests.Engine
 {
@@ -150,6 +151,40 @@ namespace FluentTc.Tests.Engine
 
             // Assert
             buildParameters.Should().NotBeNull();
+        }
+
+        [Test]
+        public void IsTeamCityMode_PropertiesFileIsNull_False()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns(null);
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsTeamCityMode;
+
+            // Assert
+            isTeamCityMode.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsTeamCityMode_PropertiesFileIsNotNull_True()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns("Some content");
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsTeamCityMode;
+
+            // Assert
+            isTeamCityMode.Should().BeTrue();
         }
     }
 }

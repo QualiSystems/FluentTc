@@ -22,6 +22,7 @@ namespace FluentTc.Engine
         string TeamcityBuildTypeId { get; }
         string TeamcityProjectName { get; }
         string TeamCityVersion { get; }
+        bool IsTeamCityMode { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
     }
 
@@ -130,6 +131,11 @@ namespace FluentTc.Engine
         public string TeamCityVersion
         {
             get { return GetBuildParameter("teamcity.version"); }
+        }
+
+        public bool IsTeamCityMode
+        {
+            get { return m_IsTeamCityMode; }
         }
 
         public void SetBuildParameter(string parameterName, string parameterValue)

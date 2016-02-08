@@ -27,6 +27,7 @@ namespace FluentTc
         string TeamcityProjectName { get; }
         string TeamCityVersion { get; }
         IList<IChangedFile> ChangedFiles { get; }
+        bool IsTeamCityMode { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
     }
 
@@ -154,6 +155,11 @@ namespace FluentTc
         public IList<IChangedFile> ChangedFiles
         {
             get { return m_ChangedFiles; }
+        }
+
+        public bool IsTeamCityMode
+        {
+            get { return m_BuildParameters.IsTeamCityMode; }
         }
     }
 }
