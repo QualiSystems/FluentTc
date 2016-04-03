@@ -19,14 +19,18 @@ namespace FluentTc.Engine
             return new DefaultEncoder(dataWriterProvider);
         }
 
-        public IDecoder GetDecoder(bool shouldRemoveAtSign = true)
+        public IDecoder GetDecoder()
         {
             var jsonReader = new JsonReader(new DataReaderSettings(DefaultEncoderDecoderConfiguration.CombinedResolverStrategy()
                 , new TeamCityDateFilter()), new[] { "application/.*json", "text/.*json" });
 
             var readers = new List<IDataReader> { jsonReader };
             var dataReaderProvider = new RegExBasedDataReaderProvider(readers);
-            return new DefaultDecoder(dataReaderProvider);
+            var defaultDecoder = new DefaultDecoder(dataReaderProvider)
+            {
+                ShouldRemoveAtSign = true
+            };
+            return defaultDecoder;
         }
     }
 }
