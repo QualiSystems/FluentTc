@@ -126,6 +126,7 @@
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="Engine\ChangesRetriever.cs" />
     <Compile Include="Engine\PropertiesFileParser.cs" />
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />
@@ -163,6 +164,9 @@
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilder.cs" />
+    <Compile Include="Locators\BuildAdditionalIncludeBuilder.cs" />
+    <Compile Include="Locators\ChangesHavingBuilder.cs" />
+    <Compile Include="Locators\ChangesIncludeBuilder.cs" />
     <Compile Include="Locators\LocatorBuilder.cs" />
     <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\StringExtensions.cs" />

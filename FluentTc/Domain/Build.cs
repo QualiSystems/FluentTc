@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace FluentTc.Domain
 {
@@ -19,5 +20,6 @@ namespace FluentTc.Domain
         public Agent Agent { get; set; }
         public ChangesList LastChanges { get; set; }
         public ChangesWrapper Changes { get; set; }
+        public List<Change> BuildChanges { get; set; }
     }
 }
