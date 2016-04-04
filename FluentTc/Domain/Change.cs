@@ -5,7 +5,7 @@ namespace FluentTc.Domain
     public class Change
     {
         public string Username { get; set; }
-        public string WebLink { get; set; }
+        public string WebUrl { get; set; }
         public string Href { get; set; }
         public long Id { get; set; }
         public string Version { get; set; }

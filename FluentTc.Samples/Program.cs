@@ -15,6 +15,8 @@ namespace FluentTc.Samples
         {
             #region RemoteTc
 
+            GetLastSuccessfulBuildsForEachConfigurationWithChanges("Trunk_Ci_FastCi");
+
             PrintEnabledAuthorizedDisconnectedAgents();
             PrintAllUsers();
             PrintAllUserEmails();
@@ -58,6 +60,16 @@ namespace FluentTc.Samples
                 .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
                 .GetBuilds(_ => _.TriggeredBy(u => u.Username(Username)))
                 .ForEach(b => Console.WriteLine("BuildTypeId: {0}", b.BuildTypeId));
+        }
+
+        private static void GetLastSuccessfulBuildsForEachConfigurationWithChanges(string projectName)
+        {
+            var builds =
+                new RemoteTc()
+                    .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
+                    .GetLastBuild(_ => _.BuildConfiguration(__ => __.Id("Trunk_Green_Ci_Compile")).Status(BuildStatus.Success),
+                        __ => __.IncludeChanges(c => c.IncludeComment().IncludeFiles().IncludeVcsRootInstance()));
+
         }
 
         private static void PrintUserDetails()

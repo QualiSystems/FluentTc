@@ -37,8 +37,8 @@
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EasyHttp, Version=1.6.67.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyHttp.1.6.67.0\lib\net40\EasyHttp.dll</HintPath>
+    <Reference Include="EasyHttp, Version=1.6.85.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyHttp.1.6.85.0\lib\net40\EasyHttp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
@@ -55,8 +55,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Abstractions, Version=2.0.0.118, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Abstractions.2.0.0.118\lib\net40\System.IO.Abstractions.dll</HintPath>
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.124, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.124\lib\net40\System.IO.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
@@ -133,6 +133,7 @@
     <Compile Include="Engine\ProjectPropertySetter.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilder.cs" />
     <Compile Include="Engine\ProjectCreator.cs" />
+    <Compile Include="Engine\ChangesRetriever.cs" />
     <Compile Include="Engine\PropertiesFileParser.cs" />
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />
@@ -169,6 +170,9 @@
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationTemplateHavingBuilder.cs" />
+    <Compile Include="Locators\BuildAdditionalIncludeBuilder.cs" />
+    <Compile Include="Locators\ChangesHavingBuilder.cs" />
+    <Compile Include="Locators\ChangesIncludeBuilder.cs" />
     <Compile Include="Locators\LocatorBuilder.cs" />
     <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\AgentHavingBuilder.cs" />

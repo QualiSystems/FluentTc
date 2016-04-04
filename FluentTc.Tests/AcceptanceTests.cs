@@ -71,6 +71,29 @@ namespace FluentTc.Tests
         }        
 
         [Test]
+        public void GetLastBuild_BuildConfigurationStatus_BuildWithWithAllDetails()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildWrapper>(
+                        "/app/rest/builds?locator=buildType:id:bt2,status:SUCCESS,count:1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
+                .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {new Build {Id = 987}})});
+            A.CallTo(() => teamCityCaller.Get<Build>("/app/rest/builds/id:987"))
+                .Returns(new Build { Id = 123, Changes = new ChangesWrapper { Count = 1}});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var build =
+                connectedTc.GetLastBuild(_ => _.BuildConfiguration(__ => __.Id("bt2")).Status(BuildStatus.Success));
+
+            // Assert
+            build.Changes.Count.Should().Be(1);
+        }        
+
+        [Test]
         public void GetBuildFullResponse_Id_Build()
         {
             // Arrange
