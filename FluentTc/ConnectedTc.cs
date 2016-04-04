@@ -44,7 +44,7 @@ namespace FluentTc
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
         /// <param name="include">Include these columns in retrieved build</param>
-        /// <returns>BuildModel</returns>
+        /// <returns>IBuild</returns>
         IBuild GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace FluentTc
         ///     specified criteria
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
-        /// <returns>BuildModel</returns>
+        /// <returns>IBuild</returns>
         IBuild GetBuild(Action<IBuildHavingBuilder> having);
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace FluentTc
         ///     specified criteria
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
-        /// <returns>BuildModel</returns>
+        /// <returns>IBuild</returns>
         IBuild GetLastBuild(Action<IBuildHavingBuilder> having);
 
         List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
@@ -83,7 +83,7 @@ namespace FluentTc
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
         /// <param name="include">Include additional data, such as Changes</param>
-        /// <returns>BuildModel</returns>
+        /// <returns>IBuild</returns>
         IBuild GetLastBuild(Action<IBuildHavingBuilder> having, Action<IBuildAdditionalIncludeBuilder> include);
 
         IBuild GetBuild(long buildId);
@@ -138,7 +138,7 @@ namespace FluentTc
         /// <summary>
         /// Deletes build parameter from build configuration or build configuration template
         /// </summary>
-        /// <param name="buildConfigurationOrTemplate">BuildModel configuration or template to delete parameter from</param>
+        /// <param name="buildConfigurationOrTemplate">IBuild configuration or template to delete parameter from</param>
         /// <param name="parameterName">Parameter name to be deleted</param>
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
     }
@@ -426,7 +426,7 @@ namespace FluentTc
         /// <summary>
         /// Deletes build parameter from build configuration or build configuration template
         /// </summary>
-        /// <param name="buildConfigurationOrTemplate">BuildModel configuration or template to delete parameter from</param>
+        /// <param name="buildConfigurationOrTemplate">IBuild configuration or template to delete parameter from</param>
         /// <param name="parameterName">Parameter name to be deleted</param>
         public void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName)
         {
