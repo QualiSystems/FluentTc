@@ -11,5 +11,12 @@
     <description>Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity</description>
     <copyright>Copyright © 2015</copyright>
     <tags>TeamCity API REST HTTP</tags>
+    <dependencies>
+      <dependency id="Autofac" version="3.5.2" />
+      <dependency id="EasyHttp" version="1.6.85.0" />
+      <dependency id="SharpZipLib" version="0.86.0" />
+      <dependency id="System.IO.Abstractions" version="2.0.0.124" />
+      <dependency id="TeamCity.ServiceMessages" version="3.0.5.1" />
+    </dependencies>
   </metadata>
 </package>
