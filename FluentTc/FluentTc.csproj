@@ -184,6 +184,7 @@
     <Compile Include="Locators\TeamCityConfigurationBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FluentTc.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
