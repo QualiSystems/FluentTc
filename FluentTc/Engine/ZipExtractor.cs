@@ -6,7 +6,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace FluentTc.Engine
 {
-    public interface IZipExtractor
+    internal interface IZipExtractor
     {
         IList<string> ExtractZipFile(string archiveFilenameIn, string outFolder, string password = null);
     }

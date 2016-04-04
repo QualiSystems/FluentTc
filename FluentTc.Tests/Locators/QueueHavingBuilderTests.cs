@@ -13,23 +13,35 @@ namespace FluentTc.Tests.Locators
         [Test]
         public void QueueHavingBuilder_BuildType_LocatorString()
         {
+            // Arrange
             var fixture = Auto.Fixture();
             var locatorBuilder = fixture.Freeze<ILocatorBuilder>();
             Action<IBuildConfigurationHavingBuilder> havingBuildConfig = _ => _.Id("bt2");
             A.CallTo(() => locatorBuilder.GetBuildConfigurationLocator(havingBuildConfig)).Returns("id:bt2");
             QueueHavingBuilder queueHavingBuilder = fixture.Create<QueueHavingBuilder>();
-            queueHavingBuilder.BuildConfiguration(havingBuildConfig).GetLocator().Should().Be("buildType:id:bt2");
+
+            // Act
+            queueHavingBuilder.BuildConfiguration(havingBuildConfig);
+            
+            // Assert
+            queueHavingBuilder.GetLocator().Should().Be("buildType:id:bt2");
         }
 
         [Test]
         public void QueueHavingBuilder_Project_LocatorString()
         {
+            // Arrange
             var fixture = Auto.Fixture();
             var locatorBuilder = fixture.Freeze<ILocatorBuilder>();
             Action<IBuildProjectHavingBuilder> havingBuildConfig = _ => _.Id("bt2");
             A.CallTo(() => locatorBuilder.GetProjectLocator(havingBuildConfig)).Returns("id:bt2");
             QueueHavingBuilder queueHavingBuilder = fixture.Create<QueueHavingBuilder>();
-            queueHavingBuilder.Project(havingBuildConfig).GetLocator().Should().Be("project:id:bt2");
+
+            // Act
+            queueHavingBuilder.Project(havingBuildConfig);
+            
+            // Assert
+            queueHavingBuilder.GetLocator().Should().Be("project:id:bt2");
         }
     }
 }

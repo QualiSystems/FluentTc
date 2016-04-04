@@ -16,8 +16,7 @@ namespace FluentTc.Tests.Engine
             // Arrange
             var fixture = Auto.Fixture();
 
-            var buildQueueIdHavingBuilder = A.Fake<IBuildQueueIdHavingBuilder>();
-            A.CallTo(() => buildQueueIdHavingBuilder.GetLocator()).Returns("id:123");
+            var buildQueueIdHavingBuilder = new BuildQueueIdHavingBuilder();
 
             var buildQueueIdHavingBuilderFactory = fixture.Freeze<IBuildQueueIdHavingBuilderFactory>();
             A.CallTo(() => buildQueueIdHavingBuilderFactory.CreateBuildQueueIdHavingBuilder())
@@ -31,7 +30,6 @@ namespace FluentTc.Tests.Engine
             buildQueueRemover.RemoveBuildFromQueue(_ => _.Id(123));
 
             // Assert
-            A.CallTo(() => buildQueueIdHavingBuilder.Id(123)).MustHaveHappened();
             A.CallTo(
                 () =>
                     teamCityCaller.DeleteFormat(@"/app/rest/buildQueue/{0}",

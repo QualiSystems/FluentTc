@@ -2,14 +2,14 @@ using FluentTc.Locators;
 
 namespace FluentTc.Engine
 {
-    public interface IBuildQueueIdHavingBuilderFactory
+    internal interface IBuildQueueIdHavingBuilderFactory
     {
-        IBuildQueueIdHavingBuilder CreateBuildQueueIdHavingBuilder();
+        BuildQueueIdHavingBuilder CreateBuildQueueIdHavingBuilder();
     }
 
     internal class BuildQueueIdHavingBuilderFactory : IBuildQueueIdHavingBuilderFactory
     {
-        public IBuildQueueIdHavingBuilder CreateBuildQueueIdHavingBuilder()
+        public BuildQueueIdHavingBuilder CreateBuildQueueIdHavingBuilder()
         {
             return new BuildQueueIdHavingBuilder();
         }

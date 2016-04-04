@@ -4,12 +4,13 @@ using System.Net;
 using System.Security.Authentication;
 using System.Web;
 using EasyHttp.Http;
+using FluentTc.Locators;
 using HttpException = EasyHttp.Infrastructure.HttpException;
 using HttpResponse = EasyHttp.Http.HttpResponse;
 
 namespace FluentTc.Engine
 {
-    public interface ITeamCityCaller
+    internal interface ITeamCityCaller
     {
         T GetFormat<T>(string urlPart, params object[] parts);
 
@@ -26,8 +27,6 @@ namespace FluentTc.Engine
         string StartBackup(string urlPart);
 
         T Get<T>(string urlPart);
-
-        void Get(string urlPart);
 
         T Post<T>(string data, string contenttype, string urlPart, string accept);
 
@@ -155,11 +154,6 @@ namespace FluentTc.Engine
         {
             var response = GetResponse(urlPart);
             return response.StaticBody<T>();
-        }
-
-        public virtual void Get(string urlPart)
-        {
-            GetResponse(urlPart);
         }
 
         private HttpResponse GetResponse(string urlPart)

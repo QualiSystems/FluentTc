@@ -2,73 +2,80 @@ using System.Collections.Generic;
 
 namespace FluentTc.Locators
 {
-    public interface IAgentHavingBuilder : ILocator
+    public interface IAgentHavingBuilder
     {
         IAgentHavingBuilder Id(int agentId);
         IAgentHavingBuilder Name(string agentName);
-        AgentHavingBuilder Connected();
-        AgentHavingBuilder Disconnected();
-        AgentHavingBuilder Enabled();
-        AgentHavingBuilder Disabled();
-        AgentHavingBuilder Authorized();
-        AgentHavingBuilder NotAuthorized();
-        AgentHavingBuilder Ip(string ip);
+        IAgentHavingBuilder Connected();
+        IAgentHavingBuilder Disconnected();
+        IAgentHavingBuilder Enabled();
+        IAgentHavingBuilder Disabled();
+        IAgentHavingBuilder Authorized();
+        IAgentHavingBuilder NotAuthorized();
+        IAgentHavingBuilder Ip(string ip);
     }
 
     public class AgentHavingBuilder : IAgentHavingBuilder
     {
+        private const string EnabledPrefix = "enabled:";
+        private const string AuthorizedPrefix = "authorized:";
+        private const string NamePrefix = "name:";
+        private const string ConnectedPrefix = "connected:";
+        private const string IdPrefix = "id:";
+
         private readonly List<string> m_Having = new List<string>();
 
         public IAgentHavingBuilder Name(string agentName)
         {
-            m_Having.Add("name:" + agentName);
+            m_Having.Add(NamePrefix + agentName);
             return this;
         }
 
-        public AgentHavingBuilder Connected()
+        public IAgentHavingBuilder Connected()
         {
-            m_Having.Add("connected:" + bool.TrueString);
+            m_Having.Add(ConnectedPrefix + bool.TrueString);
             return this;
         }
 
-        public AgentHavingBuilder Disconnected()
+        public IAgentHavingBuilder Disconnected()
         {
-            m_Having.Add("connected:" + bool.FalseString);
+            m_Having.Add(ConnectedPrefix + bool.FalseString);
             return this;
         }
 
-        public AgentHavingBuilder Disabled()
+        public IAgentHavingBuilder Disabled()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public AgentHavingBuilder Authorized()
-        {
-            m_Having.Add("authorized:" + bool.TrueString);
+            m_Having.Add(EnabledPrefix + bool.FalseString);
             return this;
         }
 
-        public AgentHavingBuilder NotAuthorized()
+        public IAgentHavingBuilder Authorized()
         {
-            m_Having.Add("authorized:" + bool.FalseString);
+            m_Having.Add(AuthorizedPrefix + bool.TrueString);
             return this;
         }
 
-        public AgentHavingBuilder Ip(string ip)
+        public IAgentHavingBuilder NotAuthorized()
+        {
+            m_Having.Add(AuthorizedPrefix + bool.FalseString);
+            return this;
+        }
+
+        public IAgentHavingBuilder Ip(string ip)
         {
             m_Having.Add("ip:" + ip);
             return this;
         }
 
-        public AgentHavingBuilder Enabled()
+        public IAgentHavingBuilder Enabled()
         {
-            m_Having.Add("enabled:" + bool.TrueString);
+            m_Having.Add(EnabledPrefix + bool.TrueString);
             return this;
         }
 
         public IAgentHavingBuilder Id(int agentId)
         {
-            m_Having.Add("id:" + agentId);
+            m_Having.Add(IdPrefix + agentId);
             return this;
         }
 

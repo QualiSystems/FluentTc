@@ -2,7 +2,7 @@ using EasyHttp.Http;
 
 namespace FluentTc.Engine
 {
-    public interface IHttpClientWrapper
+    internal interface IHttpClientWrapper
     {
         void SetRequestAccept(string accept);
         void SetRequestBasicAuthentication(string userName, string password, bool b);

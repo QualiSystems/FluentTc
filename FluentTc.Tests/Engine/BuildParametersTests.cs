@@ -4,8 +4,10 @@ using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Engine;
 using FluentTc.Exceptions;
+using FluentTc.Tests.Locators;
 using JetBrains.TeamCity.ServiceMessages.Write.Special;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace FluentTc.Tests.Engine
 {
@@ -31,6 +33,50 @@ namespace FluentTc.Tests.Engine
         }
 
         [Test]
+        public void GetParameterValue_MissingParameter_MissingBuildParameterExceptionThrown()
+        {
+            var teamCityBuildPropertiesFileRetriever = A.Fake<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns(@"C:\properties.file.txt");
+
+            var propertiesFileParser = A.Fake<IPropertiesFileParser>();
+            A.CallTo(() => propertiesFileParser.ParsePropertiesFile(@"C:\properties.file.txt"))
+                .Returns(new Dictionary<string, string>());
+
+            var buildParameters = new BuildParameters(teamCityBuildPropertiesFileRetriever, A.Fake<ITeamCityWriterFactory>(),
+                propertiesFileParser);
+
+            // Act
+            string result;
+            Action action = () => result = buildParameters.GetBuildParameter("missing.param");
+
+            // Assert
+            action.ShouldThrow<MissingBuildParameterException>()
+                .WithMessage("Build parameter missing.param is missing. It needs to be added from TeamCity");
+        }
+
+        [Test]
+        public void GetParameterValue_TeamcityBuildConfName_ValueReturned()
+        {
+            var teamCityBuildPropertiesFileRetriever = A.Fake<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns(@"C:\properties.file.txt");
+
+            var dictionary = new Dictionary<string, string> {{"teamcity.buildConfName", "FluentTc"}};
+
+            var propertiesFileParser = A.Fake<IPropertiesFileParser>();
+            A.CallTo(() => propertiesFileParser.ParsePropertiesFile(@"C:\properties.file.txt"))
+                .Returns(dictionary);
+
+            var buildParameters = new BuildParameters(teamCityBuildPropertiesFileRetriever, A.Fake<ITeamCityWriterFactory>(),
+                propertiesFileParser);
+
+            // Act
+            string buildConfName = buildParameters.TeamcityBuildConfName;
+
+            // Assert
+            buildConfName.Should().Be("FluentTc");
+        }
+
+        [Test]
         public void SetParameterValue_GetParameterValue_ValueThatWasSetReturned()
         {
             var teamCityWriter = A.Fake<ITeamCityWriter>();
@@ -45,8 +91,8 @@ namespace FluentTc.Tests.Engine
                 A.Fake<IPropertiesFileParser>());
 
             // Act
-            buildParameters.SetParameterValue("param1", "newValue");
-            var parameterValue = buildParameters.GetParameterValue("param1");
+            buildParameters.SetBuildParameter("param1", "newValue");
+            var parameterValue = buildParameters.GetBuildParameter("param1");
 
             // Assert
             parameterValue.Should().Be("newValue");
@@ -64,7 +110,7 @@ namespace FluentTc.Tests.Engine
 
             var buildParameters = new BuildParameters(teamCityBuildPropertiesFileRetriever,
                 A.Fake<ITeamCityWriterFactory>(), propertiesFileParser);
-            Action action = () => buildParameters.SetParameterValue("param1", "newValue");
+            Action action = () => buildParameters.SetBuildParameter("param1", "newValue");
 
             // Assert
             action.ShouldThrow<MissingBuildParameterException>();
@@ -86,8 +132,8 @@ namespace FluentTc.Tests.Engine
                 A.Fake<IPropertiesFileParser>());
             
             // Act
-            buildParameters.SetParameterValue("param1", "newValue");
-            var parameterValue = buildParameters.GetParameterValue("param1");
+            buildParameters.SetBuildParameter("param1", "newValue");
+            var parameterValue = buildParameters.GetBuildParameter("param1");
 
             // Assert
             parameterValue.Should().Be("newValue");
@@ -105,6 +151,40 @@ namespace FluentTc.Tests.Engine
 
             // Assert
             buildParameters.Should().NotBeNull();
+        }
+
+        [Test]
+        public void IsTeamCityMode_PropertiesFileIsNull_False()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns(null);
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsTeamCityMode;
+
+            // Assert
+            isTeamCityMode.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsTeamCityMode_PropertiesFileIsNotNull_True()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns("Some content");
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsTeamCityMode;
+
+            // Assert
+            isTeamCityMode.Should().BeTrue();
         }
     }
 }

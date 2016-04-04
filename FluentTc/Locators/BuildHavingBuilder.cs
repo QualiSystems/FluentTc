@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using FluentTc.Engine;
 
 namespace FluentTc.Locators
 {
@@ -26,7 +25,6 @@ namespace FluentTc.Locators
         IBuildHavingBuilder SinceBuild(Action<IBuildHavingBuilder> buildHavingBuilder);
         IBuildHavingBuilder SinceDate(DateTime dateTime);
         IBuildHavingBuilder Project(Action<IBuildProjectHavingBuilder> projectHavingBuilder);
-        string GetLocator();
     }
 
     internal class BuildHavingBuilder : IBuildHavingBuilder
@@ -169,7 +167,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        string IBuildHavingBuilder.GetLocator()
+        public virtual string GetLocator()
         {
             return string.Join(",", m_Having);
         }

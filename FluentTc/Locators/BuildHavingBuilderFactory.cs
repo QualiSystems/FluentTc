@@ -1,10 +1,8 @@
-using FluentTc.Locators;
-
-namespace FluentTc.Engine
+namespace FluentTc.Locators
 {
     internal interface IBuildHavingBuilderFactory
     {
-        IBuildHavingBuilder CreateBuildHavingBuilder();
+        BuildHavingBuilder CreateBuildHavingBuilder();
     }
 
     internal class BuildHavingBuilderFactory : IBuildHavingBuilderFactory
@@ -22,7 +20,7 @@ namespace FluentTc.Engine
             m_LocatorBuilder = locatorBuilder;
         }
 
-        public IBuildHavingBuilder CreateBuildHavingBuilder()
+        public BuildHavingBuilder CreateBuildHavingBuilder()
         {
             return new BuildHavingBuilder(this, m_UserHavingBuilderFactory, m_BranchHavingBuilderFactory, m_BuildProjectHavingBuilderFactory, m_LocatorBuilder);
         }

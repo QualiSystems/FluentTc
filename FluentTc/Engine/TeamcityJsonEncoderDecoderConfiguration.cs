@@ -7,7 +7,7 @@ using JsonFx.Serialization;
 
 namespace FluentTc.Engine
 {
-    public class TeamcityJsonEncoderDecoderConfiguration : IEncoderDecoderConfiguration
+    internal class TeamcityJsonEncoderDecoderConfiguration : IEncoderDecoderConfiguration
     {
         public IEncoder GetEncoder()
         {

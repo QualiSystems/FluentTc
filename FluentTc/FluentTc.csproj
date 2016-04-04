@@ -33,24 +33,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EasyHttp, Version=1.6.85.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EasyHttp.1.6.85.0\lib\net40\EasyHttp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="JetBrains.TeamCity.ServiceMessages, Version=3.0.5.1, Culture=neutral, PublicKeyToken=620ded7f0cf61090, processorArchitecture=MSIL">
-      <HintPath>packages\TeamCity.ServiceMessages.3.0.5.1\lib\net35\JetBrains.TeamCity.ServiceMessages.dll</HintPath>
+      <HintPath>..\packages\TeamCity.ServiceMessages.3.0.5.1\lib\net35\JetBrains.TeamCity.ServiceMessages.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
+      <HintPath>..\packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Domain\AgentPool.cs" />
     <Compile Include="Domain\AgentRequirement.cs" />
     <Compile Include="Domain\AgentRequirements.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Domain\Agent.cs" />
     <Compile Include="Domain\AgentWrapper.cs" />
     <Compile Include="Domain\Change.cs" />
+    <Compile Include="Domain\ChangedFile.cs" />
     <Compile Include="Domain\ChangesList.cs" />
     <Compile Include="Domain\ChangesWrapper.cs" />
     <Compile Include="Domain\File.cs" />
@@ -114,31 +117,36 @@
     <Compile Include="Engine\AgentHavingBuilderFactory.cs" />
     <Compile Include="Engine\AgentsRetriever.cs" />
     <Compile Include="Engine\ArtifactsDownloader.cs" />
-    <Compile Include="Engine\Bootstrapper.cs" />
     <Compile Include="Engine\BuildConfigurationCreator.cs" />
     <Compile Include="Engine\BuildConfigurationRetriever.cs" />
     <Compile Include="Engine\BuildConfigurationRunner.cs" />
-    <Compile Include="Engine\BuildHavingBuilderFactory.cs" />
     <Compile Include="Engine\BuildIncludeBuilderFactory.cs" />
     <Compile Include="Engine\BuildParameters.cs" />
     <Compile Include="Engine\BuildQueueRemover.cs" />
     <Compile Include="Engine\BuildQueueIdHavingBuilderFactory.cs" />
     <Compile Include="Engine\BuildsRetriever.cs" />
     <Compile Include="Engine\BuildTemplateAttacher.cs" />
+    <Compile Include="Engine\ChangedFilesParser.cs" />
     <Compile Include="Engine\CountBuilderFactory.cs" />
+    <Compile Include="Engine\BuildConfigurationTemplateRetriever.cs" />
+    <Compile Include="Engine\IBuildParameterHavingBuilder.cs" />
+    <Compile Include="Engine\ProjectPropertySetter.cs" />
+    <Compile Include="Engine\NewProjectDetailsBuilder.cs" />
+    <Compile Include="Engine\ProjectCreator.cs" />
     <Compile Include="Engine\ChangesRetriever.cs" />
     <Compile Include="Engine\PropertiesFileParser.cs" />
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />
     <Compile Include="Engine\UserRetriever.cs" />
+    <Compile Include="Exceptions\AgentNotFoundException.cs" />
     <Compile Include="Exceptions\MissingBuildParameterException.cs" />
+    <Compile Include="Exceptions\MoreThanOneAgentFoundException.cs" />
     <Compile Include="InvestigationRetriever.cs" />
     <Compile Include="Engine\HttpClientWrapper.cs" />
     <Compile Include="Engine\HttpClientWrapperFactory.cs" />
-    <Compile Include="Engine\IProjectsRetriever.cs" />
+    <Compile Include="Engine\ProjectsRetriever.cs" />
     <Compile Include="Engine\QueueHavingBuilderFactory.cs" />
     <Compile Include="Engine\TeamCityCaller.cs" />
-    <Compile Include="Engine\TeamCityConnectionDetails.cs" />
     <Compile Include="Engine\TeamCityDateFilter.cs" />
     <Compile Include="Engine\TeamcityJsonEncoderDecoderConfiguration.cs" />
     <Compile Include="Engine\ZipExtractor.cs" />
@@ -146,15 +154,13 @@
     <Compile Include="Exceptions\BuildNotFoundException.cs" />
     <Compile Include="Exceptions\MoreThanOneBuildConfigurationFoundException.cs" />
     <Compile Include="Exceptions\MoreThanOneBuildFoundException.cs" />
-    <Compile Include="Exceptions\MoreThanOneProjectFoundException.cs" />
-    <Compile Include="Exceptions\ProjectNotFoundException.cs" />
     <Compile Include="LocalTc.cs" />
     <Compile Include="Locators\BranchHavingBuilder.cs" />
     <Compile Include="Locators\BranchHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilder.cs" />
     <Compile Include="Locators\BuildConfigurationHavingBuilderFactory.cs" />
-    <Compile Include="Locators\BuildConfigurationPropertyBuilder.cs" />
     <Compile Include="Locators\BuildHavingBuilder.cs" />
+    <Compile Include="Locators\BuildHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildParametersBuilder.cs" />
     <Compile Include="Locators\BuildParameterValueBuilder.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilder.cs" />
@@ -164,6 +170,7 @@
     <Compile Include="Locators\BuildTemplateHavingBuilder.cs" />
     <Compile Include="Locators\CountBuilder.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilder.cs" />
+    <Compile Include="Locators\BuildConfigurationTemplateHavingBuilder.cs" />
     <Compile Include="Locators\BuildAdditionalIncludeBuilder.cs" />
     <Compile Include="Locators\ChangesHavingBuilder.cs" />
     <Compile Include="Locators\ChangesIncludeBuilder.cs" />
@@ -171,6 +178,7 @@
     <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\StringExtensions.cs" />
     <Compile Include="Locators\AgentHavingBuilder.cs" />
+    <Compile Include="Locators\TeamCityConnectionDetails.cs" />
     <Compile Include="Locators\UserHavingBuilder.cs" />
     <Compile Include="Locators\UserHavingBuilderFactory.cs" />
     <Compile Include="RemoteTc.cs" />

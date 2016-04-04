@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EasyHttp.Http;
@@ -39,16 +40,16 @@ namespace FluentTc.Engine
             return m_AgentsRetriever.GetAgent(onAgent).Id;
         }
 
-        private static Property[] GetProperties(Action<IBuildParameterValueBuilder> parameters)
+        private static List<Property> GetProperties(Action<IBuildParameterValueBuilder> parameters)
         {
-            if ( parameters == null ) return new Property[0];
+            if ( parameters == null ) return new List<Property>();
 
             var buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
             return buildParameterValueBuilder.GetParameters();
         }
 
-        private static string CreateTriggerBody(string buildConfigId, int? agentId, Property[] properties = null)
+        private static string CreateTriggerBody(string buildConfigId, int? agentId, List<Property> properties = null)
         {
             var bodyBuilder = new StringBuilder();
             bodyBuilder.Append(@"<build>").AppendLine()

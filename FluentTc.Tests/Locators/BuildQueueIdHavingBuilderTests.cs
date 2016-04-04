@@ -10,12 +10,14 @@ namespace FluentTc.Tests.Locators
         [Test]
         public void GetLocator_Id()
         {
+            // Arrange
             var buildQueueIdHavingBuilder = new BuildQueueIdHavingBuilder();
-            var queueIdHavingBuilder = buildQueueIdHavingBuilder.Id(123);
 
-            var locator = queueIdHavingBuilder.GetLocator();
+            // Act
+            buildQueueIdHavingBuilder.Id(123);
 
-            locator.Should().Be("id:123");
+            // Assert
+            buildQueueIdHavingBuilder.GetLocator().Should().Be("id:123");
         }
     }
 }

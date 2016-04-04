@@ -1,6 +1,6 @@
 namespace FluentTc.Engine
 {
-    public interface IHttpClientWrapperFactory
+    internal interface IHttpClientWrapperFactory
     {
         IHttpClientWrapper CreateHttpClientWrapper();
     }

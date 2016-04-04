@@ -8,7 +8,7 @@ using FluentTc.Tests.Locators;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 
-namespace FluentTc.Tests
+namespace FluentTc.Tests.Engine
 {
     [TestFixture]
     public class BuildConfigurationRetrieverTests
@@ -26,8 +26,7 @@ namespace FluentTc.Tests
 
             // Act
             var retrieveBuildConfigurations =
-                buildConfigurationRetriever.RetrieveBuildConfigurations(h => h.Project(i => i.Id("projId")),
-                    i => i.IncludeDefaults());
+                buildConfigurationRetriever.RetrieveBuildConfigurations(h => h.Project(i => i.Id("projId")));
 
             // Assert
             retrieveBuildConfigurations.Should().BeEmpty();

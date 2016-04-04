@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using FakeItEasy;
+using FluentAssertions;
 using FluentTc.Engine;
 using FluentTc.Locators;
 using JetBrains.TeamCity.ServiceMessages;
@@ -67,7 +68,39 @@ namespace FluentTc.Tests
             localTc.SetBuildParameter("parameter.name", "value1");
 
             // Assert
-            A.CallTo(() => buildParameters.SetParameterValue("parameter.name", "value1")).MustHaveHappened();
+            A.CallTo(() => buildParameters.SetBuildParameter("parameter.name", "value1")).MustHaveHappened();
+        }
+
+        [Test]
+        public void IsTeamCityMode_False()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            A.CallTo(() => buildParameters.IsTeamCityMode).Returns(false);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            var isTeamCityMode = localTc.IsTeamCityMode;
+
+            // Assert
+            isTeamCityMode.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsTeamCityMode_True()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            A.CallTo(() => buildParameters.IsTeamCityMode).Returns(true);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            var isTeamCityMode = localTc.IsTeamCityMode;
+
+            // Assert
+            isTeamCityMode.Should().BeTrue();
         }
     }
 }

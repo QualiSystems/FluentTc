@@ -4,7 +4,7 @@ using FluentTc.Locators;
 
 namespace FluentTc.Engine
 {
-    public interface IBuildTemplateAttacher
+    internal interface IBuildTemplateAttacher
     {
         void Attach(Action<IBuildConfigurationHavingBuilder> having, string buildTemplateId);
     }

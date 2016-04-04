@@ -41,8 +41,8 @@ namespace FluentTc.Engine
         public Agent GetAgent(Action<IAgentHavingBuilder> having)
         {
             var buildConfigurations = GetAgents(having);
-            if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
-            if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
+            if (!buildConfigurations.Any()) throw new AgentNotFoundException();
+            if (buildConfigurations.Count() > 1) throw new MoreThanOneAgentFoundException();
             return buildConfigurations.Single();
         }
     }

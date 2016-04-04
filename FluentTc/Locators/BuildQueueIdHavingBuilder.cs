@@ -1,6 +1,6 @@
 ﻿namespace FluentTc.Locators
 {
-    public interface IBuildQueueIdHavingBuilder : ILocator
+    public interface IBuildQueueIdHavingBuilder
     {
         IBuildQueueIdHavingBuilder Id(int buildId);
     }

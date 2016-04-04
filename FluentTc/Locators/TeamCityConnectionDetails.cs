@@ -1,4 +1,4 @@
-namespace FluentTc.Engine
+namespace FluentTc.Locators
 {
     internal interface ITeamCityConnectionDetails
     {

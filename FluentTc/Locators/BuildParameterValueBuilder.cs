@@ -6,7 +6,6 @@ namespace FluentTc.Locators
     public interface IBuildParameterValueBuilder
     {
         IBuildParameterValueBuilder Parameter(string name, string value);
-        Property[] GetParameters();
     }
 
     public class BuildParameterValueBuilder : IBuildParameterValueBuilder
@@ -15,13 +14,13 @@ namespace FluentTc.Locators
 
         public IBuildParameterValueBuilder Parameter(string name, string value)
         {
-            m_Properties.Add(new Property(){ Name = name, Value = value});
+            m_Properties.Add(new Property { Name = name, Value = value});
             return this;
         }
 
-        public Property[] GetParameters()
+        public List<Property> GetParameters()
         {
-            return m_Properties.ToArray();
+            return m_Properties;
         }
     }
 }

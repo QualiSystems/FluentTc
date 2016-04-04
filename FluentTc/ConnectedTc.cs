@@ -10,13 +10,29 @@ namespace FluentTc
 {
     public interface IConnectedTc
     {
+        /// <summary>
+        /// Retrieves builds matching the criteria
+        /// </summary>
+        /// <param name="having">Criteria to retrieve builds</param>
+        /// <returns>Builds matching the criteria</returns>
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
+
+        /// <summary>
+        /// Retrieves builds matching the criteria
+        /// </summary>
+        /// <param name="having">Criteria to retrieve builds</param>
+        /// <param name="include">Specifies which additional properties to retrieve</param>
+        /// <returns>Builds matching the criteria</returns>
         List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
 
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include,
-            Action<ICountBuilder> count);
-
-        List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
+        /// <summary>
+        /// Retrieves builds matching the criteria
+        /// </summary>
+        /// <param name="having">Criteria to retrieve builds</param>
+        /// <param name="include">Specifies which additional properties to retrieve</param>
+        /// <param name="count">Allow retrieving specific amount of results with paging</param>
+        /// <returns>Builds matching the criteria</returns>
+        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count);
 
         /// <summary>
         ///     Retrieves a build according to specified having parameter with specified columns
@@ -55,6 +71,8 @@ namespace FluentTc
         /// <returns>Build</returns>
         Build GetLastBuild(Action<IBuildHavingBuilder> having);
 
+        List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
+
         /// <summary>
         ///     Retrieves the last build that matches having parameter with all the data.
         /// </summary>
@@ -73,8 +91,9 @@ namespace FluentTc
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
 
-        void SetParameters(Action<IBuildConfigurationHavingBuilder> having,
+        void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having,
             Action<IBuildParameterValueBuilder> parameters);
+        void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
 
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
             Action<IBuildParameterValueBuilder> parameters);
@@ -105,6 +124,23 @@ namespace FluentTc
         Investigation GetTestinvestigationByTestNameId(string testNameId);
         List<User> GetAllUsers();
         User GetUser(Action<IUserHavingBuilder> having);
+        Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction);
+        List<BuildConfiguration> GetAllBuildConfigurationTemplates();
+        BuildConfiguration GetBuildConfigurationTemplate(Action<IBuildConfigurationTemplateHavingBuilder> having);
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="project">Project to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        void DeleteProjectParameter(Action<IBuildProjectHavingBuilder> project, Action<IBuildParameterHavingBuilder> parameterName);
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="buildConfigurationOrTemplate">Build configuration or template to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -121,7 +157,10 @@ namespace FluentTc
         private readonly IInvestigationRetriever m_InvestigationRetriever;
         private readonly IProjectsRetriever m_ProjectsRetriever;
         private readonly IUserRetriever m_UserRetriever;
+        private readonly IProjectCreator m_ProjectCreator;
         private readonly IChangesRetriever m_ChangesRetriever;
+        private readonly IBuildConfigurationTemplateRetriever m_BuildConfigurationTemplateRetriever;
+        private readonly IProjectPropertySetter m_ProjectPropertySetter;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -133,6 +172,11 @@ namespace FluentTc
             IBuildTemplateAttacher buildTemplateAttacher,
             IBuildQueueRemover buildQueueRemover,
             IArtifactsDownloader artifactsDownloader,
+            IInvestigationRetriever investigationRetriever, 
+            IUserRetriever userRetriever, 
+            IProjectCreator projectCreator, 
+            IProjectPropertySetter projectPropertySetter, 
+            IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever)
             IInvestigationRetriever investigationRetriever, IUserRetriever userRetriever, IChangesRetriever changesRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
@@ -147,6 +191,9 @@ namespace FluentTc
             m_ArtifactsDownloader = artifactsDownloader;
             m_InvestigationRetriever = investigationRetriever;
             m_UserRetriever = userRetriever;
+            m_ProjectCreator = projectCreator;
+            m_ProjectPropertySetter = projectPropertySetter;
+            m_BuildConfigurationTemplateRetriever = buildConfigurationTemplateRetriever;
             m_ChangesRetriever = changesRetriever;
         }
 
@@ -160,8 +207,7 @@ namespace FluentTc
             return m_BuildsRetriever.GetBuilds(having, _ => _.DefaultCount(), include);
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include,
-            Action<ICountBuilder> count)
+        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);
         }
@@ -216,13 +262,18 @@ namespace FluentTc
 
         public IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having)
         {
-            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having, null);
+            return m_BuildConfigurationRetriever.RetrieveBuildConfigurations(having);
         }
 
-        public void SetParameters(Action<IBuildConfigurationHavingBuilder> having,
+        public void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having,
             Action<IBuildParameterValueBuilder> parameters)
         {
             m_BuildConfigurationRetriever.SetParameters(having, parameters);
+        }
+
+        public void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
+        {
+            m_ProjectPropertySetter.SetProjectParameters(having, parameters);
         }
 
         public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
@@ -344,6 +395,41 @@ namespace FluentTc
         public User GetUser(Action<IUserHavingBuilder> having)
         {
             return m_UserRetriever.GetUser(having);
+        }
+
+        public Project CreateProject(Action<INewProjectDetailsBuilder> newProjectDetailsBuilderAction)
+        {
+            return m_ProjectCreator.CreateProject(newProjectDetailsBuilderAction);
+        }
+
+        public List<BuildConfiguration> GetAllBuildConfigurationTemplates()
+        {
+            return m_BuildConfigurationTemplateRetriever.GetAllBuildConfigurationTemplates();
+        }
+
+        public BuildConfiguration GetBuildConfigurationTemplate(Action<IBuildConfigurationTemplateHavingBuilder> having)
+        {
+            return m_BuildConfigurationTemplateRetriever.GetBuildConfigurationTemplate(having);
+        }
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="project">Project to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        public void DeleteProjectParameter(Action<IBuildProjectHavingBuilder> project, Action<IBuildParameterHavingBuilder> parameterName)
+        {
+            m_ProjectPropertySetter.DeleteProjectParameter(project, parameterName);
+        }
+
+        /// <summary>
+        /// Deletes build parameter from build configuration or build configuration template
+        /// </summary>
+        /// <param name="buildConfigurationOrTemplate">Build configuration or template to delete parameter from</param>
+        /// <param name="parameterName">Parameter name to be deleted</param>
+        public void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName)
+        {
+            m_BuildConfigurationRetriever.DeleteBuildConfigurationParameter(buildConfigurationOrTemplate, parameterName);
         }
     }
 }

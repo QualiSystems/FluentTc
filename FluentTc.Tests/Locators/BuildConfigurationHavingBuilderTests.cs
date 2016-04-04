@@ -16,10 +16,10 @@ namespace FluentTc.Tests.Locators
             var buildConfigurationHavingBuilder = fixture.Create<BuildConfigurationHavingBuilder>();
 
             // Act
-            var configurationHavingBuilder = buildConfigurationHavingBuilder.Id("bt2");
-            var having = configurationHavingBuilder.GetLocator();
+            buildConfigurationHavingBuilder.Id("bt2");
 
-            having.Should().Be("id:bt2");
+            // Assert
+            buildConfigurationHavingBuilder.GetLocator().Should().Be("id:bt2");
         }
 
         [Test]
@@ -30,10 +30,10 @@ namespace FluentTc.Tests.Locators
             var buildConfigurationHavingBuilder = fixture.Create<BuildConfigurationHavingBuilder>();
 
             // Act
-            var configurationHavingBuilder = buildConfigurationHavingBuilder.Name("FluentTc");
-            var having = configurationHavingBuilder.GetLocator();
+            buildConfigurationHavingBuilder.Name("FluentTc");
 
-            having.Should().Be("name:FluentTc");
+            // Assert
+            buildConfigurationHavingBuilder.GetLocator().Should().Be("name:FluentTc");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MoreLinq;
 using NUnit.Framework;
 
@@ -17,9 +16,20 @@ namespace FluentTc.Tests
             new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .EnableAgent(_ => _.Name("agent1"));
 
-            // Project
+            // Get project by Id
             var project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetProjectById("FluentTc");
+
+            // Create sub project with Id and Name
+            project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .CreateProject(_ => 
+                    _.Name("New Project Name")
+                    .Id("newProjectId")
+                    .ParentProject(a => a.Name("FluentTc")));
+
+            // Create project by Name in Root
+            project = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
+                .CreateProject(_ => _.Name("New Project Name"));
 
             // Agents
             var agents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
@@ -85,7 +95,7 @@ namespace FluentTc.Tests
 
 
             new RemoteTc().Connect(_ => _.ToHost("tc"))
-                .SetParameters(_ => _.Id("bt2"),
+                .SetBuildConfigurationParameters(_ => _.Id("bt2"),
                     _ => _.Parameter("name", "value").Parameter("name2", "value"));
 
             new RemoteTc().Connect(_ => _.ToHost("tc"))

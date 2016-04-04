@@ -128,8 +128,6 @@ namespace FluentTc.Tests
             builds.ShouldAllBeEquivalentTo(new [] { build });
         }
 
-        [Test]
-        [Ignore]
         public void GetBuilds_SinceDate()
         {
             // Arrange
@@ -152,7 +150,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void SetParameters_ConfigurationName()
+        public void SetBuildConfigurationParameters_ConfigurationName()
         {
             // Arrange
             var teamCityCaller = A.Fake<TeamCityCaller>();
@@ -160,7 +158,7 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetParameters(_ => _.Name("FluentTc"), p=>p.Parameter("name","newVal"));
+            connectedTc.SetBuildConfigurationParameters(_ => _.Name("FluentTc"), p=>p.Parameter("name","newVal"));
 
             // Assert
             A.CallTo(
@@ -170,7 +168,25 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        public void DeleteBuildConfigurationParameter_ConfigurationName()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.DeleteBuildConfigurationParameter(_ => _.Name("FluentTc"), p => p.ParameterName("paramName"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Delete("/app/rest/buildTypes/name:FluentTc/parameters/paramName"))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationName()
         {
             // Arrange
@@ -196,7 +212,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationNameWithParameters()
         {
             // Arrange
@@ -225,7 +241,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_OnAgentName()
         {
             // Arrange
@@ -257,7 +273,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void RunBuildConfiguration_OnAgentNameWithParameters()
         {
             // Arrange
@@ -345,6 +361,57 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.Post("NewConfig", HttpContentTypes.TextPlain, "/app/rest/projects/name:OpenSource/buildTypes", HttpContentTypes.ApplicationJson)).MustHaveHappened();
         }
 
+        //[Test]
+        //public void CreateBuildProject_ByName()
+        //{
+        //    // Arrange
+        //    var teamCityCaller = CreateTeamCityCaller();
+
+        //    var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+        //    // Act
+        //    Project project = connectedTc.CreateProject("NewProject");
+
+        //    // Assert
+        //    A.CallTo(() => teamCityCaller.Post("NewProject", HttpContentTypes.TextPlain, "/app/rest/projects/", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        //}
+
+        [Test]
+        public void CreateProject_NameIdParent()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            Project project = connectedTc.CreateProject(with => with.Name("New Project Name")
+                .Id("newProjectId")
+                .ParentProject(parent => parent.Id("parentProjectId")));
+
+            var data = @"<newProjectDescription name='New Project Name' id='newProjectId'><parentProject locator='id:parentProjectId'/></newProjectDescription>";
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Post(data, HttpContentTypes.ApplicationXml, "/app/rest/projects/", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        }
+
+        [Test]
+        public void CreateProject_Name()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            Project project = connectedTc.CreateProject(with => with.Name("New Project Name"));
+
+            var data = @"<newProjectDescription name='New Project Name'></newProjectDescription>";
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Post(data, HttpContentTypes.ApplicationXml, "/app/rest/projects/", HttpContentTypes.ApplicationJson)).MustHaveHappened();
+        }
+
         [Test]
         public void AttachBuildConfigurationToTemplate()
         {
@@ -426,6 +493,40 @@ namespace FluentTc.Tests
         }    
 
         [Test]
+        public void GetAllBuildConfigurationTemplates()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.GetAllBuildConfigurationTemplates();
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<BuildTypeWrapper>(@"/app/rest/buildTypes?locator=templateFlag:true")).MustHaveHappened();
+        }    
+
+        [Test]
+        public void GetBuildConfigurationTemplate_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildConfiguration>("/app/rest/buildTypes/id:TemplateId"))
+                .Returns(new BuildConfiguration { Id = "TemplateId" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.GetBuildConfigurationTemplate(_ => _.Id("TemplateId"));
+
+            // Assert
+            A.CallTo(() => teamCityCaller.Get<BuildConfiguration>(@"/app/rest/buildTypes/id:TemplateId")).MustHaveHappened();
+        }    
+
+        [Test]
         public void GetBuildsQueue_All()
         {
             // Arrange
@@ -493,15 +594,6 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.GetDownloadFormat(A<Action<string>>.Ignored, "/app/rest/builds/id:{0}/artifacts/content/{1}", 123, "Logs.zip")).MustHaveHappened();
         }
 
-        /// <summary>
-        /// The test passes only on TeamCity agent
-        /// </summary>
-        [Test]
-        public void LocalTc_AgentName()
-        {
-            new LocalTc().BuildParameters.AgentName.Should().NotBeEmpty();
-        }
-
         private static ITeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
@@ -518,6 +610,7 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<string>(A<string>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.PostFormat<Project>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.DeleteFormat(A<string>._, A<object[]>._)).CallsBaseMethod();
             return teamCityCaller;
@@ -589,6 +682,68 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<User>(@"/app/rest/users/username:boris.m")).MustHaveHappened();
+        }
+
+        [Test]
+        public void SetProjectParameters_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetProjectParameters(_ => _.Id("ProjectId"), __ => __.Parameter("param1", "value1"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put("value1", HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void DeleteProjectParameter_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.DeleteProjectParameter(_ => _.Id("ProjectId"), __ => __.ParameterName("param1"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Delete("/app/rest/projects/id:ProjectId/parameters/param1"))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void GetSingleSuccessfulFinishedBuild()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(
+                () =>
+                    teamCityCaller.Get<BuildWrapper>(
+                        @"/app/rest/builds?locator=buildType:id:FluentTc,running:False,status:SUCCESS,count:1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl,finishDate,startDate)"))
+                .Returns(new BuildWrapper {Build = new List<Build>(new [] {new Build {Id = 123}}),Count = "1"});
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var builds = connectedTc.GetBuilds(which => which
+                                        .BuildConfiguration(b => b.Id("FluentTc"))
+                                        .NotRunning()
+                                        .Status(BuildStatus.Success), 
+                                    with => with.IncludeFinishDate()
+                                        .IncludeStartDate(), 
+                                    count => count.Count(1));
+
+            // Assert
+            builds.Single().Id.Should().Be(123);
         }
     }
 }

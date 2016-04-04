@@ -12,10 +12,10 @@ namespace FluentTc.Engine
 {
     internal interface IBuildConfigurationRetriever
     {
-        IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having,
-            Action<BuildConfigurationPropertyBuilder> include);
+        IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
         void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         BuildConfiguration GetSingleBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
+        void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterHavingBuilder> parameterName);
     }
 
     internal class BuildConfigurationRetriever : IBuildConfigurationRetriever
@@ -31,8 +31,7 @@ namespace FluentTc.Engine
             m_TeamCityCaller = teamCityCaller;
         }
 
-        public IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having,
-            Action<BuildConfigurationPropertyBuilder> include)
+        public IList<BuildConfiguration> RetrieveBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having)
         {
             var buildConfigurationHavingBuilder =
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
@@ -54,10 +53,22 @@ namespace FluentTc.Engine
 
         public BuildConfiguration GetSingleBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)
         {
-            var buildConfigurations = RetrieveBuildConfigurations(having, i=>i.IncludeDefaults());
+            var buildConfigurations = RetrieveBuildConfigurations(having);
             if (!buildConfigurations.Any()) throw new BuildConfigurationNotFoundException();
             if (buildConfigurations.Count() > 1) throw new MoreThanOneBuildConfigurationFoundException();
             return GetSingleBuildConfiguration(buildConfigurations.Single().Id);
+        }
+
+        public void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterHavingBuilder> parameterName)
+        {
+            var buildConfigurationHavingBuilder =
+                m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
+            having(buildConfigurationHavingBuilder);
+
+            var buildParameterHavingBuilder = new BuildParameterHavingBuilder();
+            parameterName(buildParameterHavingBuilder);
+
+            m_TeamCityCaller.DeleteFormat("/app/rest/buildTypes/{0}/parameters/{1}", buildConfigurationHavingBuilder.GetLocator(), buildParameterHavingBuilder.GetLocator());
         }
 
         private BuildConfiguration GetSingleBuildConfiguration(string buildTypeId)
@@ -71,9 +82,9 @@ namespace FluentTc.Engine
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             having(buildConfigurationHavingBuilder);
 
-            IBuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
+            BuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
-            buildParameterValueBuilder.GetParameters().ToList()
+            buildParameterValueBuilder.GetParameters()
                 .ForEach(
                     p =>
                         m_TeamCityCaller.PutFormat(p.Value, HttpContentTypes.TextPlain,
