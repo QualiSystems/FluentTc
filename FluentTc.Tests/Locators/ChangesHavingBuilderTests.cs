@@ -13,7 +13,7 @@ namespace FluentTc.Tests.Locators
         public void Build()
         {
             // Arrange
-            var buildHavingBuilder = A.Fake<IBuildHavingBuilder>();
+            var buildHavingBuilder = A.Fake<BuildHavingBuilder>();
             A.CallTo(() => buildHavingBuilder.GetLocator()).Returns("id:123");
 
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();

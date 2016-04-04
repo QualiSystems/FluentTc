@@ -23,7 +23,7 @@ namespace FluentTc.Tests.Engine
                         A<object[]>.Ignored)).Returns(new ChangesList(){Change = new List<Change>(){new Change(){Id = 123}}});
 
 
-            var buildHavingBuilder = A.Fake<IBuildHavingBuilder>();
+            var buildHavingBuilder = A.Fake<BuildHavingBuilder>();
             A.CallTo(() => buildHavingBuilder.GetLocator()).Returns("id:123");
 
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();

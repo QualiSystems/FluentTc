@@ -176,8 +176,8 @@ namespace FluentTc
             IUserRetriever userRetriever, 
             IProjectCreator projectCreator, 
             IProjectPropertySetter projectPropertySetter, 
-            IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever)
-            IInvestigationRetriever investigationRetriever, IUserRetriever userRetriever, IChangesRetriever changesRetriever)
+            IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever,
+            IChangesRetriever changesRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
