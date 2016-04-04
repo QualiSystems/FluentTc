@@ -103,6 +103,7 @@
     <Compile Include="BuildsRetrieverTests.cs" />
     <Compile Include="ConnectedTcTests.cs" />
     <Compile Include="Engine\BuildConfigurationRetrieverTests.cs" />
+    <Compile Include="Engine\BuildModelToBuildConverterTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
     <Compile Include="Engine\ChangesRetrieverTests.cs" />

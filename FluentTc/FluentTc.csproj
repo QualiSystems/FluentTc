@@ -75,6 +75,7 @@
     <Compile Include="Domain\ArtifactDependency.cs" />
     <Compile Include="Domain\Assignment.cs" />
     <Compile Include="Domain\Build.cs" />
+    <Compile Include="Domain\BuildModel.cs" />
     <Compile Include="Domain\BuildConfiguration.cs" />
     <Compile Include="Domain\BuildStep.cs" />
     <Compile Include="Domain\BuildSteps.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Engine\BuildConfigurationRetriever.cs" />
     <Compile Include="Engine\BuildConfigurationRunner.cs" />
     <Compile Include="Engine\BuildIncludeBuilderFactory.cs" />
+    <Compile Include="Engine\BuildModelToBuildConverter.cs" />
     <Compile Include="Engine\BuildParameters.cs" />
     <Compile Include="Engine\BuildQueueRemover.cs" />
     <Compile Include="Engine\BuildQueueIdHavingBuilderFactory.cs" />

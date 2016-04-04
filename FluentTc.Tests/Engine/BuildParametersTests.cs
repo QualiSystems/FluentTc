@@ -51,7 +51,7 @@ namespace FluentTc.Tests.Engine
 
             // Assert
             action.ShouldThrow<MissingBuildParameterException>()
-                .WithMessage("Build parameter missing.param is missing. It needs to be added from TeamCity");
+                .WithMessage("BuildModel parameter missing.param is missing. It needs to be added from TeamCity");
         }
 
         [Test]

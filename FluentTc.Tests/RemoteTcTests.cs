@@ -38,7 +38,7 @@ namespace FluentTc.Tests
             var enabledAuthorizedButDisconnectedAgents = new RemoteTc().Connect(a => a.ToHost("tc").AsGuest())
                 .GetAgents(h => h.Disconnected().Enabled().Authorized());
 
-            // Build queue  
+            // BuildModel queue  
             var buildQueue = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuildsQueue(_ => _.Project(__ => __.Id("Branch6_4_Red_NightlyCi_RedWebTests")));
 
@@ -81,7 +81,7 @@ namespace FluentTc.Tests
                 .GetBuild(_ => _.Id(123456));
 
 
-            // Build configurations
+            // BuildModel configurations
             var buildConfiguration = new RemoteTc().Connect(_ => _.ToHost("tc"))
                 .GetBuildConfiguration(_ => _.Id("bt2"));
 
