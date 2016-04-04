@@ -8,6 +8,8 @@ using FluentTc.Domain;
 using FluentTc.Exceptions;
 using FluentTc.Locators;
 using JsonFx.Json;
+using JsonFx.Serialization.Resolvers;
+using JsonFx.Serialization;
 
 namespace FluentTc.Engine
 {
@@ -83,7 +85,7 @@ namespace FluentTc.Engine
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             having(buildConfigurationHavingBuilder);
 
-            var writer = new JsonWriter();
+            var writer = new JsonWriter(new DataWriterSettings(new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase)));
 
             BuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
