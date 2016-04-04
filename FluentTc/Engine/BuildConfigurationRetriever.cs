@@ -7,6 +7,7 @@ using EasyHttp.Infrastructure;
 using FluentTc.Domain;
 using FluentTc.Exceptions;
 using FluentTc.Locators;
+using JsonFx.Json;
 
 namespace FluentTc.Engine
 {
@@ -82,14 +83,15 @@ namespace FluentTc.Engine
                 m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             having(buildConfigurationHavingBuilder);
 
+            var writer = new JsonWriter();
+
             BuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
             buildParameterValueBuilder.GetParameters()
                 .ForEach(
                     p =>
-                        m_TeamCityCaller.PutFormat(p.Value, HttpContentTypes.TextPlain,
-                            "/app/rest/buildTypes/{0}/parameters/{1}", buildConfigurationHavingBuilder.GetLocator(),
-                            p.Name));
+                        m_TeamCityCaller.PutFormat(writer.Write(p), HttpContentTypes.ApplicationJson,
+                            "/app/rest/buildTypes/{0}/parameters/{1}", buildConfigurationHavingBuilder.GetLocator(), p.Name));
         }
     }
 }

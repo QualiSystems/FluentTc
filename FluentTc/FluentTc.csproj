@@ -98,6 +98,7 @@
     <Compile Include="Domain\ProjectWrapper.cs" />
     <Compile Include="Domain\Properties.cs" />
     <Compile Include="Domain\Property.cs" />
+    <Compile Include="Domain\PropertyType.cs" />
     <Compile Include="Domain\ResolutionWrapper.cs" />
     <Compile Include="Domain\Role.cs" />
     <Compile Include="Domain\RoleWrapper.cs" />

@@ -66,7 +66,17 @@ namespace FluentTc.Engine
 
                 foreach (var property in properties)
                 {
-                    bodyBuilder.AppendFormat(@"<property name=""{0}"" value=""{1}""/>", property.Name, property.Value).AppendLine();
+                    bodyBuilder.AppendFormat(@"<property name=""{0}"" value=""{1}""", property.Name, property.Value);
+                    if (property.Type != null && !string.IsNullOrEmpty(property.Type.RawValue))
+                    {
+                        bodyBuilder.Append(">").AppendLine();
+                        bodyBuilder.AppendFormat(@"<type rawValue=""{0}""/>", property.Type.RawValue).AppendLine();
+                        bodyBuilder.Append("</property>").AppendLine();
+                    }
+                    else
+                    {
+                        bodyBuilder.Append("/>").AppendLine();
+                    }
                 }
 
                 bodyBuilder.Append(@"</properties>").AppendLine();
