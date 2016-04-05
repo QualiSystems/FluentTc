@@ -102,6 +102,7 @@
     <Compile Include="BootstrapperTests.cs" />
     <Compile Include="BuildsRetrieverTests.cs" />
     <Compile Include="ConnectedTcTests.cs" />
+    <Compile Include="Domain\BuildTests.cs" />
     <Compile Include="Engine\BuildConfigurationRetrieverTests.cs" />
     <Compile Include="Engine\BuildModelToBuildConverterTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />

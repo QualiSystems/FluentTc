@@ -22,7 +22,7 @@ namespace FluentTc.Domain
     public class Build : IBuild
     {
         private readonly Agent m_Agent;
-        private readonly BuildConfiguration m_BuildConfiguration;
+        private BuildConfiguration m_BuildConfiguration;
         private readonly List<Change> m_Changes;
         private readonly DateTime m_FinishDate;
         private readonly long m_Id;
@@ -101,6 +101,11 @@ namespace FluentTc.Domain
         {
             m_Changes.Clear();
             m_Changes.AddRange(changes);
+        }
+
+        public void SetBuildConfiguration(BuildConfiguration buildConfiguration)
+        {
+            m_BuildConfiguration = buildConfiguration;
         }
     }
 }
