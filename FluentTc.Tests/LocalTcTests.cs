@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using FluentTc.Engine;
@@ -12,6 +13,14 @@ namespace FluentTc.Tests
     [TestFixture]
     public class LocalTcTests
     {
+        [Test]
+        public void Test_LocalTc_CreatedWithNoErrors()
+        {
+            Action action = () => new LocalTc();
+
+            action.ShouldNotThrow<Exception>();
+        }
+
         [Test]
         public void ChangeBuildStatus_Success_MessageWritten()
         {

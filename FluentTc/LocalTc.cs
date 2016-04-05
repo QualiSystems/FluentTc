@@ -48,8 +48,8 @@ namespace FluentTc
             teamCityWriterFactory = teamCityWriterFactory ?? bootstrapper.Get<ITeamCityWriterFactory>();
             m_TeamCityWriter = teamCityWriterFactory.CreateTeamCityWriter();
 
-            var changedFilesPath = GetBuildParameter("build.changedFiles.file");
-            if (!string.IsNullOrEmpty(changedFilesPath))
+            string changedFilesPath;
+            if (m_BuildParameters.TryGetBuildParameter("build.changedFiles.file", out changedFilesPath))
             {
                 m_ChangedFiles = bootstrapper.Get<IChangedFilesParser>().ParseChangedFiles(changedFilesPath);
             }

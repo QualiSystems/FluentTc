@@ -77,6 +77,51 @@ namespace FluentTc.Tests.Engine
         }
 
         [Test]
+        public void TryGetParameterValue_TeamcityBuildConfName_ValueReturned()
+        {
+            var teamCityBuildPropertiesFileRetriever = A.Fake<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns(@"C:\properties.file.txt");
+
+            var dictionary = new Dictionary<string, string> {{"teamcity.buildConfName", "FluentTc"}};
+
+            var propertiesFileParser = A.Fake<IPropertiesFileParser>();
+            A.CallTo(() => propertiesFileParser.ParsePropertiesFile(@"C:\properties.file.txt"))
+                .Returns(dictionary);
+
+            var buildParameters = new BuildParameters(teamCityBuildPropertiesFileRetriever, A.Fake<ITeamCityWriterFactory>(),
+                propertiesFileParser);
+
+            // Act
+            string buildConfName;
+            var valueExists = buildParameters.TryGetBuildParameter("teamcity.buildConfName", out buildConfName);
+
+            // Assert
+            valueExists.Should().BeTrue();
+            buildConfName.Should().Be("FluentTc");
+        }
+
+        [Test]
+        public void TryGetParameterValue_ValueDoesNotExists_False()
+        {
+            var teamCityBuildPropertiesFileRetriever = A.Fake<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns(@"C:\properties.file.txt");
+
+            var propertiesFileParser = A.Fake<IPropertiesFileParser>();
+            A.CallTo(() => propertiesFileParser.ParsePropertiesFile(@"C:\properties.file.txt"))
+                .Returns(new Dictionary<string, string>());
+
+            var buildParameters = new BuildParameters(teamCityBuildPropertiesFileRetriever, A.Fake<ITeamCityWriterFactory>(),
+                propertiesFileParser);
+
+            // Act
+            string buildConfName;
+            var valueExists = buildParameters.TryGetBuildParameter("teamcity.buildConfName", out buildConfName);
+
+            // Assert
+            valueExists.Should().BeFalse();
+        }
+
+        [Test]
         public void SetParameterValue_GetParameterValue_ValueThatWasSetReturned()
         {
             var teamCityWriter = A.Fake<ITeamCityWriter>();
