@@ -24,6 +24,7 @@ namespace FluentTc.Engine
         string TeamCityVersion { get; }
         bool IsTeamCityMode { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
+        bool TryGetBuildParameter(string parameterName, out string parameterValue);
     }
 
     internal class BuildParameters : IBuildParameters
@@ -147,6 +148,11 @@ namespace FluentTc.Engine
 
             m_Parameters[parameterName] = parameterValue;
             m_TeamCityWriter.WriteBuildParameter(parameterName, parameterValue);
+        }
+
+        public bool TryGetBuildParameter(string parameterName, out string parameterValue)
+        {
+            return m_Parameters.TryGetValue(parameterName, out parameterValue);
         }
     }
 }
