@@ -27,9 +27,11 @@ namespace FluentTc.Engine
         {
             var changes = buildModel.LastChanges != null ? buildModel.LastChanges.Change : new List<Change>();
 
+            var buildConfiguration = buildModel.BuildType ?? new BuildConfiguration { Id = buildModel.BuildTypeId };
+
             return new Build(buildModel.Id, buildModel.Number,
                 ConvertBuildStatus(buildModel),
-                buildModel.StartDate, buildModel.FinishDate, buildModel.QueuedDate, buildModel.BuildType,
+                buildModel.StartDate, buildModel.FinishDate, buildModel.QueuedDate, buildConfiguration,
                 buildModel.Agent, changes, buildModel.WebUrl);
         }
 
