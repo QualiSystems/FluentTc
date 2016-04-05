@@ -59,7 +59,7 @@ namespace FluentTc.Tests
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
                         "/app/rest/builds?locator=id:123,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
-                .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {new Build {Id = 987}})});
+                .Returns(new BuildWrapper {Count = "1", Build = new List<BuildModel>(new[] {new BuildModel {Id = 987, Status = "SUCCESS"}})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -79,9 +79,9 @@ namespace FluentTc.Tests
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
                         "/app/rest/builds?locator=buildType:id:bt2,status:SUCCESS,count:1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
-                .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {new Build {Id = 987}})});
-            A.CallTo(() => teamCityCaller.Get<Build>("/app/rest/builds/id:987"))
-                .Returns(new Build { Id = 123, Changes = new ChangesWrapper { Count = 1}});
+                .Returns(new BuildWrapper {Count = "1", Build = new List<BuildModel>(new[] {new BuildModel {Id = 987, Status = "FAILURE"}})});
+            A.CallTo(() => teamCityCaller.Get<BuildModel>("/app/rest/builds/id:987"))
+                .Returns(new BuildModel { Id = 987, Status = "SUCCESS" });
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -90,7 +90,8 @@ namespace FluentTc.Tests
                 connectedTc.GetLastBuild(_ => _.BuildConfiguration(__ => __.Id("bt2")).Status(BuildStatus.Success));
 
             // Assert
-            build.Changes.Count.Should().Be(1);
+            build.Id.Should().Be(987);
+            build.Status.Should().Be(BuildStatus.Success);
         }        
 
         [Test]
@@ -98,7 +99,7 @@ namespace FluentTc.Tests
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
-            A.CallTo(() => teamCityCaller.Get<Build>("/app/rest/builds/id:123")).Returns(new Build { Id = 123 });
+            A.CallTo(() => teamCityCaller.Get<BuildModel>("/app/rest/builds/id:123")).Returns(new BuildModel { Id = 123, Status = "SUCCESS"});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -114,10 +115,10 @@ namespace FluentTc.Tests
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
-            var build = new Build {Id = 987};
+            var build = new BuildModel {Id = 987, Status = "SUCCESS"};
 
             A.CallTo(() => teamCityCaller.Get<BuildWrapper>("/app/rest/builds?locator=buildType:name:FluentTc,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
-                .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {build})});
+                .Returns(new BuildWrapper {Count = "1", Build = new List<BuildModel>(new[] {build})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -125,20 +126,20 @@ namespace FluentTc.Tests
             var builds = connectedTc.GetBuilds(_ => _.BuildConfiguration(__ => __.Name("FluentTc")));
 
             // Assert
-            builds.ShouldAllBeEquivalentTo(new [] { build });
+            builds.Single().Id.Should().Be(987);
         }
 
         public void GetBuilds_SinceDate()
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
-            var build = new Build {Id = 987};
+            var build = new BuildModel {Id = 987};
 
             A.CallTo(
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
                         "/app/rest/builds?locator=sinceDate:20151026T142200%2b0000,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl)"))
-                .Returns(new BuildWrapper {Count = "1", Build = new List<Build>(new[] {build})});
+                .Returns(new BuildWrapper {Count = "1", Build = new List<BuildModel>(new[] {build})});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -600,7 +601,7 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.GetFormat<User>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<UserWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<InvestigationWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<Build>(A<string>._, A<object[]>._)).CallsBaseMethod();
+            A.CallTo(() => teamCityCaller.GetFormat<BuildModel>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<BuildConfiguration>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
             A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
@@ -729,15 +730,15 @@ namespace FluentTc.Tests
                 () =>
                     teamCityCaller.Get<BuildWrapper>(
                         @"/app/rest/builds?locator=buildType:id:FluentTc,running:False,status:SUCCESS,count:1,&fields=count,build(buildTypeId,href,id,number,state,status,webUrl,finishDate,startDate)"))
-                .Returns(new BuildWrapper {Build = new List<Build>(new [] {new Build {Id = 123}}),Count = "1"});
+                .Returns(new BuildWrapper {Build = new List<BuildModel>(new [] {new BuildModel {Id = 123, Status = "SUCCESS"}}),Count = "1"});
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
             var builds = connectedTc.GetBuilds(which => which
-                                        .BuildConfiguration(b => b.Id("FluentTc"))
-                                        .NotRunning()
-                                        .Status(BuildStatus.Success), 
+                .BuildConfiguration(b => b.Id("FluentTc"))
+                .NotRunning()
+                .Status(BuildStatus.Success), 
                                     with => with.IncludeFinishDate()
                                         .IncludeStartDate(), 
                                     count => count.Count(1));

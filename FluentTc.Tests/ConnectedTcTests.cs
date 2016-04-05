@@ -16,6 +16,17 @@ namespace FluentTc.Tests
     [TestFixture]
     public class ConnectedTcTests
     {
+        private static Project CreateProject(string projectId, Project[] childProjects,
+            BuildConfiguration[] buildConfigurations)
+        {
+            return new Project
+            {
+                Id = projectId,
+                BuildTypes = new BuildTypeWrapper {BuildType = new List<BuildConfiguration>(buildConfigurations)},
+                Projects = new ProjectWrapper {Project = new List<Project>(childProjects)}
+            };
+        }
+
         [Test]
         public void GetBuild_NoBuildsFound_BuildNotFoundExceptionThrown()
         {
@@ -24,8 +35,9 @@ namespace FluentTc.Tests
 
             var fixture = Auto.Fixture();
             var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
-            A.CallTo(() => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
-                .Returns(new List<Build>());
+            A.CallTo(
+                () => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
+                .Returns(new List<IBuild>());
 
             var connectedTc = fixture.Create<ConnectedTc>();
 
@@ -37,26 +49,6 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void GetBuild_TwoBuilds_MoreThanOneBuildFoundExceptionThrown()
-        {
-            // Arrange
-            Action<IBuildHavingBuilder> having = _ => _.AgentName("Bond");
-
-            var fixture = Auto.Fixture();
-            var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
-            A.CallTo(() => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
-                .Returns(new List<Build>(new [] { new Build(), new Build() }));
-
-            var connectedTc = fixture.Create<ConnectedTc>();
-
-            // Act
-            Action action = () => connectedTc.GetBuild(having);
-
-            // Assert
-            action.ShouldThrow<MoreThanOneBuildFoundException>();
-        }
-
-        [Test]
         public void GetBuild_OneBuild_ThantBuild()
         {
             // Arrange
@@ -64,9 +56,12 @@ namespace FluentTc.Tests
 
             var fixture = Auto.Fixture();
             var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
-            var build = new Build { Id = 123};
-            A.CallTo(() => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
-                .Returns(new List<Build>(new [] { build }));
+            var build = A.Fake<IBuild>();
+            A.CallTo(() => build.Id).Returns(123);
+
+            A.CallTo(
+                () => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
+                .Returns(new List<IBuild>(new[] {build}));
 
             var connectedTc = fixture.Create<ConnectedTc>();
 
@@ -78,11 +73,34 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void GetBuild_TwoBuilds_MoreThanOneBuildFoundExceptionThrown()
+        {
+            // Arrange
+            Action<IBuildHavingBuilder> having = _ => _.AgentName("Bond");
+
+            var fixture = Auto.Fixture();
+            var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
+            A.CallTo(
+                () => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
+                .Returns(new List<IBuild>(new[] {A.Fake<IBuild>(), A.Fake<IBuild>()}));
+
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            Action action = () => connectedTc.GetBuild(having);
+
+            // Assert
+            action.ShouldThrow<MoreThanOneBuildFoundException>();
+        }
+
+        [Test]
         public void GetBuildConfigurationsRecursively_ProjectWithChildProjectAndConfiguration_Retrieved()
         {
             // Arrange
-            var childProject = CreateProject("childId", new Project[0], new[]{ new BuildConfiguration { Id = "childConfig"}, });
-            var rootProject = CreateProject("rootId", new[] { childProject, }, new [] { new BuildConfiguration() { Id = "rootConfig"} });
+            var childProject = CreateProject("childId", new Project[0],
+                new[] {new BuildConfiguration {Id = "childConfig"}});
+            var rootProject = CreateProject("rootId", new[] {childProject},
+                new[] {new BuildConfiguration {Id = "rootConfig"}});
 
             var fixture = Auto.Fixture();
             var projectsRetriever = fixture.Freeze<IProjectsRetriever>();
@@ -95,15 +113,7 @@ namespace FluentTc.Tests
             var buildConfigurations = connectedTc.GetBuildConfigurationsRecursively("rootId");
 
             // Assert
-            buildConfigurations.Select(c => c.Id).ShouldAllBeEquivalentTo(new[] { "rootConfig", "childConfig" });
-        }
-
-        private static Project CreateProject(string projectId, Project[] childProjects, BuildConfiguration[] buildConfigurations)
-        {
-            return new Project { 
-                Id = projectId, 
-                BuildTypes = new BuildTypeWrapper { BuildType = new List<BuildConfiguration>(buildConfigurations) }, 
-                Projects = new ProjectWrapper { Project = new List<Project>(childProjects )}};
+            buildConfigurations.Select(c => c.Id).ShouldAllBeEquivalentTo(new[] {"rootConfig", "childConfig"});
         }
     }
 }

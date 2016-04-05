@@ -15,7 +15,7 @@ namespace FluentTc
         /// </summary>
         /// <param name="having">Criteria to retrieve builds</param>
         /// <returns>Builds matching the criteria</returns>
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having);
+        IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having);
 
         /// <summary>
         /// Retrieves builds matching the criteria
@@ -23,7 +23,7 @@ namespace FluentTc
         /// <param name="having">Criteria to retrieve builds</param>
         /// <param name="include">Specifies which additional properties to retrieve</param>
         /// <returns>Builds matching the criteria</returns>
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
+        IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
 
         /// <summary>
         /// Retrieves builds matching the criteria
@@ -32,7 +32,7 @@ namespace FluentTc
         /// <param name="include">Specifies which additional properties to retrieve</param>
         /// <param name="count">Allow retrieving specific amount of results with paging</param>
         /// <returns>Builds matching the criteria</returns>
-        List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count);
+        IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count);
 
         /// <summary>
         ///     Retrieves a build according to specified having parameter with specified columns
@@ -44,8 +44,8 @@ namespace FluentTc
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
         /// <param name="include">Include these columns in retrieved build</param>
-        /// <returns>Build</returns>
-        Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
+        /// <returns>IBuild</returns>
+        IBuild GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include);
 
         /// <summary>
         ///     Retrieves a build according to specified having parameter with specified columns
@@ -56,8 +56,8 @@ namespace FluentTc
         ///     specified criteria
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
-        /// <returns>Build</returns>
-        Build GetBuild(Action<IBuildHavingBuilder> having);
+        /// <returns>IBuild</returns>
+        IBuild GetBuild(Action<IBuildHavingBuilder> having);
 
         /// <summary>
         ///     Retrieves the last build that matches having parameter with all the data.
@@ -68,8 +68,8 @@ namespace FluentTc
         ///     specified criteria
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
-        /// <returns>Build</returns>
-        Build GetLastBuild(Action<IBuildHavingBuilder> having);
+        /// <returns>IBuild</returns>
+        IBuild GetLastBuild(Action<IBuildHavingBuilder> having);
 
         List<Agent> GetAgents(Action<IAgentHavingBuilder> having);
 
@@ -83,10 +83,10 @@ namespace FluentTc
         /// </exception>
         /// <param name="having">Retrieve build that matches the criteria</param>
         /// <param name="include">Include additional data, such as Changes</param>
-        /// <returns>Build</returns>
-        Build GetLastBuild(Action<IBuildHavingBuilder> having, Action<IBuildAdditionalIncludeBuilder> include);
+        /// <returns>IBuild</returns>
+        IBuild GetLastBuild(Action<IBuildHavingBuilder> having, Action<IBuildAdditionalIncludeBuilder> include);
 
-        Build GetBuild(long buildId);
+        IBuild GetBuild(long buildId);
 
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
@@ -108,7 +108,7 @@ namespace FluentTc
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having,
             string buildConfigurationName);
 
-        List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null);
+        IList<IBuild> GetBuildsQueue(Action<IQueueHavingBuilder> having = null);
         void RemoveBuildFromQueue(Action<IQueueHavingBuilder> having);
         void RemoveBuildFromQueue(Action<IBuildQueueIdHavingBuilder> having);
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having);
@@ -138,7 +138,7 @@ namespace FluentTc
         /// <summary>
         /// Deletes build parameter from build configuration or build configuration template
         /// </summary>
-        /// <param name="buildConfigurationOrTemplate">Build configuration or template to delete parameter from</param>
+        /// <param name="buildConfigurationOrTemplate">IBuild configuration or template to delete parameter from</param>
         /// <param name="parameterName">Parameter name to be deleted</param>
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
     }
@@ -197,17 +197,17 @@ namespace FluentTc
             m_ChangesRetriever = changesRetriever;
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having)
+        public IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having)
         {
             return m_BuildsRetriever.GetBuilds(having, _ => _.DefaultCount(), _ => _.IncludeDefaults());
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
+        public IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
         {
             return m_BuildsRetriever.GetBuilds(having, _ => _.DefaultCount(), include);
         }
 
-        public List<Build> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count)
+        public IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include, Action<ICountBuilder> count)
         {
             return m_BuildsRetriever.GetBuilds(having, count, include);
         }
@@ -217,7 +217,7 @@ namespace FluentTc
             return m_AgentsRetriever.GetAgents(having);
         }
 
-        public Build GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
+        public IBuild GetBuild(Action<IBuildHavingBuilder> having, Action<IBuildIncludeBuilder> include)
         {
             var builds = GetBuilds(having, include);
             if (!builds.Any()) throw new BuildNotFoundException();
@@ -225,17 +225,17 @@ namespace FluentTc
             return builds.Single();
         }
 
-        public Build GetBuild(Action<IBuildHavingBuilder> having)
+        public IBuild GetBuild(Action<IBuildHavingBuilder> having)
         {
             return GetBuild(having, _ => _.IncludeDefaults());
         }
 
-        public Build GetLastBuild(Action<IBuildHavingBuilder> having)
+        public IBuild GetLastBuild(Action<IBuildHavingBuilder> having)
         {
             return GetLastBuild(having, _ => { });
         }
 
-        public Build GetLastBuild(Action<IBuildHavingBuilder> having, Action<IBuildAdditionalIncludeBuilder> include)
+        public IBuild GetLastBuild(Action<IBuildHavingBuilder> having, Action<IBuildAdditionalIncludeBuilder> include)
         {
             var builds = GetBuilds(having, _ => _.IncludeDefaults(), __ => __.Count(1));
             if (!builds.Any()) throw new BuildNotFoundException();
@@ -244,13 +244,14 @@ namespace FluentTc
             include(buildAdditionalIncludeBuilder);
             if (buildAdditionalIncludeBuilder.ShouldIncludeChanges)
             {
-                lastBuild.BuildChanges = m_ChangesRetriever.GetChanges(_ => _.Build(__ => __.Id(lastBuild.Id)), 
+                var changes = m_ChangesRetriever.GetChanges(_ => _.Build(__ => __.Id(lastBuild.Id)), 
                     buildAdditionalIncludeBuilder.ChangesInclude);
+                lastBuild.SetChanges(changes);
             }
             return lastBuild;
         }
 
-        public Build GetBuild(long buildId)
+        public IBuild GetBuild(long buildId)
         {
             return m_BuildsRetriever.GetBuild(buildId);
         }
@@ -311,7 +312,7 @@ namespace FluentTc
             m_BuildTemplateAttacher.Attach(having, buildTemplateId);
         }
 
-        public List<Build> GetBuildsQueue(Action<IQueueHavingBuilder> having = null)
+        public IList<IBuild> GetBuildsQueue(Action<IQueueHavingBuilder> having = null)
         {
             return m_BuildsRetriever.GetBuildsQueue(having);
         }
@@ -425,7 +426,7 @@ namespace FluentTc
         /// <summary>
         /// Deletes build parameter from build configuration or build configuration template
         /// </summary>
-        /// <param name="buildConfigurationOrTemplate">Build configuration or template to delete parameter from</param>
+        /// <param name="buildConfigurationOrTemplate">IBuild configuration or template to delete parameter from</param>
         /// <param name="parameterName">Parameter name to be deleted</param>
         public void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName)
         {

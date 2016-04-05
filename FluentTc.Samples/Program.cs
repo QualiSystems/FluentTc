@@ -59,7 +59,7 @@ namespace FluentTc.Samples
             new RemoteTc()
                 .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
                 .GetBuilds(_ => _.TriggeredBy(u => u.Username(Username)))
-                .ForEach(b => Console.WriteLine("BuildTypeId: {0}", b.BuildTypeId));
+                .ForEach(b => Console.WriteLine("BuildTypeId: {0}", b.BuildConfiguration.Id));
         }
 
         private static void GetLastSuccessfulBuildsForEachConfigurationWithChanges(string projectName)
