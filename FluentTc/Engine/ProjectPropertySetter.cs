@@ -1,6 +1,9 @@
 using System;
 using EasyHttp.Http;
 using FluentTc.Locators;
+using JsonFx.Serialization.Resolvers;
+using JsonFx.Serialization;
+using JsonFx.Json;
 
 namespace FluentTc.Engine
 {
@@ -27,11 +30,13 @@ namespace FluentTc.Engine
             having(buildConfigurationHavingBuilder);
             var projectLocator = buildConfigurationHavingBuilder.GetLocator();
 
+            var writer = new JsonWriter(new DataWriterSettings(new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase)));
+
             BuildParameterValueBuilder buildParameterValueBuilder = new BuildParameterValueBuilder();
             parameters(buildParameterValueBuilder);
 
             buildParameterValueBuilder.GetParameters()
-                .ForEach(p => m_TeamCityCaller.PutFormat(p.Value, HttpContentTypes.TextPlain,
+                .ForEach(p => m_TeamCityCaller.PutFormat(writer.Write(p), HttpContentTypes.ApplicationJson,
                         "/app/rest/projects/{0}/parameters/{1}", projectLocator, p.Name));
         }
 
