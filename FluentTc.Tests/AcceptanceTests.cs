@@ -151,7 +151,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void SetBuildConfigurationParameters_ConfigurationName()
+        public void SetBuildConfigurationParameters_GivenParameterWithoutRawType_ConfigurationName()
         {
             // Arrange
             var teamCityCaller = A.Fake<TeamCityCaller>();
@@ -164,7 +164,27 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.PutFormat("newVal", HttpContentTypes.TextPlain, "/app/rest/buildTypes/{0}/parameters/{1}", A<object[]>.That.IsSameSequenceAs(new[] {"name:FluentTc", "name"})))
+                    teamCityCaller.PutFormat("{\"name\":\"name\",\"value\":\"newVal\",\"type\":null}",
+                    HttpContentTypes.ApplicationJson, "/app/rest/buildTypes/{0}/parameters/{1}", A<object[]>.That.IsSameSequenceAs(new[] {"name:FluentTc", "name"})))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void SetBuildConfigurationParameters_GivenParameterWithRawType_ConfigurationName()
+        {
+            // Arrange
+            var teamCityCaller = A.Fake<TeamCityCaller>();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetBuildConfigurationParameters(_ => _.Name("FluentTc"), p => p.Parameter("name", "newVal", "select data_1='lol' display='normal'"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.PutFormat("{\"name\":\"name\",\"value\":\"newVal\",\"type\":{\"rawValue\":\"select data_1='lol' display='normal'\"}}",
+                    HttpContentTypes.ApplicationJson, "/app/rest/buildTypes/{0}/parameters/{1}", A<object[]>.That.IsSameSequenceAs(new[] { "name:FluentTc", "name" })))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -686,7 +706,7 @@ namespace FluentTc.Tests
         }
 
         [Test]
-        public void SetProjectParameters_ById()
+        public void SetProjectParameters_GivenParameterWithoutRawType_ById()
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
@@ -699,7 +719,27 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Put("value1", HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
+                    teamCityCaller.Put("{\"name\":\"param1\",\"value\":\"value1\",\"type\":null}",
+                    HttpContentTypes.ApplicationJson, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void SetProjectParameters_GivenParameterWithRawType_ById()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetProjectParameters(_ => _.Id("ProjectId"), __ => __.Parameter("param1", "value1", "rawType1"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put("{\"name\":\"param1\",\"value\":\"value1\",\"type\":{\"rawValue\":\"rawType1\"}}",
+                    HttpContentTypes.ApplicationJson, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
