@@ -17,6 +17,7 @@ namespace FluentTc.Domain
         List<Change> Changes { get; }
         string WebUrl { get; }
         void SetChanges(List<Change> changes);
+        void SetBuildConfiguration(BuildConfiguration buildConfiguration);
     }
 
     public class Build : IBuild
