@@ -10,16 +10,17 @@ namespace FluentTc
     public interface ILocalTc
     {
         void ChangeBuildStatus(BuildStatus buildStatus);
-        string GetBuildParameter(string parameterName);
+        T GetBuildParameter<T>(string parameterName);
+        bool TryGetBuildParameter(string parameterName, out string parameterValue);
         string AgentHomeDir { get; }
         string AgentName { get; }
         string AgentOwnPort { get; }
         string AgentWorkDir { get; }
-        string BuildNumber { get; }
-        string TeamcityAgentCpuBenchmark { get; }
+        long BuildNumber { get; }
+        int TeamcityAgentCpuBenchmark { get; }
         string TeamcityBuildChangedFilesFile { get; }
         string TeamcityBuildCheckoutDir { get; }
-        string TeamcityBuildId { get; }
+        long TeamcityBuildId { get; }
         string TeamcityBuildTempDir { get; }
         string TeamcityBuildWorkingDir { get; }
         string TeamcityBuildConfName { get; }
@@ -28,6 +29,7 @@ namespace FluentTc
         string TeamCityVersion { get; }
         IList<IChangedFile> ChangedFiles { get; }
         bool IsTeamCityMode { get; }
+        bool IsPersonal { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
     }
 
@@ -67,9 +69,14 @@ namespace FluentTc
             });
         }
 
-        public string GetBuildParameter(string buildParameterName)
+        public T GetBuildParameter<T>(string buildParameterName)
         {
-            return m_BuildParameters.GetBuildParameter(buildParameterName);
+            return m_BuildParameters.GetBuildParameter<T>(buildParameterName);
+        }
+
+        public bool TryGetBuildParameter(string parameterName, out string parameterValue)
+        {
+            return m_BuildParameters.TryGetBuildParameter(parameterName, out parameterValue);
         }
 
         public void SetBuildParameter(string buildParameterName, string buildParameterValue)
@@ -97,12 +104,12 @@ namespace FluentTc
             get { return m_BuildParameters.AgentWorkDir; }
         }
 
-        public string BuildNumber
+        public long BuildNumber
         {
             get { return m_BuildParameters.BuildNumber; }
         }
 
-        public string TeamcityAgentCpuBenchmark
+        public int TeamcityAgentCpuBenchmark
         {
             get { return m_BuildParameters.TeamcityAgentCpuBenchmark; }
         }
@@ -117,7 +124,7 @@ namespace FluentTc
             get { return m_BuildParameters.TeamcityBuildCheckoutDir; }
         }
 
-        public string TeamcityBuildId
+        public long TeamcityBuildId
         {
             get { return m_BuildParameters.TeamcityBuildId; }
         }
@@ -160,6 +167,11 @@ namespace FluentTc
         public bool IsTeamCityMode
         {
             get { return m_BuildParameters.IsTeamCityMode; }
+        }
+
+        public bool IsPersonal
+        {
+            get { return m_BuildParameters.IsPersonal; }
         }
     }
 }

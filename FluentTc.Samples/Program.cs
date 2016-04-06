@@ -31,7 +31,7 @@ namespace FluentTc.Samples
 
             var localTc = new LocalTc();
 
-            var buildId = localTc.GetBuildParameter("build.id");
+            var buildId = localTc.GetBuildParameter<long>("build.id");
             localTc.SetBuildParameter("parameter.name", "value1");
             localTc.ChangeBuildStatus(BuildStatus.Success);
 

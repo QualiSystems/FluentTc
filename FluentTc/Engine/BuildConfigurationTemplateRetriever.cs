@@ -16,12 +16,10 @@ namespace FluentTc.Engine
     internal class BuildConfigurationTemplateRetriever : IBuildConfigurationTemplateRetriever
     {
         private readonly ITeamCityCaller m_TeamCityCaller;
-        private readonly IBuildConfigurationHavingBuilderFactory m_BuildConfigurationHavingBuilderFactory;
 
-        public BuildConfigurationTemplateRetriever(ITeamCityCaller teamCityCaller, IBuildConfigurationHavingBuilderFactory buildConfigurationHavingBuilderFactory)
+        public BuildConfigurationTemplateRetriever(ITeamCityCaller teamCityCaller)
         {
             m_TeamCityCaller = teamCityCaller;
-            m_BuildConfigurationHavingBuilderFactory = buildConfigurationHavingBuilderFactory;
         }
 
         public List<BuildConfiguration> GetAllBuildConfigurationTemplates()

@@ -104,6 +104,7 @@
     <Compile Include="ConnectedTcTests.cs" />
     <Compile Include="Domain\BuildTests.cs" />
     <Compile Include="Engine\BuildConfigurationRetrieverTests.cs" />
+    <Compile Include="Engine\BuildConfigurationTemplateRetrieverTests.cs" />
     <Compile Include="Engine\BuildModelToBuildConverterTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Engine\NewProjectDetailsBuilderTests.cs" />
     <Compile Include="Engine\ProjectsRetrieverTests.cs" />
     <Compile Include="Engine\PropertiesFileParserTests.cs" />
+    <Compile Include="Engine\UniversalTypeConverterTests.cs" />
     <Compile Include="LocalTcTests.cs" />
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />
     <Compile Include="Locators\Auto.cs" />

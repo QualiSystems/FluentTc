@@ -111,5 +111,77 @@ namespace FluentTc.Tests
             // Assert
             isTeamCityMode.Should().BeTrue();
         }
+
+        [Test]
+        public void TryGetBuildParameter_ParameterExists_True()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            string paramValue;
+            A.CallTo(() => buildParameters.TryGetBuildParameter("param1", out paramValue)).Returns(true)
+                .AssignsOutAndRefParameters("VALUE");
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            string actualValue;
+            var paramExists = localTc.TryGetBuildParameter("param1", out actualValue);
+
+            // Assert
+            actualValue.Should().Be("VALUE");
+            paramExists.Should().BeTrue();
+        }
+
+        [Test]
+        public void TryGetBuildParameter_ParameterDoesNotExist_False()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            string paramValue;
+            A.CallTo(() => buildParameters.TryGetBuildParameter("param1", out paramValue)).Returns(false);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            string actualValue;
+            var paramExists = localTc.TryGetBuildParameter("param1", out actualValue);
+
+            // Assert
+            paramExists.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsPersonal_True_True()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            A.CallTo(() => buildParameters.IsPersonal)
+                .Returns(true);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            bool isPersonal = localTc.IsPersonal;
+
+            // Assert
+            isPersonal.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsPersonal_False_False()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            A.CallTo(() => buildParameters.IsPersonal)
+                .Returns(false);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            bool isPersonal = localTc.IsPersonal;
+
+            // Assert
+            isPersonal.Should().BeFalse();
+        }
     }
 }
