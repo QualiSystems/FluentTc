@@ -11,6 +11,7 @@ namespace FluentTc
     {
         void ChangeBuildStatus(BuildStatus buildStatus);
         string GetBuildParameter(string parameterName);
+        bool TryGetBuildParameter(string parameterName, out string parameterValue);
         string AgentHomeDir { get; }
         string AgentName { get; }
         string AgentOwnPort { get; }
@@ -70,6 +71,11 @@ namespace FluentTc
         public string GetBuildParameter(string buildParameterName)
         {
             return m_BuildParameters.GetBuildParameter(buildParameterName);
+        }
+
+        public bool TryGetBuildParameter(string parameterName, out string parameterValue)
+        {
+            return m_BuildParameters.TryGetBuildParameter(parameterName, out parameterValue);
         }
 
         public void SetBuildParameter(string buildParameterName, string buildParameterValue)
