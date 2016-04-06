@@ -47,7 +47,7 @@ namespace FluentTc.Tests.Engine
 
             // Act
             string result;
-            Action action = () => result = buildParameters.GetBuildParameter("missing.param");
+            Action action = () => result = buildParameters.GetBuildParameter<string>("missing.param");
 
             // Assert
             action.ShouldThrow<MissingBuildParameterException>()
@@ -137,7 +137,7 @@ namespace FluentTc.Tests.Engine
 
             // Act
             buildParameters.SetBuildParameter("param1", "newValue");
-            var parameterValue = buildParameters.GetBuildParameter("param1");
+            var parameterValue = buildParameters.GetBuildParameter<string>("param1");
 
             // Assert
             parameterValue.Should().Be("newValue");
@@ -178,7 +178,7 @@ namespace FluentTc.Tests.Engine
             
             // Act
             buildParameters.SetBuildParameter("param1", "newValue");
-            var parameterValue = buildParameters.GetBuildParameter("param1");
+            var parameterValue = buildParameters.GetBuildParameter<string>("param1");
 
             // Assert
             parameterValue.Should().Be("newValue");

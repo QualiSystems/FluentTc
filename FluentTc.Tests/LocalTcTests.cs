@@ -149,5 +149,39 @@ namespace FluentTc.Tests
             // Assert
             paramExists.Should().BeFalse();
         }
+
+        [Test]
+        public void IsPersonal_True_True()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            A.CallTo(() => buildParameters.IsPersonal)
+                .Returns(true);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            bool isPersonal = localTc.IsPersonal;
+
+            // Assert
+            isPersonal.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsPersonal_False_False()
+        {
+            // Arrange
+            var buildParameters = A.Fake<IBuildParameters>();
+            A.CallTo(() => buildParameters.IsPersonal)
+                .Returns(false);
+
+            var localTc = new LocalTc(buildParameters, A.Fake<ITeamCityWriterFactory>());
+
+            // Act
+            bool isPersonal = localTc.IsPersonal;
+
+            // Assert
+            isPersonal.Should().BeFalse();
+        }
     }
 }

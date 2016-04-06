@@ -140,6 +140,7 @@
     <Compile Include="Engine\PropertiesFileParser.cs" />
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />
+    <Compile Include="Engine\UniversalTypeConverter.cs" />
     <Compile Include="Engine\UserRetriever.cs" />
     <Compile Include="Exceptions\AgentNotFoundException.cs" />
     <Compile Include="Exceptions\MissingBuildParameterException.cs" />
