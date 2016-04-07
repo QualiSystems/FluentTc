@@ -141,6 +141,8 @@ namespace FluentTc
         /// <param name="buildConfigurationOrTemplate">IBuild configuration or template to delete parameter from</param>
         /// <param name="parameterName">Parameter name to be deleted</param>
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
+
+        Statistics GetStatistics(Action<IBuildHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -161,6 +163,7 @@ namespace FluentTc
         private readonly IChangesRetriever m_ChangesRetriever;
         private readonly IBuildConfigurationTemplateRetriever m_BuildConfigurationTemplateRetriever;
         private readonly IProjectPropertySetter m_ProjectPropertySetter;
+        private readonly IStatisticsRetriever m_StatisticsRetriever;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -177,7 +180,8 @@ namespace FluentTc
             IProjectCreator projectCreator, 
             IProjectPropertySetter projectPropertySetter, 
             IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever,
-            IChangesRetriever changesRetriever)
+            IChangesRetriever changesRetriever,
+            IStatisticsRetriever statisticsRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -195,6 +199,7 @@ namespace FluentTc
             m_ProjectPropertySetter = projectPropertySetter;
             m_BuildConfigurationTemplateRetriever = buildConfigurationTemplateRetriever;
             m_ChangesRetriever = changesRetriever;
+            m_StatisticsRetriever = statisticsRetriever;
         }
 
         public IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having)
@@ -431,6 +436,11 @@ namespace FluentTc
         public void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName)
         {
             m_BuildConfigurationRetriever.DeleteBuildConfigurationParameter(buildConfigurationOrTemplate, parameterName);
+        }
+
+        public Statistics GetStatistics(Action<IBuildHavingBuilder> having)
+        {
+            return m_StatisticsRetriever.GetStatistics(having);
         }
     }
 }
