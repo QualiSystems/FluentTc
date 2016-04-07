@@ -123,6 +123,7 @@
     <Compile Include="Locators\BuildConfigurationHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildIncludeBuilderTests.cs" />
+    <Compile Include="Locators\BuildParameterTypeBuilderFormatTests.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilderTests.cs" />
     <Compile Include="Locators\ChangesHavingBuilderTests.cs" />

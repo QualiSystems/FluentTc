@@ -178,7 +178,7 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetBuildConfigurationParameters(_ => _.Name("FluentTc"), p => p.Parameter("name", "newVal", "select data_1='lol' display='normal'"));
+            connectedTc.SetBuildConfigurationParameters(_ => _.Name("FluentTc"), p => p.Parameter("name", "newVal", t => t.AsSelectList(s => s.Value("lol"))));
 
             // Assert
             A.CallTo(
@@ -733,12 +733,12 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetProjectParameters(_ => _.Id("ProjectId"), __ => __.Parameter("param1", "value1", "rawType1"));
+            connectedTc.SetProjectParameters(_ => _.Id("ProjectId"), __ => __.Parameter("param1", "value1", t => t.AsSelectList(s => s.Value("item1"))));
 
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Put("{\"name\":\"param1\",\"value\":\"value1\",\"type\":{\"rawValue\":\"rawType1\"}}",
+                    teamCityCaller.Put("{\"name\":\"param1\",\"value\":\"value1\",\"type\":{\"rawValue\":\"select data_1='item1' display='normal'\"}}",
                     HttpContentTypes.ApplicationJson, "/app/rest/projects/id:ProjectId/parameters/param1", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
