@@ -51,7 +51,7 @@ namespace FluentTc.Tests.Locators
                 {2, () => testObject.AsRegex(regexp, validationMessage)}
             };
             if (!validationMap.ContainsKey(validation))
-                Assert.Inconclusive("Wrong " + nameof(validation) + " argument value passed");
+                Assert.Inconclusive("Wrong 'validation' argument value passed");
             validationMap[validation]();
 
             // Act
@@ -172,7 +172,7 @@ namespace FluentTc.Tests.Locators
                 {1, () => testObject.AsPassword()}
             };
             if (!typeMap.ContainsKey(type))
-                Assert.Inconclusive("Wrong " + nameof(type) + " argument value passed");
+                Assert.Inconclusive("Wrong 'type' argument value passed");
             typeMap[type]();
             var displayMap = new Dictionary<int, Action>
             {
@@ -182,7 +182,7 @@ namespace FluentTc.Tests.Locators
                 {3, () => testObject.WithDisplayHidden()}
             };
             if (!displayMap.ContainsKey(display))
-                Assert.Inconclusive("Wrong " + nameof(display) + " argument value passed");
+                Assert.Inconclusive("Wrong 'display' argument value passed");
             displayMap[display]();
             if (label != null)
                 testObject.WithLabel(label);
