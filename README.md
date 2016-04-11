@@ -29,11 +29,3 @@ For more examples and documentation read the [Wiki](https://github.com/QualiSyst
 
 ## Credits
 [![Continuous Integration powered by TeamCity and CodeBetter](https://resources.jetbrains.com/assets/banners/jetbrains-com/Codebetter.png)](http://codebetter.com/codebetter-ci/)
-
-
-
-
-
-
-
-
