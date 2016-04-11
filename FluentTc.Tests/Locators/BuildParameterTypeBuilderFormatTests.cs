@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentTc.Locators;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace FluentTc.Tests.Locators
@@ -25,7 +26,7 @@ namespace FluentTc.Tests.Locators
             var result = testObject.Build();
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            result.Should().Be(expected);
         }
 
         [TestCase(0, null, null, "text validationMode='any'")]
@@ -58,7 +59,7 @@ namespace FluentTc.Tests.Locators
             var result = testObject.Build();
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            result.Should().Be(expected);
         }
 
         [TestCase(null, null, null, null, null, "")]
@@ -127,7 +128,7 @@ namespace FluentTc.Tests.Locators
             var result = testObject.Build();
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            result.Should().Be(expected);
         }
 
         [TestCase(0, 0, null, null, "")]
@@ -193,7 +194,7 @@ namespace FluentTc.Tests.Locators
             var result = testObject.Build();
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            result.Should().Be(expected);
         }
     }
 }
