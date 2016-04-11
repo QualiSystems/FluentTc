@@ -5,7 +5,7 @@ using FluentTc.Locators;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace FluentTc.Tests
+namespace FluentTc.Tests.Engine
 {
     [TestFixture]
     public class StatisticsRetrieverTests
@@ -17,17 +17,17 @@ namespace FluentTc.Tests
             var teamCityCaller = A.Fake<ITeamCityCaller>();
             A.CallTo(
                () =>
-                   teamCityCaller.GetFormat<Statistics>(
+                   teamCityCaller.GetFormat<BuildStatistics>(
                        "/app/rest/builds/{0}/statistics",
                        A<object[]>._))
-               .Returns(new Statistics { Count = "0", Property = { } });
+               .Returns(new BuildStatistics { Count = "0", Property = { } });
 
             var buildHavingBuilder = A.Fake<BuildHavingBuilder>();
             A.CallTo(() => buildHavingBuilder.GetLocator()).Returns("buildId:123");
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
             A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(buildHavingBuilder);
 
-            var statisticsRetriever = new StatisticsRetriever(teamCityCaller, buildHavingBuilderFactory);
+            var statisticsRetriever = new BuildStatisticsRetriever(teamCityCaller, buildHavingBuilderFactory);
 
             // Act
             var statistics = statisticsRetriever.GetStatistics(_ => _.Id(123));
@@ -35,10 +35,11 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.GetFormat<Statistics>(
+                    teamCityCaller.GetFormat<BuildStatistics>(
                        "/app/rest/builds/{0}/statistics",
                         A<object[]>.That.IsSameSequenceAs(new object[] { "buildId:123" })))
                 .MustHaveHappened(Repeated.Exactly.Once);
+            Assert.AreEqual("0", statistics.Count);
         }
 
         [Test]
@@ -49,12 +50,12 @@ namespace FluentTc.Tests
                         new Property { Name = "MockProperty1", Value = "MockValue1" }, 
                         new Property { Name = "MockProperty2", Value = "MockValue2" } 
             };
-            var mockStatistics = new Statistics { Count = "2", Property = mockPropertyList };
+            var mockStatistics = new BuildStatistics { Count = "2", Property = mockPropertyList };
             
             var teamCityCaller = A.Fake<ITeamCityCaller>();
             A.CallTo(
                () =>
-                   teamCityCaller.GetFormat<Statistics>(
+                   teamCityCaller.GetFormat<BuildStatistics>(
                        "/app/rest/builds/{0}/statistics",
                        A<object[]>._))
                .Returns(mockStatistics);
@@ -64,7 +65,7 @@ namespace FluentTc.Tests
             var buildHavingBuilderFactory = A.Fake<IBuildHavingBuilderFactory>();
             A.CallTo(() => buildHavingBuilderFactory.CreateBuildHavingBuilder()).Returns(buildHavingBuilder);
 
-            var statisticsRetriever = new StatisticsRetriever(teamCityCaller, buildHavingBuilderFactory);
+            var statisticsRetriever = new BuildStatisticsRetriever(teamCityCaller, buildHavingBuilderFactory);
 
             // Act
             var statistics = statisticsRetriever.GetStatistics(_ => _.Id(1));
@@ -72,7 +73,7 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.GetFormat<Statistics>(
+                    teamCityCaller.GetFormat<BuildStatistics>(
                        "/app/rest/builds/{0}/statistics",
                         A<object[]>.That.IsSameSequenceAs(new object[] { "buildId:123" })))
                 .MustHaveHappened(Repeated.Exactly.Once);

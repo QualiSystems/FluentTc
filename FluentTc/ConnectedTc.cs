@@ -142,7 +142,7 @@ namespace FluentTc
         /// <param name="parameterName">Parameter name to be deleted</param>
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
 
-        Statistics GetStatistics(Action<IBuildHavingBuilder> having);
+        BuildStatistics GetBuildStatistics(Action<IBuildHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -163,7 +163,7 @@ namespace FluentTc
         private readonly IChangesRetriever m_ChangesRetriever;
         private readonly IBuildConfigurationTemplateRetriever m_BuildConfigurationTemplateRetriever;
         private readonly IProjectPropertySetter m_ProjectPropertySetter;
-        private readonly IStatisticsRetriever m_StatisticsRetriever;
+        private readonly IBuildStatisticsRetriever m_StatisticsRetriever;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -181,7 +181,7 @@ namespace FluentTc
             IProjectPropertySetter projectPropertySetter, 
             IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever,
             IChangesRetriever changesRetriever,
-            IStatisticsRetriever statisticsRetriever)
+            IBuildStatisticsRetriever statisticsRetriever)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -438,7 +438,7 @@ namespace FluentTc
             m_BuildConfigurationRetriever.DeleteBuildConfigurationParameter(buildConfigurationOrTemplate, parameterName);
         }
 
-        public Statistics GetStatistics(Action<IBuildHavingBuilder> having)
+        public BuildStatistics GetBuildStatistics(Action<IBuildHavingBuilder> having)
         {
             return m_StatisticsRetriever.GetStatistics(having);
         }

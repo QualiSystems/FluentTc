@@ -115,5 +115,27 @@ namespace FluentTc.Tests
             // Assert
             buildConfigurations.Select(c => c.Id).ShouldAllBeEquivalentTo(new[] {"rootConfig", "childConfig"});
         }
+
+        [Test]
+        public void GetBuildStatistics_ProjectWithChildProjectAndConfiguration_Retrieved()
+        {
+            // Arrange
+            var mockStatistics = new BuildStatistics { Count = "1", Property = new List<Property> { new Property { Name = "TestName", Value = "TestValue" } } };
+            Action<IBuildHavingBuilder> having = _ => _.Id(123);
+            
+            var fixture = Auto.Fixture();
+            var statisticsRetriever = fixture.Freeze<IBuildStatisticsRetriever>();
+            A.CallTo(() => statisticsRetriever.GetStatistics(having)).Returns(mockStatistics);
+
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            var buildStatistics = connectedTc.GetBuildStatistics(having);
+
+            // Assert
+            Assert.AreEqual("1", buildStatistics.Count);
+            Assert.AreEqual(mockStatistics.Property[0].Name, buildStatistics.Property[0].Name);
+            Assert.AreEqual(mockStatistics.Property[0].Value, buildStatistics.Property[0].Value);
+        }
     }
 }

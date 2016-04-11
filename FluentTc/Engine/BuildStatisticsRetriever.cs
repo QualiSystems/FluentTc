@@ -7,27 +7,27 @@ using FluentTc.Locators;
 
 namespace FluentTc.Engine
 {
-    internal interface IStatisticsRetriever
+    internal interface IBuildStatisticsRetriever
     {
-        Statistics GetStatistics(Action<IBuildHavingBuilder> having);
+        BuildStatistics GetStatistics(Action<IBuildHavingBuilder> having);
     }
-    internal class StatisticsRetriever : IStatisticsRetriever
+    internal class BuildStatisticsRetriever : IBuildStatisticsRetriever
     {
         private readonly ITeamCityCaller m_Caller;
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
 
-        public StatisticsRetriever(ITeamCityCaller caller, IBuildHavingBuilderFactory buildHavingBuilderFactory)
+        public BuildStatisticsRetriever(ITeamCityCaller caller, IBuildHavingBuilderFactory buildHavingBuilderFactory)
         {
             m_Caller = caller;
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
         }
 
-        public Statistics GetStatistics(Action<IBuildHavingBuilder> having)
+        public BuildStatistics GetStatistics(Action<IBuildHavingBuilder> having)
         {
             var buildHavingBuilder = m_BuildHavingBuilderFactory.CreateBuildHavingBuilder();
             having(buildHavingBuilder);
             var locator = buildHavingBuilder.GetLocator();
-            return m_Caller.GetFormat<Statistics>("/app/rest/builds/{0}/statistics", locator);
+            return m_Caller.GetFormat<BuildStatistics>("/app/rest/builds/{0}/statistics", locator);
         }
     }
 }
