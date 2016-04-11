@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace FluentTc.Locators
@@ -106,10 +104,10 @@ namespace FluentTc.Locators
                 return string.Empty;
             builder.Append(m_special);
             if (!string.IsNullOrEmpty(m_label))
-                builder.Append($" label='{m_label}'");
+                builder.Append(" label='").Append(m_label).Append("'");
             if (!string.IsNullOrEmpty(m_description))
-                builder.Append($" description='{m_description}'");
-            builder.Append($" display='{m_display}'");
+                builder.Append(" description='").Append(m_description).Append("'");
+            builder.Append(" display='").Append(m_display).Append("'");
             return builder.ToString();
         }
     }

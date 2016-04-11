@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace FluentTc.Locators
 {
@@ -33,9 +30,9 @@ namespace FluentTc.Locators
             var builder = new StringBuilder();
             builder.Append("checkbox");
             if (!string.IsNullOrEmpty(m_checkedValue))
-                builder.Append($" checkedValue='{m_checkedValue}'");
+                builder.Append(" checkedValue='").Append(m_checkedValue).Append("'");
             if (!string.IsNullOrEmpty(m_uncheckedValue))
-                builder.Append($" uncheckedValue='{m_uncheckedValue}'");
+                builder.Append(" uncheckedValue='").Append(m_uncheckedValue).Append("'");
             return builder.ToString();
         }
     }

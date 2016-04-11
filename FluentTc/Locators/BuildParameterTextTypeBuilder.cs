@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace FluentTc.Locators
 {
@@ -52,11 +49,11 @@ namespace FluentTc.Locators
         {
             var builder = new StringBuilder();
             builder.Append("text");
-            builder.Append($" validationMode='{m_mode}'");
+            builder.Append(" validationMode='").Append(m_mode).Append("'");
             if (!string.IsNullOrEmpty(m_regexp))
-                builder.Append($" regexp='{m_regexp}'");
+                builder.Append(" regexp='").Append(m_regexp).Append("'");
             if (!string.IsNullOrEmpty(m_message))
-                builder.Append($" validationMessage='{m_message}'");
+                builder.Append(" validationMessage='").Append(m_message).Append("'");
             return builder.ToString();
         }
     }

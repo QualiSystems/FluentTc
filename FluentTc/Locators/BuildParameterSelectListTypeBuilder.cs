@@ -57,13 +57,13 @@ namespace FluentTc.Locators
             {
                 builder.Append(" multiple='true'");
                 if (!string.IsNullOrEmpty(m_separator))
-                    builder.Append($" valueSeparator='{m_separator}'");
+                    builder.Append(" valueSeparator='").Append(m_separator).Append("'");
             }
             for (var i = 0; i < m_values.Count; i++)
             {
                 if (!string.IsNullOrEmpty(m_values[i].Item1))
-                    builder.Append($" label_{i + 1}='{m_values[i].Item1}'");
-                builder.Append($" data_{i + 1}='{m_values[i].Item2}'");
+                    builder.Append(" label_").Append(i + 1).Append("='").Append(m_values[i].Item1).Append("'");
+                builder.Append(" data_").Append(i + 1).Append("='").Append(m_values[i].Item2).Append("'");
             }
             return builder.ToString();
         }
