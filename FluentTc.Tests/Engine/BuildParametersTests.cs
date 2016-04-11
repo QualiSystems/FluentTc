@@ -231,5 +231,67 @@ namespace FluentTc.Tests.Engine
             // Assert
             isTeamCityMode.Should().BeTrue();
         }
+
+        [Test]
+        public void IsPersonal_ParameterMissing_False()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns("some file content");
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsPersonal;
+
+            // Assert
+            isTeamCityMode.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsPersonal_ParameterExistsWithValueTrue_True()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns("some file content");
+
+            var propertiesFileParser = fixture.Freeze<IPropertiesFileParser>();
+            var dictionary = new Dictionary<string, string> {{"build.is.personal", "true"}};
+
+            A.CallTo(() => propertiesFileParser.ParsePropertiesFile(A<string>._))
+                .Returns(dictionary);
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsPersonal;
+
+            // Assert
+            isTeamCityMode.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsPersonal_ParameterExistsWithValueFalse_False()
+        {
+            // Arrange
+            var fixture = Auto.Fixture();
+            var teamCityBuildPropertiesFileRetriever = fixture.Freeze<ITeamCityBuildPropertiesFileRetriever>();
+            A.CallTo(() => teamCityBuildPropertiesFileRetriever.GetTeamCityBuildPropertiesFilePath()).Returns("some file content");
+
+            var propertiesFileParser = fixture.Freeze<IPropertiesFileParser>();
+            var dictionary = new Dictionary<string, string> { { "build.is.personal", "false" } };
+            A.CallTo(() => propertiesFileParser.ParsePropertiesFile(A<string>._))
+                .Returns(dictionary);
+
+            var parameters = fixture.Create<BuildParameters>();
+
+            // Act
+            var isTeamCityMode = parameters.IsPersonal;
+
+            // Assert
+            isTeamCityMode.Should().BeFalse();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace FluentTc.Engine
         bool IsTeamCityMode { get; }
         bool IsPersonal { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
-        bool TryGetBuildParameter(string parameterName, out string parameterValue);
+        bool TryGetBuildParameter<T>(string parameterName, out T parameterValue);
     }
 
     internal class BuildParameters : IBuildParameters
@@ -142,7 +142,11 @@ namespace FluentTc.Engine
 
         public bool IsPersonal
         {
-            get { return GetBuildParameter<bool>("build.is.personal"); }
+            get
+            {
+                bool isPersonal;
+                return TryGetBuildParameter("build.is.personal", out isPersonal) && isPersonal;
+            }
         }
 
         public void SetBuildParameter(string parameterName, string parameterValue)
@@ -156,9 +160,17 @@ namespace FluentTc.Engine
             m_TeamCityWriter.WriteBuildParameter(parameterName, parameterValue);
         }
 
-        public bool TryGetBuildParameter(string parameterName, out string parameterValue)
+        public bool TryGetBuildParameter<T>(string parameterName, out T parameterValue)
         {
-            return m_Parameters.TryGetValue(parameterName, out parameterValue);
+            string stringValue;
+            var parameterFound = m_Parameters.TryGetValue(parameterName, out stringValue);
+            if (!parameterFound)
+            {
+                parameterValue = default(T);
+                return false;
+            }
+            parameterValue = UniversalTypeConverter.StringToType<T>(stringValue);
+            return true;
         }
     }
 }
