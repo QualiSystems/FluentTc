@@ -7,14 +7,15 @@ namespace FluentTc.Samples
 {
     internal static class Program
     {
-        private const string TeamCityHost = "";
-        private static readonly string Username = "";
-        private static readonly string Password = "";
+        private const string TeamCityHost = "tc";
+        private static readonly string Username = "buser";
+        private static readonly string Password = "qaz$9512";
 
         private static void Main(string[] args)
         {
             #region RemoteTc
 
+            //GetBuildConfigurationParameters();
             GetLastSuccessfulBuildsForEachConfigurationWithChanges("Trunk_Ci_FastCi");
 
             PrintEnabledAuthorizedDisconnectedAgents();
@@ -45,6 +46,13 @@ namespace FluentTc.Samples
             new RemoteTc()
                 .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
                 .DeleteBuildConfigurationParameter(_ => _.Id("buildConfigId"), __ => __.ParameterName("parameter.name"));
+        }
+
+        private static void GetBuildConfigurationParameters()
+        {
+            var buildConfiguration = new RemoteTc()
+                .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
+                .GetBuildConfiguration(_ => _.Id("Trunk_Green_Ci_Compile"));
         }
 
         private static void DeleteProjectParameter()

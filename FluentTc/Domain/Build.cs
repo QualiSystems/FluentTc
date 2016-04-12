@@ -8,7 +8,7 @@ namespace FluentTc.Domain
     {
         long Id { get; }
         string Number { get; }
-        BuildStatus Status { get; }
+        BuildStatus? Status { get; }
         DateTime StartDate { get; }
         DateTime FinishDate { get; }
         DateTime QueuedDate { get; }
@@ -30,10 +30,10 @@ namespace FluentTc.Domain
         private readonly string m_Number;
         private readonly DateTime m_QueuedDate;
         private readonly DateTime m_StartDate;
-        private readonly BuildStatus m_Status;
+        private readonly BuildStatus? m_Status;
         private readonly string m_WebUrl;
 
-        public Build(long id, string number, BuildStatus status, DateTime startDate, DateTime finishDate,
+        public Build(long id, string number, BuildStatus? status, DateTime startDate, DateTime finishDate,
             DateTime queuedDate, BuildConfiguration buildConfiguration, Agent agent, List<Change> changes, string webUrl)
         {
             m_Id = id;
@@ -58,7 +58,7 @@ namespace FluentTc.Domain
             get { return m_Number; }
         }
 
-        public BuildStatus Status
+        public BuildStatus? Status
         {
             get { return m_Status; }
         }

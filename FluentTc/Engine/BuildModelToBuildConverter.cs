@@ -35,8 +35,9 @@ namespace FluentTc.Engine
                 buildModel.Agent, changes, buildModel.WebUrl);
         }
 
-        private static BuildStatus ConvertBuildStatus(BuildModel buildModel)
+        private static BuildStatus? ConvertBuildStatus(BuildModel buildModel)
         {
+            if (string.IsNullOrEmpty(buildModel.Status)) return null;
             return (BuildStatus)Enum.Parse(typeof(BuildStatus), UppercaseFirst(buildModel.Status));
         }
 
