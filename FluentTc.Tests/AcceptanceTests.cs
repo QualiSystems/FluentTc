@@ -178,7 +178,9 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetBuildConfigurationParameters(_ => _.Name("FluentTc"), p => p.Parameter("name", "newVal", "select data_1='lol' display='normal'"));
+            connectedTc.SetBuildConfigurationParameters(
+                _ => _.Name("FluentTc"), 
+                p => p.Parameter("name", "newVal", "select data_1='lol' display='normal'"));
 
             // Assert
             A.CallTo(

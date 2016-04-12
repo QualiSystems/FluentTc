@@ -15,6 +15,7 @@ namespace FluentTc.Samples
         {
             #region RemoteTc
 
+            GetBuildConfigurationParameters();
             GetLastSuccessfulBuildsForEachConfigurationWithChanges("Trunk_Ci_FastCi");
 
             PrintEnabledAuthorizedDisconnectedAgents();
@@ -45,6 +46,13 @@ namespace FluentTc.Samples
             new RemoteTc()
                 .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
                 .DeleteBuildConfigurationParameter(_ => _.Id("buildConfigId"), __ => __.ParameterName("parameter.name"));
+        }
+
+        private static void GetBuildConfigurationParameters()
+        {
+            var buildConfiguration = new RemoteTc()
+                .Connect(_ => _.ToHost(TeamCityHost).AsUser(Username, Password))
+                .GetBuildConfiguration(_ => _.Id("Trunk_Green_Ci_Compile"));
         }
 
         private static void DeleteProjectParameter()

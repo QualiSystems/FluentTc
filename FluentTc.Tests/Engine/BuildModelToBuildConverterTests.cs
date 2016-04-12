@@ -72,5 +72,26 @@ namespace FluentTc.Tests.Engine
             builds.Single().Status.Should().Be(BuildStatus.Success);
             builds.Single().BuildConfiguration.Id.Should().Be("bt2");
         }
+
+        [Test]
+        public void ConvertToBuilds_StatusIsNull_StatusIsNull()
+        {
+            var buildModelToBuildConverter = new BuildModelToBuildConverter();
+            var buildWrapper = new BuildWrapper
+            {
+                Build = new List<BuildModel> {new BuildModel
+                {
+                    Status = null,
+                    BuildType = new BuildConfiguration { Id = "bt2"},
+                    BuildTypeId = "WRONG"
+                }},
+                Count = "1"
+            };
+            var builds = buildModelToBuildConverter.ConvertToBuilds(buildWrapper);
+
+            // Assert
+            builds.Single().Status.HasValue.Should().BeFalse();
+            builds.Single().BuildConfiguration.Id.Should().Be("bt2");
+        }
     }
 }
