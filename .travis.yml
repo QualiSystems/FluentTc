@@ -1,0 +1,11 @@
+language: csharp
+solution: FluentTc.sln
+
+install:
+  - sudo apt-get install -y gtk-sharp2
+  - nuget restore FluentTc.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+
+script:
+  - xbuild /p:Configuration=Release FluentTc.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./FluentTc.Tests/bin/Release/FluentTc.Tests.dll
