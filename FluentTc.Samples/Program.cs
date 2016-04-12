@@ -7,15 +7,15 @@ namespace FluentTc.Samples
 {
     internal static class Program
     {
-        private const string TeamCityHost = "tc";
-        private static readonly string Username = "buser";
-        private static readonly string Password = "qaz$9512";
+        private const string TeamCityHost = "";
+        private static readonly string Username = "";
+        private static readonly string Password = "";
 
         private static void Main(string[] args)
         {
             #region RemoteTc
 
-            //GetBuildConfigurationParameters();
+            GetBuildConfigurationParameters();
             GetLastSuccessfulBuildsForEachConfigurationWithChanges("Trunk_Ci_FastCi");
 
             PrintEnabledAuthorizedDisconnectedAgents();
