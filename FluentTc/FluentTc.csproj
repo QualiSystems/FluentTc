@@ -105,6 +105,7 @@
     <Compile Include="Domain\RoleWrapper.cs" />
     <Compile Include="Domain\SnapshotDependencies.cs" />
     <Compile Include="Domain\SnapshotDependency.cs" />
+    <Compile Include="Domain\BuildStatistics.cs" />
     <Compile Include="Domain\Test.cs" />
     <Compile Include="Domain\TestOccurrence.cs" />
     <Compile Include="Domain\TestOccurrenceWrapper.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Engine\ProjectCreator.cs" />
     <Compile Include="Engine\ChangesRetriever.cs" />
     <Compile Include="Engine\PropertiesFileParser.cs" />
+    <Compile Include="Engine\BuildStatisticsRetriever.cs" />
     <Compile Include="Engine\TeamCityBuildPropertiesFileRetriever.cs" />
     <Compile Include="Engine\TeamCityWriterFactory.cs" />
     <Compile Include="Engine\UniversalTypeConverter.cs" />

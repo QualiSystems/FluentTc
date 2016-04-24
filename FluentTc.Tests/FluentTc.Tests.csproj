@@ -134,6 +134,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteTcTests.cs" />
     <Compile Include="AgentsRetrieverTests.cs" />
+    <Compile Include="Engine\BuildStatisticsRetrieverTests.cs" />
     <Compile Include="TestingTools\EmbeddedResourceReader.cs" />
   </ItemGroup>
   <ItemGroup>
