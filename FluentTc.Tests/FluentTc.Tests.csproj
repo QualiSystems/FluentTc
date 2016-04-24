@@ -108,6 +108,7 @@
     <Compile Include="Engine\BuildModelToBuildConverterTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
+    <Compile Include="Engine\BuildStatisticConverterTests.cs" />
     <Compile Include="Engine\ChangesRetrieverTests.cs" />
     <Compile Include="Engine\ChangedFilesParserTests.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilderTests.cs" />
