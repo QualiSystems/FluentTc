@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace FluentTc.Tests.Engine
 {
     [TestFixture]
-    public class StatisticsRetrieverTests
+    public class BuildStatisticsRetrieverTests
     {
         [Test]
         public void GetStatistics_ByBuild_ShouldReturnZeroResults()
