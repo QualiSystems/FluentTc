@@ -108,6 +108,7 @@
     <Compile Include="Engine\BuildModelToBuildConverterTests.cs" />
     <Compile Include="Engine\BuildParametersTests.cs" />
     <Compile Include="Engine\BuildQueueRemoverTests.cs" />
+    <Compile Include="Engine\BuildStatisticConverterTests.cs" />
     <Compile Include="Engine\ChangesRetrieverTests.cs" />
     <Compile Include="Engine\ChangedFilesParserTests.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilderTests.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Locators\BuildConfigurationHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildIncludeBuilderTests.cs" />
+    <Compile Include="Locators\BuildParameterTypeBuilderFormatTests.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilderTests.cs" />
     <Compile Include="Locators\BuildQueueIdHavingBuilderTests.cs" />
     <Compile Include="Locators\ChangesHavingBuilderTests.cs" />

@@ -142,7 +142,12 @@ namespace FluentTc
         /// <param name="parameterName">Parameter name to be deleted</param>
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> buildConfigurationOrTemplate, Action<IBuildParameterHavingBuilder> parameterName);
 
-        BuildStatistics GetBuildStatistics(Action<IBuildHavingBuilder> having);
+        /// <summary>
+        /// Retrieves build statistics according to the provided build criteria
+        /// </summary>
+        /// <param name="having">Build criteria</param>
+        /// <returns>List of build statistics</returns>
+        IList<IBuildStatistic> GetBuildStatistics(Action<IBuildHavingBuilder> having);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -438,9 +443,14 @@ namespace FluentTc
             m_BuildConfigurationRetriever.DeleteBuildConfigurationParameter(buildConfigurationOrTemplate, parameterName);
         }
 
-        public BuildStatistics GetBuildStatistics(Action<IBuildHavingBuilder> having)
+        /// <summary>
+        /// Retrieves build statistics according to the provided build criteria
+        /// </summary>
+        /// <param name="having">Build criteria</param>
+        /// <returns>List of build statistics</returns>
+        public IList<IBuildStatistic> GetBuildStatistics(Action<IBuildHavingBuilder> having)
         {
-            return m_StatisticsRetriever.GetStatistics(having);
+            return m_StatisticsRetriever.GetBuildStatistics(having);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FluentTc.Domain;
 using FluentTc.Locators;
 
@@ -9,25 +7,29 @@ namespace FluentTc.Engine
 {
     internal interface IBuildStatisticsRetriever
     {
-        BuildStatistics GetStatistics(Action<IBuildHavingBuilder> having);
+        IList<IBuildStatistic> GetBuildStatistics(Action<IBuildHavingBuilder> having);
     }
     internal class BuildStatisticsRetriever : IBuildStatisticsRetriever
     {
         private readonly ITeamCityCaller m_Caller;
         private readonly IBuildHavingBuilderFactory m_BuildHavingBuilderFactory;
+        private readonly IBuildStatisticConverter m_BuildStatisticConverter;
 
-        public BuildStatisticsRetriever(ITeamCityCaller caller, IBuildHavingBuilderFactory buildHavingBuilderFactory)
+        public BuildStatisticsRetriever(ITeamCityCaller caller, IBuildHavingBuilderFactory buildHavingBuilderFactory, IBuildStatisticConverter buildStatisticConverter)
         {
             m_Caller = caller;
             m_BuildHavingBuilderFactory = buildHavingBuilderFactory;
+            m_BuildStatisticConverter = buildStatisticConverter;
         }
 
-        public BuildStatistics GetStatistics(Action<IBuildHavingBuilder> having)
+        public IList<IBuildStatistic> GetBuildStatistics(Action<IBuildHavingBuilder> having)
         {
             var buildHavingBuilder = m_BuildHavingBuilderFactory.CreateBuildHavingBuilder();
             having(buildHavingBuilder);
             var locator = buildHavingBuilder.GetLocator();
-            return m_Caller.GetFormat<BuildStatistics>("/app/rest/builds/{0}/statistics", locator);
+            var buildStatisticsModel = m_Caller.GetFormat<BuildStatisticsModel>("/app/rest/builds/{0}/statistics", locator);
+
+            return m_BuildStatisticConverter.Convert(buildStatisticsModel);
         }
     }
 }

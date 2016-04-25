@@ -73,6 +73,74 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void GetLastBuild_OneBuild_ThantBuild()
+        {
+            // Arrange
+            Action<IBuildHavingBuilder> having = _ => _.AgentName("Bond");
+
+            var fixture = Auto.Fixture();
+            var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
+            var build = A.Fake<IBuild>();
+            A.CallTo(() => build.Id).Returns(123);
+
+            A.CallTo(
+                () => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
+                .Returns(new List<IBuild>(new[] {build}));
+            A.CallTo(() => buildsRetriever.GetBuild(123)).Returns(build);
+
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            var actualBuild = connectedTc.GetLastBuild(having);
+
+            // Assert
+            actualBuild.Should().Be(build);
+        }
+
+        [Test]
+        public void GetLastBuild_IncludeChangedFiles_BuildContainsChangesWithFiles()
+        {
+            // Arrange
+            Action<IBuildHavingBuilder> having = _ => _.AgentName("Bond");
+
+            var fixture = Auto.Fixture();
+            var buildsRetriever = fixture.Freeze<IBuildsRetriever>();
+            var build = A.Fake<IBuild>();
+            A.CallTo(() => build.Id).Returns(123);
+            A.CallTo(() => build.SetChanges(A<List<Change>>._)).Invokes(a =>
+            {
+                var changes = (List<Change>)a.Arguments[0];
+                var fakedBuild = (IBuild)a.FakedObject;
+                A.CallTo(() => fakedBuild.Changes).Returns(changes);
+            });
+
+            A.CallTo(
+                () => buildsRetriever.GetBuilds(having, A<Action<ICountBuilder>>._, A<Action<IBuildIncludeBuilder>>._))
+                .Returns(new List<IBuild>(new[] {build}));
+            A.CallTo(() => buildsRetriever.GetBuild(123)).Returns(build);
+
+            var changesRetriever = fixture.Freeze<IChangesRetriever>();
+            A.CallTo(
+                () =>
+                    changesRetriever.GetChanges(A<Action<IChangesHavingBuilder>>._, A<Action<IChangesIncludeBuilder>>._))
+                .Returns(new List<Change>()
+                {
+                    new Change {Files = new FileWrapper {File = new List<File>
+                    {
+                        new File{relativefile = "modifiedFile.cs"}
+                    }}}
+                });
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            var actualBuild = connectedTc.GetLastBuild(having, _=>_.IncludeChanges(__=>__.IncludeFiles()));
+
+            // Assert
+            actualBuild.Should().Be(build);
+            build.Changes.Single().Files.File.Single().relativefile.Should().Be("modifiedFile.cs");
+        }
+
+        [Test]
         public void GetBuild_TwoBuilds_MoreThanOneBuildFoundExceptionThrown()
         {
             // Arrange
@@ -120,12 +188,16 @@ namespace FluentTc.Tests
         public void GetBuildStatistics_ProjectWithChildProjectAndConfiguration_Retrieved()
         {
             // Arrange
-            var mockStatistics = new BuildStatistics { Count = "1", Property = new List<Property> { new Property { Name = "TestName", Value = "TestValue" } } };
+            var statistics = new List<IBuildStatistic>()
+            {
+                new BuildStatistic("TestName", "TestValue")
+            };
+
             Action<IBuildHavingBuilder> having = _ => _.Id(123);
-            
+
             var fixture = Auto.Fixture();
             var statisticsRetriever = fixture.Freeze<IBuildStatisticsRetriever>();
-            A.CallTo(() => statisticsRetriever.GetStatistics(having)).Returns(mockStatistics);
+            A.CallTo(() => statisticsRetriever.GetBuildStatistics(having)).Returns(statistics);
 
             var connectedTc = fixture.Create<ConnectedTc>();
 
@@ -133,9 +205,8 @@ namespace FluentTc.Tests
             var buildStatistics = connectedTc.GetBuildStatistics(having);
 
             // Assert
-            Assert.AreEqual("1", buildStatistics.Count);
-            Assert.AreEqual(mockStatistics.Property[0].Name, buildStatistics.Property[0].Name);
-            Assert.AreEqual(mockStatistics.Property[0].Value, buildStatistics.Property[0].Value);
+            buildStatistics.Single().Name.Should().Be("TestName");
+            buildStatistics.Single().Value.Should().Be("TestValue");
         }
     }
 }
