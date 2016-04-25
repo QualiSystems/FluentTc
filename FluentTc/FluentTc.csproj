@@ -169,7 +169,9 @@
     <Compile Include="Locators\BuildConfigurationHavingBuilderFactory.cs" />
     <Compile Include="Locators\BuildHavingBuilder.cs" />
     <Compile Include="Locators\BuildHavingBuilderFactory.cs" />
+    <Compile Include="Locators\BuildParameterCheckboxTypeBuilder.cs" />
     <Compile Include="Locators\BuildParametersBuilder.cs" />
+    <Compile Include="Locators\BuildParameterTextTypeBuilder.cs" />
     <Compile Include="Locators\BuildParameterValueBuilder.cs" />
     <Compile Include="Locators\BuildProjectHavingBuilder.cs" />
     <Compile Include="Locators\BuildIncludeBuilder.cs" />
@@ -181,6 +183,8 @@
     <Compile Include="Locators\BuildAdditionalIncludeBuilder.cs" />
     <Compile Include="Locators\ChangesHavingBuilder.cs" />
     <Compile Include="Locators\ChangesIncludeBuilder.cs" />
+    <Compile Include="Locators\BuildParameterTypeBuilder.cs" />
+    <Compile Include="Locators\BuildParameterSelectListTypeBuilder.cs" />
     <Compile Include="Locators\LocatorBuilder.cs" />
     <Compile Include="Locators\QueueHavingBuilder.cs" />
     <Compile Include="Locators\AgentHavingBuilder.cs" />
