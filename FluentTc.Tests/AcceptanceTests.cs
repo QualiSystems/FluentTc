@@ -329,7 +329,6 @@ namespace FluentTc.Tests
         }
         
         [Test]
-        [Ignore("Ignore")]
         public void RunBuildConfiguration_WithComment()
         {
             // Arrange
