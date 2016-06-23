@@ -208,6 +208,33 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void RunBuildConfiguration_WithComment()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, "comment!");
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build>
+<buildType id=""bt2""/>
+<comment><text>comment!</text></comment>
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
         [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationName()
         {
