@@ -751,7 +751,7 @@ namespace FluentTc.Tests
             A.CallTo(() => teamCityCaller.GetDownloadFormat(A<Action<string>>.Ignored, "/app/rest/builds/id:{0}/artifacts/content/{1}", 123, "Logs.zip")).MustHaveHappened();
         }
 
-        private static ITeamCityCaller CreateTeamCityCaller()
+        private static TeamCityCaller CreateTeamCityCaller()
         {
             var teamCityCaller = A.Fake<TeamCityCaller>();
             A.CallTo(() => teamCityCaller.GetFormat<User>(A<string>._, A<object[]>._)).CallsBaseMethod();
