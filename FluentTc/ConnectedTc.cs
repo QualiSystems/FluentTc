@@ -105,6 +105,8 @@ namespace FluentTc
 
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
 
+        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, string comment);
+
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having,
             string buildConfigurationName);
 
@@ -291,6 +293,11 @@ namespace FluentTc
             Action<IBuildParameterValueBuilder> parameters)
         {
             m_BuildConfigurationRunner.Run(having, parameters: parameters);
+        }
+
+        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, string comment)
+        {
+            m_BuildConfigurationRunner.Run(having, comment: comment);
         }
 
         public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,

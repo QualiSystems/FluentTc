@@ -10,7 +10,7 @@ namespace FluentTc.Engine
 {
     internal interface IBuildConfigurationRunner
     {
-        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null);
+        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null, string comment = null);
     }
 
     internal class BuildConfigurationRunner : IBuildConfigurationRunner
@@ -26,11 +26,11 @@ namespace FluentTc.Engine
             m_AgentsRetriever = agentsRetriever;
         }
 
-        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null)
+        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null, string comment = null)
         {
             var agentId = GetAgentId(onAgent);
             var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
-            var body = CreateTriggerBody(buildConfiguration.Id, agentId, GetProperties(parameters));
+            var body = CreateTriggerBody(buildConfiguration.Id, agentId, GetProperties(parameters), comment);
             m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
         }
 
@@ -49,7 +49,7 @@ namespace FluentTc.Engine
             return buildParameterValueBuilder.GetParameters();
         }
 
-        private static string CreateTriggerBody(string buildConfigId, int? agentId, List<Property> properties = null)
+        private static string CreateTriggerBody(string buildConfigId, int? agentId, List<Property> properties = null, string comment = null)
         {
             var bodyBuilder = new StringBuilder();
             bodyBuilder.Append(@"<build>").AppendLine()
@@ -58,6 +58,11 @@ namespace FluentTc.Engine
             if (agentId.HasValue)
             {
                 bodyBuilder.AppendFormat(@"<agent id=""{0}""/>", agentId).AppendLine();
+            }
+
+            if (comment != null)
+            {
+                bodyBuilder.AppendFormat(@"<comment><text>{0}</text></comment>", comment).AppendLine();
             }
 
             if (properties != null && properties.Any())
