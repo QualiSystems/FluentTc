@@ -221,7 +221,7 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
 
             // Act
-            connectedTc.RunBuildConfiguration(having, "comment!");
+            connectedTc.RunBuildConfiguration(having, options => options.WithComment("comment!"));
 
             // Assert
             A.CallTo(
@@ -229,6 +229,114 @@ namespace FluentTc.Tests
                     teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 <comment><text>comment!</text></comment>
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void RunBuildConfiguration_WithCommentAndPersonal()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, options => options.WithComment("comment!").AsPersonal());
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build personal=""true"">
+<buildType id=""bt2""/>
+<comment><text>comment!</text></comment>
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void RunBuildConfiguration_WithCommentAndPersonalAndCleanSources()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, options => options.WithComment("comment!").AsPersonal().WithCleanSources());
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build personal=""true"">
+<buildType id=""bt2""/>
+<comment><text>comment!</text></comment>
+<triggeringOptions cleanSources=""true"" />
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void RunBuildConfiguration_Personal_CleanSources_QueueTop()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, options => options.WithCleanSources().QueueAtTop());
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build>
+<buildType id=""bt2""/>
+<triggeringOptions cleanSources=""true"" queueAtTop=""true"" />
+</build>
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void RunBuildConfiguration()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having);
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(@"<build>
+<buildType id=""bt2""/>
 </build>
 ", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
                         .MustHaveHappened(Repeated.Exactly.Once);
