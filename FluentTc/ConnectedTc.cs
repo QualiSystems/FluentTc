@@ -105,6 +105,8 @@ namespace FluentTc
 
         void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
 
+        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, string comment);
+
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having,
             string buildConfigurationName);
 
