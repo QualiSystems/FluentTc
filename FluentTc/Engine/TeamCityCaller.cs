@@ -28,7 +28,7 @@ namespace FluentTc.Engine
 
         T Get<T>(string urlPart);
 
-        T Post<T>(string data, string contenttype, string urlPart, string accept);
+        T PostByType<T>(string data, string contenttype, string urlPart, string accept);
 
         bool Authenticate(string urlPart);
 
@@ -60,7 +60,7 @@ namespace FluentTc.Engine
 
         public virtual T PostFormat<T>(object data, string contenttype, string accept, string urlPart, params object[] parts)
         {
-            return Post<T>(data.ToString(), contenttype, string.Format(urlPart, parts), accept);
+            return PostByType<T>(data.ToString(), contenttype, string.Format(urlPart, parts), accept);
         }
 
         public virtual void PostFormat(object data, string contenttype, string urlPart, params object[] parts)
@@ -177,7 +177,7 @@ namespace FluentTc.Engine
             return response;
         }
 
-        public T Post<T>(string data, string contenttype, string urlPart, string accept)
+        public T PostByType<T>(string data, string contenttype, string urlPart, string accept)
         {
             return Post(data, contenttype, urlPart, accept).StaticBody<T>();
         }
