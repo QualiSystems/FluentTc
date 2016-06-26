@@ -338,12 +338,11 @@ namespace FluentTc.Tests
                     teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 </build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]
-        [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationName()
         {
             // Arrange
@@ -364,12 +363,11 @@ namespace FluentTc.Tests
                     teamCityCaller.Post(@"<build>
 <buildType id=""bt2""/>
 </build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]
-        [Ignore("Ignore")]
         public void RunBuildConfiguration_ConfigurationNameWithParameters()
         {
             // Arrange
@@ -393,12 +391,11 @@ namespace FluentTc.Tests
 <property name=""param1"" value=""value1""/>
 </properties>
 </build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]
-        [Ignore("Ignore")]
         public void RunBuildConfiguration_OnAgentName()
         {
             // Arrange
@@ -425,12 +422,11 @@ namespace FluentTc.Tests
 <buildType id=""bt2""/>
 <agent id=""9""/>
 </build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]
-        [Ignore("Ignore")]
         public void RunBuildConfiguration_OnAgentNameWithParameters()
         {
             // Arrange
@@ -459,7 +455,7 @@ namespace FluentTc.Tests
 <property name=""param1"" value=""value1""/>
 </properties>
 </build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", string.Empty))
+", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
