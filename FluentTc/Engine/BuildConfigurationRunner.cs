@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using EasyHttp.Http;
 using FluentTc.Domain;
@@ -87,7 +88,8 @@ namespace FluentTc.Engine
             if (moreOptions != null &&
                 moreOptions.GetComment() != null)
             {
-                bodyBuilder.AppendFormat(@"<comment><text>{0}</text></comment>", moreOptions.GetComment()).AppendLine();
+                var encodedName = SecurityElement.Escape(moreOptions.GetComment());
+                bodyBuilder.AppendFormat(@"<comment><text>{0}</text></comment>", encodedName).AppendLine();
             }
 
             if (moreOptions != null &&

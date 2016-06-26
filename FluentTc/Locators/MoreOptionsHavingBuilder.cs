@@ -13,7 +13,7 @@ namespace FluentTc.Locators
         IMoreOptionsHavingBuilder WithComment(string comment);
     }
 
-    public class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
+    internal class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
     {
         private string m_Comment;
         private readonly TriggeringOptions m_TriggeringOptions;

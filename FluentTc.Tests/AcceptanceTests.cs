@@ -230,6 +230,30 @@ namespace FluentTc.Tests
                     HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
+        
+        [Test]
+        public void RunBuildConfiguration_WithComment_SpecialCharacters()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            connectedTc.RunBuildConfiguration(having, options => options.WithComment("comment<HAHA>"));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n<comment><text>comment&lt;HAHA&gt;</text></comment>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
 
         [Test]
         public void RunBuildConfiguration_WithCommentAndPersonal()
