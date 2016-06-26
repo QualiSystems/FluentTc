@@ -226,11 +226,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-<comment><text>comment!</text></comment>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n<comment><text>comment!</text></comment>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -253,11 +250,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build personal=""true"">
-<buildType id=""bt2""/>
-<comment><text>comment!</text></comment>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                    teamCityCaller.Post("<build personal=\"true\">\r\n<buildType id=\"bt2\"/>\r\n<comment><text>comment!</text></comment>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -280,12 +274,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build personal=""true"">
-<buildType id=""bt2""/>
-<comment><text>comment!</text></comment>
-<triggeringOptions cleanSources=""true"" />
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                    teamCityCaller.Post("<build personal=\"true\">\r\n<buildType id=\"bt2\"/>\r\n<comment><text>comment!</text></comment>\r\n<triggeringOptions cleanSources=\"true\" />\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -308,11 +298,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-<triggeringOptions cleanSources=""true"" queueAtTop=""true"" />
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n<triggeringOptions cleanSources=\"true\" queueAtTop=\"true\" />\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", ""))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -335,10 +322,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, A<string>.Ignored, A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -360,10 +345,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -385,13 +368,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-<properties>
-<property name=""param1"" value=""value1""/>
-</properties>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n<properties>\r\n<property name=\"param1\" value=\"value1\"/>\r\n</properties>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -418,11 +396,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-<agent id=""9""/>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n<agent id=\"9\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
@@ -448,14 +423,8 @@ namespace FluentTc.Tests
             // Assert
             A.CallTo(
                 () =>
-                    teamCityCaller.Post(@"<build>
-<buildType id=""bt2""/>
-<agent id=""9""/>
-<properties>
-<property name=""param1"" value=""value1""/>
-</properties>
-</build>
-", HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
+                    teamCityCaller.Post("<build>\r\n<buildType id=\"bt2\"/>\r\n<agent id=\"9\"/>\r\n<properties>\r\n<property name=\"param1\" value=\"value1\"/>\r\n</properties>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildQueue", A<string>.Ignored))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
 
