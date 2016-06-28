@@ -24,6 +24,22 @@ var builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
 
 For more examples and documentation read the [Wiki](https://github.com/QualiSystems/FluentTc/wiki)
 
+## Contributors
+Boris Modylevsky [@borismod](https://github.com/borismod)
+Tomer Cohen [@TCDooM](https://github.com/TCDooM)
+Igor Olikh [@igoro1975](https://github.com/igoro1975)
+Derrick Wood [@asmoran](https://github.com/asmoran)
+sokolovsv90 [@sokolovsv90](https://github.com/sokolovsv90)
+Tomer Admon [@TomerAdmon](https://github.com/TomerAdmon)
+
+## Versioning
+FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
+
+## Project State
+The project is stable and works in production in a few organizations. It has a growing community of users and contributors.
+Although we are happy with its current state, we'd like to hear what you think. We are asking to spend a few minutes and fill this survey:
+[FluentTc survey](http://goo.gl/forms/42U7MvVFStoieQaB3)
+
 ## License
 [Apache License 2.0](https://github.com/QualiSystems/FluentTc/blob/master/LICENSE)
 
