@@ -115,6 +115,7 @@
     <Compile Include="Engine\ProjectsRetrieverTests.cs" />
     <Compile Include="Engine\PropertiesFileParserTests.cs" />
     <Compile Include="Engine\UniversalTypeConverterTests.cs" />
+    <Compile Include="Helpers\InfoBuildTestsExtensionTests.cs" />
     <Compile Include="LocalTcTests.cs" />
     <Compile Include="Locators\AgentHavingBuilderTests.cs" />
     <Compile Include="Locators\Auto.cs" />

@@ -16,6 +16,7 @@ namespace FluentTc.Domain
         Agent Agent { get; }
         List<Change> Changes { get; }
         string WebUrl { get; }
+        string StatusText { get; }
         void SetChanges(List<Change> changes);
         void SetBuildConfiguration(BuildConfiguration buildConfiguration);
     }

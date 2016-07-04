@@ -6,7 +6,7 @@ namespace FluentTc.Helpers
 {
     public static class InfoBuildTestsExtension
     {
-        public static TestInfo GetTestInfo(this Build build)
+        public static TestInfo GetTestInfo(this IBuild build)
         {
             if (build == null)
                 throw new ArgumentNullException("build");
@@ -21,17 +21,17 @@ namespace FluentTc.Helpers
             var result = new TestInfo();
             foreach (var item in statusSplit)
             {
-                var testRecordInfo = ParseTestRecord(item.Trim());
+                var testRecordInfo = ParseTestRecord(item);
                 if (testRecordInfo != null)
                 {
-                    switch (testRecordInfo.Name)
+                    switch (testRecordInfo.Name.ToLower())
                     {
-                        case "passed":
-                            result.Passed = testRecordInfo.Count;
-                            break;
                         case "failed":
                             result.Failed = testRecordInfo.Count;
                             result.FailedNew = testRecordInfo.CountNew;
+                            break;
+                        case "passed":
+                            result.Passed = testRecordInfo.Count;
                             break;
                         case "muted":
                             result.Muted = testRecordInfo.Count;
@@ -50,12 +50,17 @@ namespace FluentTc.Helpers
             var match = TestRecordRegex.Value.Match(testSplit);
             if (!match.Success)
                 return null;
-            return new TestRecordInfo
+            var testRecordInfo = new TestRecordInfo
             {
-                Name = match.Groups["name"].Value.ToLower(),
-                Count = int.Parse(match.Groups["count"].Value),
-                CountNew = int.Parse(match.Groups["countNew"].Value)
+                Name = match.Groups["name"].Value,
+                Count = int.Parse(match.Groups["count"].Value)
             };
+            if (match.Groups["countNew"].Success)
+            {
+                testRecordInfo.CountNew = int.Parse(match.Groups["countNew"].Value);
+            }
+
+            return testRecordInfo;
         }
 
         private class TestRecordInfo
