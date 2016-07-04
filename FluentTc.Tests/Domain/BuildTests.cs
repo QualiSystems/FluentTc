@@ -16,7 +16,7 @@ namespace FluentTc.Tests.Domain
             // Arrange
             var build = new Build(1, "2", BuildStatus.Success, new DateTime(), new DateTime(), new DateTime(), null,
                 null,
-                new List<Change>(), "");
+                new List<Change>(), "", BuildState.Finished);
 
             // Act
             build.SetBuildConfiguration(new BuildConfiguration {Id = "ConfigId"});
