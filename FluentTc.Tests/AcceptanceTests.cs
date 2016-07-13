@@ -543,7 +543,11 @@ namespace FluentTc.Tests
             var build = connectedTc.RunBuildConfiguration(having);
 
             // Assert
-            build.Id.Should().Be(123);
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>("<build>\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue", A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Should().NotBe(null);
             build.Id.ShouldBeEquivalentTo(123);
             build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
         }
