@@ -11,7 +11,7 @@ namespace FluentTc.Engine
 {
     internal interface IBuildConfigurationRunner
     {
-        void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null,
+        IBuild Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null,
             Action<IMoreOptionsHavingBuilder> moreOptions = null);
     }
 
@@ -20,22 +20,30 @@ namespace FluentTc.Engine
         private readonly IBuildConfigurationRetriever m_BuildConfigurationRetriever;
         private readonly ITeamCityCaller m_TeamCityCaller;
         private readonly IAgentsRetriever m_AgentsRetriever;
+        private readonly IBuildModelToBuildConverter m_BuildModelToBuildConverter;
 
-        public BuildConfigurationRunner(IBuildConfigurationRetriever buildConfigurationRetriever, ITeamCityCaller teamCityCaller, IAgentsRetriever agentsRetriever)
+        public BuildConfigurationRunner(IBuildConfigurationRetriever buildConfigurationRetriever,
+            ITeamCityCaller teamCityCaller,
+            IAgentsRetriever agentsRetriever,
+            IBuildModelToBuildConverter buildModelToBuildConverter
+            )
         {
             m_BuildConfigurationRetriever = buildConfigurationRetriever;
             m_TeamCityCaller = teamCityCaller;
             m_AgentsRetriever = agentsRetriever;
+            m_BuildModelToBuildConverter = buildModelToBuildConverter;
         }
 
-        public void Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null,
+        public IBuild Run(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent = null, Action<IBuildParameterValueBuilder> parameters = null,
             Action<IMoreOptionsHavingBuilder> moreOptionsAction = null)
         {
             var agentId = GetAgentId(onAgent);
             var buildConfiguration = m_BuildConfigurationRetriever.GetSingleBuildConfiguration(having);
             var moreOptions = GetMoreOptions(moreOptionsAction);
             var body = CreateTriggerBody(buildConfiguration.Id, agentId, GetProperties(parameters), moreOptions);
-            m_TeamCityCaller.PostFormat(body, HttpContentTypes.ApplicationXml, "/app/rest/buildQueue");
+            var buildModel = m_TeamCityCaller.PostFormat<BuildModel>(body, HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue");
+            var build = m_BuildModelToBuildConverter.ConvertToBuild(buildModel);
+            return build;
         }
 
         private static MoreOptionsHavingBuilder GetMoreOptions(Action<IMoreOptionsHavingBuilder> moreOptionsAction)
