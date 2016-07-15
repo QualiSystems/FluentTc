@@ -95,6 +95,23 @@ namespace FluentTc.Tests.Engine
         }
 
         [Test]
+        public void ConvertToBuild()
+        {
+            var buildModelToBuildConverter = new BuildModelToBuildConverter();
+            var buildModel = new BuildModel
+            {
+                Status = "FAILURE",
+                BuildType = new BuildConfiguration {Id = "bt2"},
+                BuildTypeId = "bt2"
+            };
+            var build = buildModelToBuildConverter.ConvertToBuild(buildModel);
+
+            // Assert
+            build.Status.Should().Be(BuildStatus.Failure);
+            build.BuildConfiguration.Id.Should().Be("bt2");
+        }
+
+        [Test]
         public void ConvertToBuilds_BuildProperties()
         {
             var buildModelToBuildConverter = new BuildModelToBuildConverter();
