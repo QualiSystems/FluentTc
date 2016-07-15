@@ -67,8 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\InfoBuildTestsExtension.cs" />
-    <Compile Include="Helpers\TestInfo.cs" />
     <Compile Include="Locators\MoreOptionsHavingBuilder.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Domain\AgentPool.cs" />
