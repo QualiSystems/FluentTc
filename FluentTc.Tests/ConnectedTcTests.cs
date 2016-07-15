@@ -208,5 +208,20 @@ namespace FluentTc.Tests
             buildStatistics.Single().Name.Should().Be("TestName");
             buildStatistics.Single().Value.Should().Be("TestValue");
         }
+
+        [Test]
+        public void RunBuildConfiguration_BuildResponse()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var fixture = Auto.Fixture();
+            var connectedTc = fixture.Create<ConnectedTc>();
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having);
+
+            // Assert
+            build.Should().NotBe(null);
+        }
     }
 }
