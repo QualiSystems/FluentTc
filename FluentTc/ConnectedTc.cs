@@ -95,17 +95,17 @@ namespace FluentTc
             Action<IBuildParameterValueBuilder> parameters);
         void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
 
-        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
+        IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
             Action<IBuildParameterValueBuilder> parameters);
 
-        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent);
+        IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent);
 
-        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent,
+        IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent,
             Action<IBuildParameterValueBuilder> parameters);
 
-        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
+        IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
 
-        void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IMoreOptionsHavingBuilder> moreOptions);
+        IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IMoreOptionsHavingBuilder> moreOptions);
 
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having,
             string buildConfigurationName);
@@ -289,32 +289,32 @@ namespace FluentTc
             m_ProjectPropertySetter.SetProjectParameters(having, parameters);
         }
 
-        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
+        public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
             Action<IBuildParameterValueBuilder> parameters)
         {
-            m_BuildConfigurationRunner.Run(having, parameters: parameters);
+            return m_BuildConfigurationRunner.Run(having, parameters: parameters);
         }
 
-        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
+        public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
             Action<IAgentHavingBuilder> onAgent)
         {
-            m_BuildConfigurationRunner.Run(having, onAgent);
+            return m_BuildConfigurationRunner.Run(having, onAgent);
         }
 
-        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IMoreOptionsHavingBuilder> moreOptions)
+        public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IMoreOptionsHavingBuilder> moreOptions)
         {
-            m_BuildConfigurationRunner.Run(having, moreOptions: moreOptions);
+            return m_BuildConfigurationRunner.Run(having, moreOptions: moreOptions);
         }
 
-        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
+        public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
             Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters)
         {
-            m_BuildConfigurationRunner.Run(having, onAgent, parameters);
+            return m_BuildConfigurationRunner.Run(having, onAgent, parameters);
         }
 
-        public void RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)
+        public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)
         {
-            m_BuildConfigurationRunner.Run(having);
+            return m_BuildConfigurationRunner.Run(having);
         }
 
         public BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having,
