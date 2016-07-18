@@ -18,7 +18,7 @@ namespace FluentTc.Domain
 
         public BuildConfiguration BuildType { get; set; }
         public Agent Agent { get; set; }
-        public TestOccurrences TestOccurrences { get; set; }
+        public ITestOccurrences TestOccurrences { get; set; }
         public ChangesList LastChanges { get; set; }
         public ChangesWrapper Changes { get; set; }
         public List<Change> BuildChanges { get; set; }

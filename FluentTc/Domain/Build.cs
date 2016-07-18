@@ -14,7 +14,7 @@ namespace FluentTc.Domain
         DateTime QueuedDate { get; }
         BuildConfiguration BuildConfiguration { get; }
         Agent Agent { get; }
-        TestOccurrences TestOccurrences { get; }
+        ITestOccurrences TestOccurrences { get; }
         List<Change> Changes { get; }
         string WebUrl { get; }
         void SetChanges(List<Change> changes);
@@ -33,11 +33,11 @@ namespace FluentTc.Domain
         private readonly DateTime m_StartDate;
         private readonly BuildStatus? m_Status;
         private readonly string m_WebUrl;
-        private TestOccurrences m_TestOccurrences;
+        private ITestOccurrences m_TestOccurrences;
 
         public Build(long id, string number, BuildStatus? status, DateTime startDate, DateTime finishDate,
             DateTime queuedDate, BuildConfiguration buildConfiguration, Agent agent, List<Change> changes, string webUrl,
-            TestOccurrences testOccurrences)
+            ITestOccurrences testOccurrences)
         {
             m_Id = id;
             m_Number = number;
@@ -92,7 +92,7 @@ namespace FluentTc.Domain
             get { return m_Agent; }
         }
 
-        public TestOccurrences TestOccurrences
+        public ITestOccurrences TestOccurrences
         {
             get { return m_TestOccurrences; }
         }

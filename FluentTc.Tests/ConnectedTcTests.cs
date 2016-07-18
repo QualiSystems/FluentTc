@@ -221,7 +221,7 @@ namespace FluentTc.Tests
             var build = connectedTc.RunBuildConfiguration(having);
 
             // Assert
-            build.Should().NotBe(null);
+            build.Should().NotBeNull();
         }
     }
 }

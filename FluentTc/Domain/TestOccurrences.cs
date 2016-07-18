@@ -1,6 +1,17 @@
 namespace FluentTc.Domain
 {
-    public class TestOccurrences
+    public interface ITestOccurrences
+    {
+        int Count { get; }
+        string Href { get; }
+        int Passed { get; }
+        int Failed { get; }
+        int NewFailed { get; }
+        int Muted { get; }
+        int Ignored { get; }
+    }
+
+    public class TestOccurrences : ITestOccurrences
     {
         public int Count { get; set; }
 

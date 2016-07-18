@@ -138,7 +138,7 @@ namespace FluentTc.Tests
             var build = connectedTc.GetBuild(123);
 
             // Assert
-            build.TestOccurrences.Should().NotBe(null);
+            build.TestOccurrences.Should().NotBeNull();
             build.TestOccurrences.Count.Should().Be(13);
             build.TestOccurrences.Href.Should().Be("/app/rest/testOccurrences?locator=build:(id:123)");
             build.TestOccurrences.Passed.Should().Be(1);
@@ -585,7 +585,7 @@ namespace FluentTc.Tests
                 teamCityCaller.PostFormat<BuildModel>("<build>\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
                     HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue", A<object[]>.Ignored))
                 .MustHaveHappened(Repeated.Exactly.Once);
-            build.Should().NotBe(null);
+            build.Should().NotBeNull();
             build.Id.ShouldBeEquivalentTo(123);
             build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
         }
@@ -612,7 +612,7 @@ namespace FluentTc.Tests
             var build = connectedTc.RunBuildConfiguration(having, p => p.Parameter("param1", "value1"));
 
             // Assert
-            build.Should().NotBe(null);
+            build.Should().NotBeNull();
             build.Id.ShouldBeEquivalentTo(123);
             build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
         }
