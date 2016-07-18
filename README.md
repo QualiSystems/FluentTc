@@ -31,7 +31,7 @@ For more examples and documentation read the [Wiki](https://github.com/QualiSyst
 * Derrick Wood [@asmoran](https://github.com/asmoran)
 * sokolovsv90 [@sokolovsv90](https://github.com/sokolovsv90)
 * Tomer Admon [@TomerAdmon](https://github.com/TomerAdmon)
-* nex-54 [@nex-54](https://github.com/nex-54)
+* Artem Kuznetsov [@nex-54](https://github.com/nex-54)
 
 ## Versioning
 FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
