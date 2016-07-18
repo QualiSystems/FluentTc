@@ -16,6 +16,7 @@ namespace FluentTc.Domain
         Agent Agent { get; }
         List<Change> Changes { get; }
         string WebUrl { get; }
+        Properties Properties { get; }
         void SetChanges(List<Change> changes);
         void SetBuildConfiguration(BuildConfiguration buildConfiguration);
     }
@@ -32,9 +33,11 @@ namespace FluentTc.Domain
         private readonly DateTime m_StartDate;
         private readonly BuildStatus? m_Status;
         private readonly string m_WebUrl;
+        private readonly Properties m_Properties;
 
         public Build(long id, string number, BuildStatus? status, DateTime startDate, DateTime finishDate,
-            DateTime queuedDate, BuildConfiguration buildConfiguration, Agent agent, List<Change> changes, string webUrl)
+            DateTime queuedDate, BuildConfiguration buildConfiguration, Agent agent, List<Change> changes, string webUrl,
+            Properties properties)
         {
             m_Id = id;
             m_Number = number;
@@ -46,6 +49,7 @@ namespace FluentTc.Domain
             m_Agent = agent;
             m_Changes = changes;
             m_WebUrl = webUrl;
+            m_Properties = properties;
         }
 
         public long Id
@@ -96,6 +100,11 @@ namespace FluentTc.Domain
         public string WebUrl
         {
             get { return m_WebUrl; }
+        }
+
+        public Properties Properties
+        {
+            get { return m_Properties; }
         }
 
         public void SetChanges(List<Change> changes)
