@@ -22,5 +22,6 @@ namespace FluentTc.Domain
         public ChangesList LastChanges { get; set; }
         public ChangesWrapper Changes { get; set; }
         public List<Change> BuildChanges { get; set; }
+        public Properties Properties { get; set; }
     }
 }
