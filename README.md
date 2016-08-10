@@ -12,8 +12,8 @@ __install-package FluentTc__
 
 # Example 
 
-Connects to TeamCity using guest account and retrieves build from FluentTc build configuration with all its branches, 
-including StatusText, StartDate and FinishDate with paging taking 10 builds starting from the 30th build.
+Connects to TeamCity using guest account and retrieves builds from the [FluentTc](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc_FluentTcDevelop) build configuration with all its branches, 
+with additional build properties, such as StatusText, StartDate and FinishDate; with paging taking 10 builds starting from the 30th build.
 
 ```C#
 IList<IBuild> builds =
