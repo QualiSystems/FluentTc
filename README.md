@@ -11,15 +11,19 @@ Or from Nuget Package Manager Console:
 __install-package FluentTc__
 
 # Example 
+
+Connects to TeamCity using guest account and retrieves builds from the [FluentTc](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc_FluentTcDevelop) build configuration with all its branches, 
+with additional build properties, such as StatusText, StartDate and FinishDate; with paging taking 10 builds starting from the 30th build.
+
 ```C#
-var builds = new RemoteTc().Connect(_ => _.ToHost("tc"))
-    .GetBuilds(
-        _ => _.BuildConfiguration(x => x.Id("bt2"))
-              .NotPersonal()
-              .NotRunning()
-              .Branch(_ => _.NotBranched()), 
-        _ => _.Start(10).Count(5),
-        _ => _.IncludeStartDate().IncludeFinishDate());
+IList<IBuild> builds =
+    new RemoteTc().Connect(h => h.ToHost("teamcity.codebetter.com").AsGuest())
+        .GetBuilds(b =>
+            b.BuildConfiguration(c =>
+                c.Id("FluentTc_FluentTcDevelop"))
+                .Branch(r => r.Branched()),
+            i => i.IncludeStatusText().IncludeStartDate().IncludeFinishDate(), 
+            p => p.Start(30).Count(10));
 ```
 
 For more examples and documentation read the [Wiki](https://github.com/QualiSystems/FluentTc/wiki)
