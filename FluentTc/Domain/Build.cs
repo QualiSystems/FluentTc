@@ -15,8 +15,10 @@ namespace FluentTc.Domain
         DateTime QueuedDate { get; }
         BuildConfiguration BuildConfiguration { get; }
         Agent Agent { get; }
+        ITestOccurrences TestOccurrences { get; }
         List<Change> Changes { get; }
         string WebUrl { get; }
+        Properties Properties { get; }
         void SetChanges(List<Change> changes);
         void SetBuildConfiguration(BuildConfiguration buildConfiguration);
     }
@@ -34,10 +36,12 @@ namespace FluentTc.Domain
         private readonly BuildStatus? m_Status;
         private readonly BuildState? m_State;
         private readonly string m_WebUrl;
+        private readonly Properties m_Properties;
+        private ITestOccurrences m_TestOccurrences;
 
         public Build(long id, string number, BuildStatus? status, DateTime startDate, DateTime finishDate,
             DateTime queuedDate, BuildConfiguration buildConfiguration, Agent agent, List<Change> changes, string webUrl,
-            BuildState? state)
+            Properties properties, ITestOccurrences testOccurrences, BuildState? state)
         {
             m_Id = id;
             m_Number = number;
@@ -48,8 +52,10 @@ namespace FluentTc.Domain
             m_QueuedDate = queuedDate;
             m_BuildConfiguration = buildConfiguration;
             m_Agent = agent;
+            m_TestOccurrences = testOccurrences;
             m_Changes = changes;
             m_WebUrl = webUrl;
+            m_Properties = properties;
         }
 
         public long Id
@@ -97,6 +103,11 @@ namespace FluentTc.Domain
             get { return m_Agent; }
         }
 
+        public ITestOccurrences TestOccurrences
+        {
+            get { return m_TestOccurrences; }
+        }
+
         public List<Change> Changes
         {
             get { return m_Changes; }
@@ -105,6 +116,11 @@ namespace FluentTc.Domain
         public string WebUrl
         {
             get { return m_WebUrl; }
+        }
+
+        public Properties Properties
+        {
+            get { return m_Properties; }
         }
 
         public void SetChanges(List<Change> changes)

@@ -33,7 +33,7 @@ namespace FluentTc.Engine
                 ConvertBuildStatus(buildModel),
                 buildModel.StartDate, buildModel.FinishDate, buildModel.QueuedDate, buildConfiguration,
                 buildModel.Agent, changes, buildModel.WebUrl,
-                ConvertBuildState(buildModel));
+                buildModel.Properties, buildModel.TestOccurrences, ConvertBuildState(buildModel));
         }
 
         private static BuildStatus? ConvertBuildStatus(BuildModel buildModel)

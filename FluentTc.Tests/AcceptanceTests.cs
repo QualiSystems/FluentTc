@@ -108,8 +108,46 @@ namespace FluentTc.Tests
 
             // Assert
             build.Id.Should().Be(123);
-        }        
-        
+        }
+
+        [Test]
+        public void GetBuildFullResponse_TestOccurrences_Build()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(() => teamCityCaller.Get<BuildModel>("/app/rest/builds/id:123")).Returns(
+                new BuildModel
+                {
+                    Id = 123,
+                    Status = "SUCCESS",
+                    TestOccurrences = new TestOccurrences
+                    {
+                        Count = 13,
+                        Href = "/app/rest/testOccurrences?locator=build:(id:123)",
+                        Passed = 1,
+                        NewFailed = 2,
+                        Failed = 3,
+                        Muted = 4,
+                        Ignored = 5,
+                    }
+                });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var build = connectedTc.GetBuild(123);
+
+            // Assert
+            build.TestOccurrences.Should().NotBeNull();
+            build.TestOccurrences.Count.Should().Be(13);
+            build.TestOccurrences.Href.Should().Be("/app/rest/testOccurrences?locator=build:(id:123)");
+            build.TestOccurrences.Passed.Should().Be(1);
+            build.TestOccurrences.NewFailed.Should().Be(2);
+            build.TestOccurrences.Failed.Should().Be(3);
+            build.TestOccurrences.Muted.Should().Be(4);
+            build.TestOccurrences.Ignored.Should().Be(5);
+        }
+
         [Test]
         public void GetBuilds_BuildConfigurationName()
         {
