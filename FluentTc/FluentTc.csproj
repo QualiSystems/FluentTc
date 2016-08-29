@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\TestOccurrences.cs" />
+    <Compile Include="Locators\BuildState.cs" />
     <Compile Include="Locators\MoreOptionsHavingBuilder.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Domain\AgentPool.cs" />

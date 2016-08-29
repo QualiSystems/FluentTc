@@ -618,6 +618,32 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void RunBuildConfiguration_BuildResponse_StateQueued()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Id("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build>\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue", A<object[]>.Ignored))
+                .Returns(new BuildModel { Id = 123, State = "queued" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having);
+
+            // Assert
+            build.Should().NotBeNull();
+            build.State.ShouldBeEquivalentTo(BuildState.Queued);
+        }
+
+        [Test]
         public void GetBuildConfigurations_ByName()
         {
             // Arrange

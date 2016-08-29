@@ -133,5 +133,39 @@ namespace FluentTc.Tests.Engine
             builds.Single().Properties.Property.Single().Name.Should().Be("Property1");
             builds.Single().Properties.Property.Single().Value.Should().Be("Value1");
         }
+
+        [Test]
+        public void ConvertToBuilds_State()
+        {
+            var buildModelToBuildConverter = new BuildModelToBuildConverter();
+            var buildWrapper = new BuildWrapper
+            {
+                Build = new List<BuildModel>
+                {
+                    new BuildModel
+                    {
+                        Id = 1,
+                        State = "Queued"
+                    },
+                    new BuildModel
+                    {
+                        Id = 2,
+                        State = "running"
+                    },
+                    new BuildModel
+                    {
+                        Id = 3,
+                        State = "FINISHED"
+                    }
+                },
+                Count = "3"
+            };
+            var builds = buildModelToBuildConverter.ConvertToBuilds(buildWrapper);
+
+            // Assert
+            builds.Single(_ => _.Id == 1).State.Should().Be(BuildState.Queued);
+            builds.Single(_ => _.Id == 2).State.Should().Be(BuildState.Running);
+            builds.Single(_ => _.Id == 3).State.Should().Be(BuildState.Finished);
+        }
     }
 }
