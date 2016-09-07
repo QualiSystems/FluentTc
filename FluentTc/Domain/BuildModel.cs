@@ -8,6 +8,7 @@ namespace FluentTc.Domain
         public long Id { get; set; }
         public string Number { get; set; }
         public string Status { get; set; }
+        public string State { get; set; }
         public string BuildTypeId { get; set; }
         public string Href { get; set; }
         public string WebUrl { get; set; }
@@ -18,8 +19,10 @@ namespace FluentTc.Domain
 
         public BuildConfiguration BuildType { get; set; }
         public Agent Agent { get; set; }
+        public TestOccurrences TestOccurrences { get; set; }
         public ChangesList LastChanges { get; set; }
         public ChangesWrapper Changes { get; set; }
         public List<Change> BuildChanges { get; set; }
+        public Properties Properties { get; set; }
     }
 }

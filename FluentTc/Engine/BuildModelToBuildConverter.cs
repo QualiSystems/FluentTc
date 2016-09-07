@@ -33,24 +33,28 @@ namespace FluentTc.Engine
                 ConvertBuildStatus(buildModel),
                 buildModel.StartDate, buildModel.FinishDate, buildModel.QueuedDate, buildConfiguration,
                 buildModel.Agent, changes, buildModel.WebUrl,
+                buildModel.Properties, buildModel.TestOccurrences, ConvertBuildState(buildModel),
                 buildModel.StatusText);
         }
 
         private static BuildStatus? ConvertBuildStatus(BuildModel buildModel)
         {
-            if (string.IsNullOrEmpty(buildModel.Status)) return null;
-            return (BuildStatus)Enum.Parse(typeof(BuildStatus), UppercaseFirst(buildModel.Status));
+            if (buildModel.Status == null)
+                return null;
+            BuildStatus result;
+            if (!Enum.TryParse(buildModel.Status, true, out result))
+                return null;
+            return result;
         }
 
-        static string UppercaseFirst(string s)
+        private static BuildState? ConvertBuildState(BuildModel buildModel)
         {
-            // Check for empty string.
-            if (string.IsNullOrEmpty(s))
-            {
-                return string.Empty;
+            if (buildModel.State == null)
+                return null;
+            BuildState result;
+            if (!Enum.TryParse(buildModel.State, true, out result))
+                return null;
+            return result;
             }
-            // Return char and concat substring.
-            return char.ToUpper(s[0]) + s.Substring(1).ToLower();
         }
-    }
 }

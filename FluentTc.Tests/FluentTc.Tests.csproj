@@ -111,6 +111,7 @@
     <Compile Include="Engine\BuildStatisticConverterTests.cs" />
     <Compile Include="Engine\ChangesRetrieverTests.cs" />
     <Compile Include="Engine\ChangedFilesParserTests.cs" />
+    <Compile Include="Engine\ModelFiltersTest.cs" />
     <Compile Include="Engine\NewProjectDetailsBuilderTests.cs" />
     <Compile Include="Engine\ProjectsRetrieverTests.cs" />
     <Compile Include="Engine\PropertiesFileParserTests.cs" />
