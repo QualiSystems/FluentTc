@@ -31,7 +31,7 @@ IList<IBuild> builds =
 For more examples and documentation read the [Wiki](https://github.com/QualiSystems/FluentTc/wiki)
 
 ## Contributors
-This project would not be possible with the support of [contributors](~/CONTRIBUTORS.md)
+This project would not be possible with the support of [contributors](CONTRIBUTORS.md)
 
 ## Versioning
 FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
