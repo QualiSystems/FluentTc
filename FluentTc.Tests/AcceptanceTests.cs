@@ -492,6 +492,36 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void RunBuildConfiguration_ConfigurationNameWithParametersAndOptions()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build>\r\n<buildType id=\"bt2\"/>\r\n<triggeringOptions queueAtTop=\"true\" />\r\n<properties>\r\n<property name=\"param1\" value=\"value1\"/>\r\n</properties>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue"))
+                .Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having, p => p.Parameter("param1", "value1"), o => o.QueueAtTop());
+
+            // Assert
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build>\r\n<buildType id=\"bt2\"/>\r\n<triggeringOptions queueAtTop=\"true\" />\r\n<properties>\r\n<property name=\"param1\" value=\"value1\"/>\r\n</properties>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue", A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
         public void RunBuildConfiguration_OnAgentName()
         {
             // Arrange
