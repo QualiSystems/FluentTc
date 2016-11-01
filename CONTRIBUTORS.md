@@ -1,4 +1,7 @@
-## Contributors (in order of contribution)
+# Contributors
+
+in order of contribution
+
 * Boris Modylevsky [@borismod](https://github.com/borismod)
 * Tomer Cohen [@TCDooM](https://github.com/TCDooM)
 * Igor Olikh [@igoro1975](https://github.com/igoro1975)
