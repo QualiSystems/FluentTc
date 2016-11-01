@@ -8,7 +8,9 @@ Easy-to-use, readable and comprehensive library for consuming TeamCity REST API.
 Install __FluentTc__ nuget package from from Manage Nuget packages
 
 Or from Nuget Package Manager Console:
-__install-package FluentTc__
+```PS
+install-package FluentTc
+```
 
 # Example 
 
@@ -29,13 +31,7 @@ IList<IBuild> builds =
 For more examples and documentation read the [Wiki](https://github.com/QualiSystems/FluentTc/wiki)
 
 ## Contributors
-* Boris Modylevsky [@borismod](https://github.com/borismod)
-* Tomer Cohen [@TCDooM](https://github.com/TCDooM)
-* Igor Olikh [@igoro1975](https://github.com/igoro1975)
-* Derrick Wood [@asmoran](https://github.com/asmoran)
-* sokolovsv90 [@sokolovsv90](https://github.com/sokolovsv90)
-* Tomer Admon [@TomerAdmon](https://github.com/TomerAdmon)
-* Artem Kuznetsov [@nex-54](https://github.com/nex-54)
+This project would not be possible with the support of [contributors](~/CONTRIBUTORS.md)
 
 ## Versioning
 FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
