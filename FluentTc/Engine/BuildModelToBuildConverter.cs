@@ -25,7 +25,16 @@ namespace FluentTc.Engine
 
         public IBuild ConvertToBuild(BuildModel buildModel)
         {
-            var changes = buildModel.LastChanges != null ? buildModel.LastChanges.Change : new List<Change>();
+            List<Change> changes = new List<Change>();
+
+            if (buildModel.LastChanges != null)
+            {
+                changes = buildModel.LastChanges.Change;
+            } 
+            else if (buildModel.Revisions != null)
+            {
+                changes = buildModel.Revisions.Revision;
+            }
 
             var buildConfiguration = buildModel.BuildType ?? new BuildConfiguration { Id = buildModel.BuildTypeId };
 

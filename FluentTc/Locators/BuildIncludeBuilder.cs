@@ -8,6 +8,7 @@ namespace FluentTc.Locators
         IBuildIncludeBuilder IncludeFinishDate();
         IBuildIncludeBuilder IncludeStatusText();
         IBuildIncludeBuilder IncludeDefaults();
+        IBuildIncludeBuilder IncludeRevisions();
     }
 
     public class BuildIncludeBuilder : IBuildIncludeBuilder
@@ -37,6 +38,12 @@ namespace FluentTc.Locators
 
         public IBuildIncludeBuilder IncludeDefaults()
         {
+            return this;
+        }
+
+        public IBuildIncludeBuilder IncludeRevisions()
+        {
+            m_Properties.Add("revisions");
             return this;
         }
 

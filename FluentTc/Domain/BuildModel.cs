@@ -22,6 +22,7 @@ namespace FluentTc.Domain
         public TestOccurrences TestOccurrences { get; set; }
         public ChangesList LastChanges { get; set; }
         public ChangesWrapper Changes { get; set; }
+        public RevisionsWrapper Revisions { get; set; }
         public List<Change> BuildChanges { get; set; }
         public Properties Properties { get; set; }
     }

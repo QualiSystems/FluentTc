@@ -76,5 +76,19 @@ namespace FluentTc.Tests.Locators
             // Assert
             columns.Should().Be("buildTypeId,href,id,number,state,status,webUrl,startDate,finishDate,statusText");
         }
+
+        [Test]
+        public void GetColumns_IncludeRevisions_Formatted()
+        {
+            // Arrange
+            var buildIncludeBuilder = new BuildIncludeBuilder();
+            buildIncludeBuilder.IncludeRevisions();
+
+            // Act
+            var columns = buildIncludeBuilder.GetColumns();
+
+            // Assert
+            columns.Should().Be("buildTypeId,href,id,number,state,status,webUrl,revisions");
+        }
     }
 }
