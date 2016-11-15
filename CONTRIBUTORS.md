@@ -10,3 +10,4 @@ in order of contribution
 * Tomer Admon [@TomerAdmon](https://github.com/TomerAdmon)
 * Artem Kuznetsov [@nex-54](https://github.com/nex-54)
 * Stephen Brown [@evolvedlight](https://github.com/evolvedlight)
+* Tomas Bezouska [@bezysoftware](http://github.com/bezysoftware)
