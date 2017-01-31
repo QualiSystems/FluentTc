@@ -11,3 +11,4 @@ in order of contribution
 * Artem Kuznetsov [@nex-54](https://github.com/nex-54)
 * Stephen Brown [@evolvedlight](https://github.com/evolvedlight)
 * Tomas Bezouska [@bezysoftware](http://github.com/bezysoftware)
+* Pat Hermens [@phermens-coolblue](https://github.com/phermens-coolblue)
