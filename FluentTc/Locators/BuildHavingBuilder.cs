@@ -105,13 +105,13 @@ namespace FluentTc.Locators
 
         public IBuildHavingBuilder Cancelled()
         {
-            m_Having.Add("cancelled:" + bool.TrueString);
+            m_Having.Add("canceled:" + bool.TrueString);
             return this;
         }
 
         public IBuildHavingBuilder NotCancelled()
         {
-            m_Having.Add("cancelled:" + bool.FalseString);
+            m_Having.Add("canceled:" + bool.FalseString);
             return this;
         }
 
