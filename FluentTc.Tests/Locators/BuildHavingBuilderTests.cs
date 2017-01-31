@@ -74,7 +74,7 @@ namespace FluentTc.Tests.Locators
             buildHavingBuilder.Cancelled();
 
             // Assert
-            buildHavingBuilder.GetLocator().Should().Be("cancelled:True");
+            buildHavingBuilder.GetLocator().Should().Be("canceled:True");
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace FluentTc.Tests.Locators
             buildHavingBuilder.NotCancelled();
 
             // Assert
-            buildHavingBuilder.GetLocator().Should().Be("cancelled:False");
+            buildHavingBuilder.GetLocator().Should().Be("canceled:False");
         }
 
         [Test]
