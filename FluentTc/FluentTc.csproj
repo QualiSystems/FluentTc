@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Domain\RevisionsList.cs" />
     <Compile Include="Domain\RevisionsWrapper.cs" />
+    <Compile Include="Domain\SourceBuildType.cs" />
     <Compile Include="Domain\TestOccurrences.cs" />
     <Compile Include="Locators\BuildState.cs" />
     <Compile Include="Locators\MoreOptionsHavingBuilder.cs" />
