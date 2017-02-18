@@ -699,8 +699,35 @@ namespace FluentTc.Tests
             var teamCityCaller = CreateTeamCityCaller();
             A.CallTo(() => teamCityCaller.Get<BuildTypeWrapper>("/app/rest/buildTypes?locator=id:bt123"))
                 .Returns(new BuildTypeWrapper { BuildType = new List<BuildConfiguration>(new[] { new BuildConfiguration { Id = "bt123" } }) });
+            var buildConfigMock = new BuildConfiguration {
+                Id = "bt123",
+                SnapshotDependencies = new SnapshotDependencies
+                {
+                    SnapshotDependency = new List<SnapshotDependency>
+                    {
+                        new SnapshotDependency() { Id = "dep.bt123" }
+                    }
+                },
+                ArtifactDependencies = new ArtifactDependencies
+                {
+                    ArtifactDependency = new List<ArtifactDependency>
+                    {
+                        new ArtifactDependency()
+                        {
+                            Id = "ARTIFACT_DEPENDENCY_1",
+                            SourceBuildType = new SourceBuildType()
+                            {
+                                Id = "buildConfig123",
+                                Name = "Build Config 123",
+                                ProjectId = "proj123",
+                                ProjectName = "Project 123"
+                            }    
+                        }
+                    }
+                }
+            };
             A.CallTo(() => teamCityCaller.Get<BuildConfiguration>("/app/rest/buildTypes/id:bt123"))
-                .Returns(new BuildConfiguration { Id = "bt123", SnapshotDependencies = new SnapshotDependencies { SnapshotDependency = new List<SnapshotDependency>(new[] { new SnapshotDependency() { Id = "dep.bt123" } }) } });
+                .Returns(buildConfigMock);
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
@@ -709,6 +736,12 @@ namespace FluentTc.Tests
 
             // Assert
             buildConfiguration.SnapshotDependencies.SnapshotDependency.Single().Id.Should().Be("dep.bt123");
+            var artifactDependency = buildConfiguration.ArtifactDependencies.ArtifactDependency.Single();
+            artifactDependency.Id.Should().Be("ARTIFACT_DEPENDENCY_1");
+            artifactDependency.SourceBuildType.Id.Should().Be("buildConfig123");
+            artifactDependency.SourceBuildType.Name.Should().Be("Build Config 123");
+            artifactDependency.SourceBuildType.ProjectId.Should().Be("proj123");
+            artifactDependency.SourceBuildType.ProjectName.Should().Be("Project 123");
         }
 
         [Test]
