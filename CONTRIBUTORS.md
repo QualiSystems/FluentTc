@@ -12,3 +12,4 @@ in order of contribution
 * Stephen Brown [@evolvedlight](https://github.com/evolvedlight)
 * Tomas Bezouska [@bezysoftware](http://github.com/bezysoftware)
 * Pat Hermens [@phermens-coolblue](https://github.com/phermens-coolblue)
+* Daniel Dreibrodt [@3breadt](https://github.com/3breadt)
