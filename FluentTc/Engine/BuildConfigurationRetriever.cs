@@ -19,6 +19,7 @@ namespace FluentTc.Engine
         void SetParameters(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
         BuildConfiguration GetSingleBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         void DeleteBuildConfigurationParameter(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildParameterHavingBuilder> parameterName);
+        void SetFields(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildFieldValueBuilder> fields);
     }
 
     internal class BuildConfigurationRetriever : IBuildConfigurationRetriever
@@ -94,6 +95,21 @@ namespace FluentTc.Engine
                     p =>
                         m_TeamCityCaller.PutFormat(writer.Write(p), HttpContentTypes.ApplicationJson,
                             "/app/rest/buildTypes/{0}/parameters/{1}", buildConfigurationHavingBuilder.GetLocator(), p.Name));
+        }
+
+        public void SetFields(Action<IBuildConfigurationHavingBuilder> having, Action<IBuildFieldValueBuilder> fields)
+        {
+            var buildConfigurationHavingBuilder =
+                m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
+            having(buildConfigurationHavingBuilder);
+
+            BuildFieldValueBuilder fieldValueBuilder = new BuildFieldValueBuilder();
+            fields(fieldValueBuilder);
+            fieldValueBuilder.GetFields()
+                .ForEach(
+                    f =>
+                        m_TeamCityCaller.PutFormat(f.Value, HttpContentTypes.TextPlain,
+                            "/app/rest/buildTypes/{0}/{1}", buildConfigurationHavingBuilder.GetLocator(), f.Name));
         }
     }
 }

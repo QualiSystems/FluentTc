@@ -93,6 +93,12 @@ namespace FluentTc
 
         void SetBuildConfigurationParameters(Action<IBuildConfigurationHavingBuilder> having,
             Action<IBuildParameterValueBuilder> parameters);
+        void SetBuildConfigurationField(Action<IBuildConfigurationHavingBuilder> having,
+            Action<IBuildFieldValueBuilder> parameters);
+
+        void SetProjectConfigurationField(Action<IBuildProjectHavingBuilder> having,
+            Action<IBuildProjectFieldValueBuilder> fields);
+
         void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters);
 
         IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having,
@@ -286,6 +292,19 @@ namespace FluentTc
         {
             m_BuildConfigurationRetriever.SetParameters(having, parameters);
         }
+
+        public void SetBuildConfigurationField(Action<IBuildConfigurationHavingBuilder> having,
+            Action<IBuildFieldValueBuilder> fields)
+        {
+            m_BuildConfigurationRetriever.SetFields(having, fields);
+        }
+
+        public void SetProjectConfigurationField(Action<IBuildProjectHavingBuilder> having,
+            Action<IBuildProjectFieldValueBuilder> fields)
+        {
+            m_ProjectsRetriever.SetFields(having, fields);
+        }
+
 
         public void SetProjectParameters(Action<IBuildProjectHavingBuilder> having, Action<IBuildParameterValueBuilder> parameters)
         {

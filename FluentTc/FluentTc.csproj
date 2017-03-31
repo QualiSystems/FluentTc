@@ -71,7 +71,9 @@
     <Compile Include="Domain\RevisionsWrapper.cs" />
     <Compile Include="Domain\SourceBuildType.cs" />
     <Compile Include="Domain\TestOccurrences.cs" />
+    <Compile Include="Locators\BuildProjectFieldValueBuilder.cs" />
     <Compile Include="Locators\BuildState.cs" />
+    <Compile Include="Locators\BuildFieldValueBuilder.cs" />
     <Compile Include="Locators\MoreOptionsHavingBuilder.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Domain\AgentPool.cs" />

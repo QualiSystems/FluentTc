@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentTc.Domain;
 using FluentTc.Locators;
+using EasyHttp.Http;
 
 namespace FluentTc.Engine
 {
@@ -9,6 +10,9 @@ namespace FluentTc.Engine
     {
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having = null);
         Project GetProject(string projectId);
+
+        void SetFields(Action<IBuildProjectHavingBuilder> having, Action<IBuildProjectFieldValueBuilder> fields);
+
     }
 
     internal class ProjectsRetriever : IProjectsRetriever
@@ -39,6 +43,22 @@ namespace FluentTc.Engine
         public Project GetProject(string projectId)
         {
             return m_TeamCityCaller.GetFormat<Project>("/app/rest/projects/id:{0}", projectId);
+        }
+
+        public void SetFields(Action<IBuildProjectHavingBuilder> having, Action<IBuildProjectFieldValueBuilder> fields)
+        {
+            var projectConfigurationHavingBuilder =
+                m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
+            having(projectConfigurationHavingBuilder);
+
+            BuildProjectFieldValueBuilder fieldValueBuilder = new BuildProjectFieldValueBuilder();
+            fields(fieldValueBuilder);
+            fieldValueBuilder.GetFields()
+                .ForEach(
+                    f =>
+                        m_TeamCityCaller.PutFormat(f.Value, HttpContentTypes.TextPlain,
+                            "/app/rest/projects/{0}/{1}", projectConfigurationHavingBuilder.GetLocator(), f.Name));
+
         }
     }
 }

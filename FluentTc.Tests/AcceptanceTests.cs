@@ -1163,5 +1163,137 @@ namespace FluentTc.Tests
             // Assert
             builds.Single().Id.Should().Be(123);
         }
+
+        [Test]
+        [TestCase("A simple description")]
+        [TestCase("")]
+        public void SetProjectDescription(string description)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.Description(description));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put(description,
+                    HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/description", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        [TestCase("A simple description")]
+        [TestCase("")]
+        public void SetBuildDescription(string description)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.Description(description));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put(description,
+                    HttpContentTypes.TextPlain, "/app/rest/buildTypes/id:BuildId/description", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SetProjectArchived(bool archived)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            if (archived)
+                connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.Archived());
+            else
+                connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.NotArchived());
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put(archived.ToString(System.Globalization.CultureInfo.InvariantCulture).ToLower(),
+                    HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/archived", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SetBuildDescription(bool paused)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            if (paused)
+                connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.Paused());
+            else
+                connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.NotPaused());
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put(paused.ToString(System.Globalization.CultureInfo.InvariantCulture).ToLower(),
+                    HttpContentTypes.TextPlain, "/app/rest/buildTypes/id:BuildId/paused", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        [TestCase("A simple name")]
+        [TestCase("")]
+        public void SetProjectName(string name)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.Name(name));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put(name,
+                    HttpContentTypes.TextPlain, "/app/rest/projects/id:ProjectId/name", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        [TestCase("A simple name")]
+        [TestCase("")]
+        public void SetBuildName(string name)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.Name(name));
+
+            // Assert
+            A.CallTo(
+                () =>
+                    teamCityCaller.Put(name,
+                    HttpContentTypes.TextPlain, "/app/rest/buildTypes/id:BuildId/name", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
     }
 }
