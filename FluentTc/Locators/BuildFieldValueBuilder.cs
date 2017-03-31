@@ -8,7 +8,8 @@ namespace FluentTc.Locators
     {
         IBuildFieldValueBuilder Name(string value);
         IBuildFieldValueBuilder Description(string value);
-        IBuildFieldValueBuilder Paused(bool value);
+        IBuildFieldValueBuilder Paused();
+        IBuildFieldValueBuilder NotPaused();
     }
 
     public class BuildFieldValueBuilder: IBuildFieldValueBuilder
@@ -21,13 +22,23 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IBuildFieldValueBuilder Paused(bool value)
+        public IBuildFieldValueBuilder Paused()
         {
             m_Properties.Add(new Property
                 {
                 Name = "paused",
-                Value = value.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+                Value = "true",
                 Type = null });
+            return this;
+        }
+        public IBuildFieldValueBuilder NotPaused()
+        {
+            m_Properties.Add(new Property
+            {
+                Name = "paused",
+                Value = "false",
+                Type = null
+            });
             return this;
         }
 

@@ -1217,7 +1217,10 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.Archived(archived));
+            if (archived)
+                connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.Archived());
+            else
+                connectedTc.SetProjectConfigurationField(_ => _.Id("ProjectId"), __ => __.NotArchived());
 
             // Assert
             A.CallTo(
@@ -1238,7 +1241,10 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.Paused(paused));
+            if (paused)
+                connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.Paused());
+            else
+                connectedTc.SetBuildConfigurationField(_ => _.Id("BuildId"), __ => __.NotPaused());
 
             // Assert
             A.CallTo(

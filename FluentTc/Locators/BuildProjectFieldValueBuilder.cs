@@ -8,7 +8,8 @@ namespace FluentTc.Locators
     {
         IBuildProjectFieldValueBuilder Name(string value);
         IBuildProjectFieldValueBuilder Description(string value);
-        IBuildProjectFieldValueBuilder Archived(bool value);
+        IBuildProjectFieldValueBuilder Archived();
+        IBuildProjectFieldValueBuilder NotArchived();
     }
 
     public class BuildProjectFieldValueBuilder: IBuildProjectFieldValueBuilder
@@ -21,13 +22,24 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IBuildProjectFieldValueBuilder Archived(bool value)
+        public IBuildProjectFieldValueBuilder Archived()
         {
             m_Properties.Add(new Property
                 {
                 Name = "archived",
-                Value = value.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+                Value = "true",
                 Type = null });
+            return this;
+        }
+
+        public IBuildProjectFieldValueBuilder NotArchived()
+        {
+            m_Properties.Add(new Property
+            {
+                Name = "archived",
+                Value = "false",
+                Type = null
+            });
             return this;
         }
 
