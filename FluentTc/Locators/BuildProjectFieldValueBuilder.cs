@@ -17,7 +17,7 @@ namespace FluentTc.Locators
 
         public IBuildProjectFieldValueBuilder Description(string value)
         {
-            m_Properties.Add(new Property { Name = nameof(Description).ToLower(), Value = value, Type = null });
+            m_Properties.Add(new Property { Name = "description", Value = value, Type = null });
             return this;
         }
 
@@ -25,7 +25,7 @@ namespace FluentTc.Locators
         {
             m_Properties.Add(new Property
                 {
-                Name = nameof(Name).ToLower(),
+                Name = "archived",
                 Value = value.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
                 Type = null });
             return this;
@@ -33,7 +33,7 @@ namespace FluentTc.Locators
 
         public IBuildProjectFieldValueBuilder Name(string value)
         {
-            m_Properties.Add(new Property { Name = nameof(Name).ToLower(), Value = value, Type = null });
+            m_Properties.Add(new Property { Name = "name", Value = value, Type = null });
             return this;
         }
 
