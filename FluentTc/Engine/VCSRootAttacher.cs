@@ -26,12 +26,13 @@ namespace FluentTc.Engine
             var buildConfigurationHavingBuilder = m_BuildConfigurationHavingBuilderFactory.CreateBuildConfigurationHavingBuilder();
             having(buildConfigurationHavingBuilder);
 
-            string xmlData = $@"<vcs-root-entry id=""{vcsRoot.Id}"">
-                                    <vcs-root id=""{vcsRoot.Id}"" 
-                                        vcsName=""{vcsRoot.vcsName}""
-                                        href=""{vcsRoot.Href}""/>                    
-                                    <checkout-rules/>
-                                </vcs-root-entry>";
+            string xmlData = string.Format(
+                @"<vcs-root-entry id=""{0}"">
+                    <vcs-root id=""{0}"" 
+                        vcsName=""{1}""
+                        href=""{2}""/>                    
+                    <checkout-rules/>
+                </vcs-root-entry>", vcsRoot.Id, vcsRoot.Id, vcsRoot.vcsName, vcsRoot.Href);
 
             m_TeamCityCaller.PostFormat(xmlData, HttpContentTypes.ApplicationXml, "/app/rest/buildTypes/{0}/vcs-root-entries", buildConfigurationHavingBuilder.GetLocator());
         }

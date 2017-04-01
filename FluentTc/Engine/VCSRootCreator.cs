@@ -34,9 +34,11 @@ namespace FluentTc.Engine
 
             var vcs = gitVCSBuilder.GetVCSRoot();
 
-            string xmlData = $@"<vcs-root id=""{vcs.Id}"" name=""{vcs.Name}"" vcsName=""{vcs.vcsName}"">
-                                    <project id=""{vcs.Project.Id}"" name=""{vcs.Project.Name}"" href=""{vcs.Project.Href}""/>
-                                    <properties count =""{vcs.Properties.Property.Count}"">";
+            string xmlData = string.Format(
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}"">
+                    <project id=""{3}"" name=""{4}"" href=""{5}""/>
+                    <properties count =""{6}"">", 
+                vcs.Id, vcs.Name, vcs.vcsName, vcs.Project.Id, vcs.Project.Name, vcs.Project.Href, vcs.Properties.Property.Count);
 
             foreach (var property in vcs.Properties.Property)
             {
