@@ -167,6 +167,13 @@ namespace FluentTc
         /// <param name="vcsRoot">The VCS root data.</param>
         /// <returns></returns>
         VcsRoot CreateVcsRoot(Project project, Action<IGitVCSRootBuilder> vcsRoot);
+
+        /// <summary>
+        /// Attaches the VCS root to a build configuration.
+        /// </summary>
+        /// <param name="having">The having.</param>
+        /// <param name="vcsRootEntry">The VCS root entry.</param>
+        void AttachVcsRootToBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, VcsRoot vcsRoot);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -189,6 +196,7 @@ namespace FluentTc
         private readonly IProjectPropertySetter m_ProjectPropertySetter;
         private readonly IBuildStatisticsRetriever m_StatisticsRetriever;
         private readonly IVCSRootCreator m_VcsRootCreator;
+        private readonly IVCSRootAttacher m_VcsRootAttacher;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -207,7 +215,8 @@ namespace FluentTc
             IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever,
             IChangesRetriever changesRetriever,
             IBuildStatisticsRetriever statisticsRetriever,
-            IVCSRootCreator vcsRootCreator)
+            IVCSRootCreator vcsRootCreator,
+            IVCSRootAttacher vcsRootAttacher)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -226,7 +235,8 @@ namespace FluentTc
             m_BuildConfigurationTemplateRetriever = buildConfigurationTemplateRetriever;
             m_ChangesRetriever = changesRetriever;
             m_StatisticsRetriever = statisticsRetriever;
-            m_VcsRootCreator = vcsRootCreator; 
+            m_VcsRootCreator = vcsRootCreator;
+            m_VcsRootAttacher = vcsRootAttacher; 
         }
 
         public IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having)
@@ -509,5 +519,16 @@ namespace FluentTc
         {
             return m_VcsRootCreator.Create(project, vcsRoot);
         }
+
+        /// <summary>
+        /// Attaches the VCS root to a build configuration.
+        /// </summary>
+        /// <param name="having">The having.</param>
+        /// <param name="vcsRootEntry">The VCS root entry.</param>
+        public void AttachVcsRootToBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, VcsRoot vcsRoot)
+        {
+            m_VcsRootAttacher.Attach(having, vcsRoot);
+        }
+
     }
 }
