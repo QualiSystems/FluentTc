@@ -18,5 +18,7 @@ namespace FluentTc.Domain
         }
 
         public Properties Properties { get; set; }
+
+        public Project Project { get; set; }
     }
 }

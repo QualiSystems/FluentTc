@@ -159,6 +159,14 @@ namespace FluentTc
         /// <param name="having">Build criteria</param>
         /// <returns>List of build statistics</returns>
         IList<IBuildStatistic> GetBuildStatistics(Action<IBuildHavingBuilder> having);
+
+        /// <summary>
+        /// Creates a VCS root.
+        /// </summary>
+        /// <param name="project">The project that will contain the VCS Root.</param>
+        /// <param name="vcsRoot">The VCS root data.</param>
+        /// <returns></returns>
+        VcsRoot CreateVcsRoot(Project project, Action<IGitVCSRootBuilder> vcsRoot);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -180,6 +188,7 @@ namespace FluentTc
         private readonly IBuildConfigurationTemplateRetriever m_BuildConfigurationTemplateRetriever;
         private readonly IProjectPropertySetter m_ProjectPropertySetter;
         private readonly IBuildStatisticsRetriever m_StatisticsRetriever;
+        private readonly IVCSRootCreator m_VcsRootCreator;
 
         public ConnectedTc(IBuildsRetriever buildsRetriever,
             IAgentsRetriever agentsRetriever,
@@ -197,7 +206,8 @@ namespace FluentTc
             IProjectPropertySetter projectPropertySetter, 
             IBuildConfigurationTemplateRetriever buildConfigurationTemplateRetriever,
             IChangesRetriever changesRetriever,
-            IBuildStatisticsRetriever statisticsRetriever)
+            IBuildStatisticsRetriever statisticsRetriever,
+            IVCSRootCreator vcsRootCreator)
         {
             m_BuildsRetriever = buildsRetriever;
             m_AgentsRetriever = agentsRetriever;
@@ -216,6 +226,7 @@ namespace FluentTc
             m_BuildConfigurationTemplateRetriever = buildConfigurationTemplateRetriever;
             m_ChangesRetriever = changesRetriever;
             m_StatisticsRetriever = statisticsRetriever;
+            m_VcsRootCreator = vcsRootCreator; 
         }
 
         public IList<IBuild> GetBuilds(Action<IBuildHavingBuilder> having)
@@ -486,6 +497,17 @@ namespace FluentTc
         public IList<IBuildStatistic> GetBuildStatistics(Action<IBuildHavingBuilder> having)
         {
             return m_StatisticsRetriever.GetBuildStatistics(having);
+        }
+
+        /// <summary>
+        /// Creates a VCS root.
+        /// </summary>
+        /// <param name="project">The project that will contain the VCS Root.</param>
+        /// <param name="vcsRoot">The VCS root data.</param>
+        /// <returns></returns>
+        public VcsRoot CreateVcsRoot(Project project, Action<IGitVCSRootBuilder> vcsRoot)
+        {
+            return m_VcsRootCreator.Create(project, vcsRoot);
         }
     }
 }
