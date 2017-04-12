@@ -591,6 +591,68 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void RunBuildConfiguration_BranchName()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build branchName=\"develop\">\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue"))
+                .Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having, o => o.BranchName("develop"));
+
+            // Assert
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build branchName=\"develop\">\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, A<string>.Ignored, A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
+        public void RunBuildConfiguration_BranchNameAndPersonal()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build personal=\"true\" branchName=\"develop\">\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue"))
+                .Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having, o => o.BranchName("develop").AsPersonal());
+
+            // Assert
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build personal=\"true\" branchName=\"develop\">\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, A<string>.Ignored, A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
         public void RunBuildConfiguration_BuildResponse()
         {
             // Arrange

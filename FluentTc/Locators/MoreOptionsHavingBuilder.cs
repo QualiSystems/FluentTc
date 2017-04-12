@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Xml;
 
 namespace FluentTc.Locators
 {
@@ -11,11 +9,13 @@ namespace FluentTc.Locators
         IMoreOptionsHavingBuilder QueueAtTop();
         IMoreOptionsHavingBuilder AsPersonal();
         IMoreOptionsHavingBuilder WithComment(string comment);
+        IMoreOptionsHavingBuilder BranchName(string branchName);
     }
 
     internal class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
     {
         private string m_Comment;
+        private string m_BranchName;
         private readonly TriggeringOptions m_TriggeringOptions;
 
         public MoreOptionsHavingBuilder()
@@ -56,9 +56,20 @@ namespace FluentTc.Locators
             return this;
         }
 
+        public IMoreOptionsHavingBuilder BranchName(string branchName)
+        {
+            m_BranchName = branchName;
+            return this;
+        }
+
         public string GetComment()
         {
             return m_Comment;
+        }
+
+        public string GetBranchName()
+        {
+            return m_BranchName;
         }
 
         public TriggeringOptions TriggeringOptions
