@@ -1,5 +1,3 @@
-using System;
-
 namespace FluentTc.Locators
 {
     public interface IMoreOptionsHavingBuilder
@@ -9,7 +7,7 @@ namespace FluentTc.Locators
         IMoreOptionsHavingBuilder QueueAtTop();
         IMoreOptionsHavingBuilder AsPersonal();
         IMoreOptionsHavingBuilder WithComment(string comment);
-        IMoreOptionsHavingBuilder BranchName(string branchName);
+        IMoreOptionsHavingBuilder OnBranch(string branchName);
     }
 
     internal class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
@@ -56,7 +54,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IMoreOptionsHavingBuilder BranchName(string branchName)
+        public IMoreOptionsHavingBuilder OnBranch(string branchName)
         {
             m_BranchName = branchName;
             return this;

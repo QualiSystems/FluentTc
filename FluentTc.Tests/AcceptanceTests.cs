@@ -609,7 +609,7 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
 
             // Act
-            var build = connectedTc.RunBuildConfiguration(having, o => o.BranchName("develop"));
+            var build = connectedTc.RunBuildConfiguration(having, o => o.OnBranch("develop"));
 
             // Assert
             A.CallTo(() =>
@@ -640,7 +640,7 @@ namespace FluentTc.Tests
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
 
             // Act
-            var build = connectedTc.RunBuildConfiguration(having, o => o.BranchName("develop").AsPersonal());
+            var build = connectedTc.RunBuildConfiguration(having, o => o.OnBranch("develop").AsPersonal());
 
             // Assert
             A.CallTo(() =>
