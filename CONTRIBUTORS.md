@@ -14,3 +14,4 @@ in order of contribution
 * Pat Hermens [@phermens-coolblue](https://github.com/phermens-coolblue)
 * Daniel Dreibrodt [@3breadt](https://github.com/3breadt)
 * Polzoni Gilberto [@GibbOne](https://github.com/GibbOne)
+* Jakub Bartkowiak [@gralin](https://github.com/gralin)
