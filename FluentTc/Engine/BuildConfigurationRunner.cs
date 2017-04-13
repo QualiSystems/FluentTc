@@ -85,7 +85,7 @@ namespace FluentTc.Engine
                     bodyBuilder.Append(@" personal=""true""");
                 }
 
-                if (moreOptions.GetBranchName() != null)
+                if (moreOptions.HasBranch())
                 {
                     var encodedName = SecurityElement.Escape(moreOptions.GetBranchName());
                     bodyBuilder.AppendFormat(@" branchName=""{0}""", encodedName);

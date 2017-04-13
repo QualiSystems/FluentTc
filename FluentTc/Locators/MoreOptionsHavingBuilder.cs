@@ -70,6 +70,11 @@ namespace FluentTc.Locators
             return m_BranchName;
         }
 
+        public bool HasBranch()
+        {
+            return !string.IsNullOrEmpty(m_BranchName);
+        }
+
         public TriggeringOptions TriggeringOptions
         {
             get { return m_TriggeringOptions; }
