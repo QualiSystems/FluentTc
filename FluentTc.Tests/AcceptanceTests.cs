@@ -633,6 +633,41 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void RunBuildConfiguration_OnAgentNameWithParametersBranchName()
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build branchName=\"develop\">\r\n<buildType id=\"bt2\"/>\r\n<agent id=\"9\"/>\r\n<properties>\r\n<property name=\"param1\" value=\"value1\"/>\r\n</properties>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue"))
+                .Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+
+            Action<IAgentHavingBuilder> onAgent = p => p.Name("agent1");
+            var agentsRetriever = A.Fake<IAgentsRetriever>();
+            A.CallTo(() => agentsRetriever.GetAgent(onAgent)).Returns(new Agent() { Id = 9 });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever, agentsRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having, onAgent, p => p.Parameter("param1", "value1"), o => o.OnBranch("develop"));
+
+            // Assert
+            A.CallTo(() =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    "<build branchName=\"develop\">\r\n<buildType id=\"bt2\"/>\r\n<agent id=\"9\"/>\r\n<properties>\r\n<property name=\"param1\" value=\"value1\"/>\r\n</properties>\r\n</build>\r\n",
+                    HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, "/app/rest/buildQueue", A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
         public void RunBuildConfiguration_BranchName()
         {
             // Arrange
