@@ -8,6 +8,7 @@ namespace FluentTc.Locators
         IMoreOptionsHavingBuilder AsPersonal();
         IMoreOptionsHavingBuilder WithComment(string comment);
         IMoreOptionsHavingBuilder OnBranch(string branchName);
+        IMoreOptionsHavingBuilder OnChange(long changeId);
     }
 
     internal class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
@@ -15,6 +16,7 @@ namespace FluentTc.Locators
         private string m_Comment;
         private string m_BranchName;
         private readonly TriggeringOptions m_TriggeringOptions;
+        private long m_ChangeId;
 
         public MoreOptionsHavingBuilder()
         {
@@ -60,6 +62,12 @@ namespace FluentTc.Locators
             return this;
         }
 
+        public IMoreOptionsHavingBuilder OnChange(long changeId)
+        {
+            this.m_ChangeId = changeId;
+            return this;
+        }
+
         public string GetComment()
         {
             return m_Comment;
@@ -78,6 +86,11 @@ namespace FluentTc.Locators
         public TriggeringOptions TriggeringOptions
         {
             get { return m_TriggeringOptions; }
+        }
+
+        public long GetChangeId()
+        {
+            return this.m_ChangeId;
         }
     }
 
