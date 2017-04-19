@@ -116,6 +116,9 @@ namespace FluentTc
         IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, 
             Action<IBuildParameterValueBuilder> parameters, Action<IMoreOptionsHavingBuilder> moreOptions);
 
+        IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent,
+            Action<IBuildParameterValueBuilder> parameters, Action<IMoreOptionsHavingBuilder> moreOptions);
+
         BuildConfiguration CreateBuildConfiguration(Action<IBuildProjectHavingBuilder> having,
             string buildConfigurationName);
 
@@ -338,6 +341,12 @@ namespace FluentTc
             Action<IAgentHavingBuilder> onAgent, Action<IBuildParameterValueBuilder> parameters)
         {
             return m_BuildConfigurationRunner.Run(having, onAgent, parameters);
+        }
+
+        public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IAgentHavingBuilder> onAgent,
+            Action<IBuildParameterValueBuilder> parameters, Action<IMoreOptionsHavingBuilder> moreOptions)
+        {
+            return m_BuildConfigurationRunner.Run(having, onAgent, parameters, moreOptions);
         }
 
         public IBuild RunBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having)
