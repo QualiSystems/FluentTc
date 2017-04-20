@@ -401,6 +401,48 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        [TestCase(1234567891023)]
+        public void RunBuildConfiguration_OnChange(long changeId)
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(
+                () =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    string.Format(
+                        "<build>\r\n<buildType id=\"bt2\"/>\r\n<lastChanges>\r\n<change id=\"{0}\"/>\r\n</lastChanges>\r\n</build>\r\n",
+                        changeId),
+                    HttpContentTypes.ApplicationXml,
+                    HttpContentTypes.ApplicationJson,
+                    "/app/rest/buildQueue"))
+                .Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(having, options => options.OnChange(change => change.Id(changeId)));
+
+            // Assert
+            A.CallTo(
+                () =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    string.Format(
+                        "<build>\r\n<buildType id=\"bt2\"/>\r\n<lastChanges>\r\n<change id=\"{0}\"/>\r\n</lastChanges>\r\n</build>\r\n",
+                        changeId),
+                    HttpContentTypes.ApplicationXml,
+                    HttpContentTypes.ApplicationJson,
+                    "/app/rest/buildQueue"))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
         public void RunBuildConfiguration()
         {
             // Arrange
@@ -713,6 +755,116 @@ namespace FluentTc.Tests
                 teamCityCaller.PostFormat<BuildModel>(
                     "<build branchName=\"r&amp;d\">\r\n<buildType id=\"bt2\"/>\r\n</build>\r\n",
                     HttpContentTypes.ApplicationXml, HttpContentTypes.ApplicationJson, A<string>.Ignored, A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
+        [TestCase("param1", "value1", "release", 1234567891023)]
+        public void RunBuildConfiguration_WithParametersBranchNameOnChange(string paramName, string paramValue, string branchName, long changeId)
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(
+                () =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    string.Format(
+                        "<build branchName=\"{0}\">\r\n<buildType id=\"bt2\"/>\r\n<properties>\r\n<property name=\"{1}\" value=\"{2}\"/>\r\n</properties>\r\n<lastChanges>\r\n<change id=\"{3}\"/>\r\n</lastChanges>\r\n</build>\r\n",
+                        branchName,
+                        paramName,
+                        paramValue,
+                        changeId),
+                    HttpContentTypes.ApplicationXml,
+                    HttpContentTypes.ApplicationJson,
+                    "/app/rest/buildQueue")).Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(
+                having,
+                parameters => parameters.Parameter(paramName, paramValue),
+                options => options.OnBranch(branchName).OnChange(change => change.Id(changeId)));
+
+            // Assert
+            A.CallTo(
+                () =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    string.Format(
+                        "<build branchName=\"{0}\">\r\n<buildType id=\"bt2\"/>\r\n<properties>\r\n<property name=\"{1}\" value=\"{2}\"/>\r\n</properties>\r\n<lastChanges>\r\n<change id=\"{3}\"/>\r\n</lastChanges>\r\n</build>\r\n",
+                        branchName,
+                        paramName,
+                        paramValue,
+                        changeId),
+                    HttpContentTypes.ApplicationXml,
+                    HttpContentTypes.ApplicationJson,
+                    "/app/rest/buildQueue",
+                    A<object[]>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+            build.Id.ShouldBeEquivalentTo(123);
+            build.Status.ShouldBeEquivalentTo(BuildStatus.Success);
+        }
+
+        [Test]
+        [TestCase("agent1", "param1", "value1", "release", 1234567891023)]
+        public void RunBuildConfiguration_OnAgentNameWithParametersBranchNameOnChange(string agentName, string paramName, string paramValue, string branchName, long changeId)
+        {
+            // Arrange
+            Action<IBuildConfigurationHavingBuilder> having = _ => _.Name("FluentTc");
+            var teamCityCaller = CreateTeamCityCaller();
+            var buildConfigurationRetriever = A.Fake<IBuildConfigurationRetriever>();
+
+            const int AgentId = 46;
+            Action<IAgentHavingBuilder> onAgent = p => p.Name(agentName);
+            var agentsRetriever = A.Fake<IAgentsRetriever>();
+            A.CallTo(() => agentsRetriever.GetAgent(onAgent)).Returns(new Agent { Id = AgentId });
+
+            A.CallTo(() => buildConfigurationRetriever.GetSingleBuildConfiguration(having))
+                .Returns(new BuildConfiguration { Id = "bt2" });
+            A.CallTo(
+                () =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    string.Format(
+                        "<build branchName=\"{0}\">\r\n<buildType id=\"bt2\"/>\r\n<agent id=\"{1}\"/>\r\n<properties>\r\n<property name=\"{2}\" value=\"{3}\"/>\r\n</properties>\r\n<lastChanges>\r\n<change id=\"{4}\"/>\r\n</lastChanges>\r\n</build>\r\n",
+                        branchName,
+                        AgentId,
+                        paramName,
+                        paramValue,
+                        changeId),
+                    HttpContentTypes.ApplicationXml,
+                    HttpContentTypes.ApplicationJson,
+                    "/app/rest/buildQueue")).Returns(new BuildModel { Id = 123, Status = "SUCCESS" });
+            
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller, buildConfigurationRetriever, agentsRetriever);
+
+            // Act
+            var build = connectedTc.RunBuildConfiguration(
+                having,
+                onAgent,
+                parameters => parameters.Parameter(paramName, paramValue),
+                options => options.OnBranch(branchName).OnChange(change => change.Id(changeId)));
+
+            // Assert
+            A.CallTo(
+                () =>
+                teamCityCaller.PostFormat<BuildModel>(
+                    string.Format(
+                        "<build branchName=\"{0}\">\r\n<buildType id=\"bt2\"/>\r\n<agent id=\"{1}\"/>\r\n<properties>\r\n<property name=\"{2}\" value=\"{3}\"/>\r\n</properties>\r\n<lastChanges>\r\n<change id=\"{4}\"/>\r\n</lastChanges>\r\n</build>\r\n",
+                        branchName,
+                        AgentId,
+                        paramName,
+                        paramValue,
+                        changeId),
+                    HttpContentTypes.ApplicationXml,
+                    HttpContentTypes.ApplicationJson,
+                    "/app/rest/buildQueue",
+                    A<object[]>.Ignored))
                 .MustHaveHappened(Repeated.Exactly.Once);
             build.Id.ShouldBeEquivalentTo(123);
             build.Status.ShouldBeEquivalentTo(BuildStatus.Success);

@@ -145,6 +145,15 @@ namespace FluentTc.Engine
                 bodyBuilder.Append(@"</properties>").AppendLine();
             }
 
+            if (moreOptions != null && moreOptions.HasChangeId())
+            {
+                bodyBuilder.Append(@"<lastChanges>").AppendLine();
+
+                bodyBuilder.AppendFormat(@"<change id=""{0}""/>", moreOptions.GetChangeId()).AppendLine();
+
+                bodyBuilder.Append(@"</lastChanges>").AppendLine();
+            }
+
             bodyBuilder.Append("</build>").AppendLine();
 
             return bodyBuilder.ToString();

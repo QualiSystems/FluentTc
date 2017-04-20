@@ -10,7 +10,7 @@ namespace FluentTc.Domain
         {
             get
             {
-                return Test.IdRegex.Match(this.Href).Groups["id"].Value;
+                return Test.IdRegex.Match(Href).Groups["id"].Value;
             }
         }
 
