@@ -67,7 +67,7 @@ namespace FluentTc.Locators
 
         public IMoreOptionsHavingBuilder OnChange(Action<IOnChangeHavingBuilder> onChangeHavingBuilderAction)
         {
-            onChangeHavingBuilderAction(this.m_OnChangeHavingBuilder);
+            onChangeHavingBuilderAction(m_OnChangeHavingBuilder);
             return this;
         }
 
@@ -93,12 +93,12 @@ namespace FluentTc.Locators
 
         public bool HasChangeId()
         {
-            return this.m_OnChangeHavingBuilder.GetChangeId() != 0;
+            return m_OnChangeHavingBuilder.GetChangeId() != 0;
         }
 
         public long GetChangeId()
         {
-            return this.m_OnChangeHavingBuilder.GetChangeId();
+            return m_OnChangeHavingBuilder.GetChangeId();
         }
     }
 

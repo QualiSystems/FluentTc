@@ -11,13 +11,13 @@
 
         public IOnChangeHavingBuilder Id(long changeId)
         {
-            this.m_ChangeId = changeId;
+            m_ChangeId = changeId;
             return this;
         }
 
         public long GetChangeId()
         {
-            return this.m_ChangeId;
+            return m_ChangeId;
         }
     }
 }
