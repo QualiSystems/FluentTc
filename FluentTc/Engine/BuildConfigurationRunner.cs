@@ -145,7 +145,7 @@ namespace FluentTc.Engine
                 bodyBuilder.Append(@"</properties>").AppendLine();
             }
 
-            if (moreOptions != null && moreOptions.GetChangeId() != 0)
+            if (moreOptions != null && moreOptions.HasChangeId())
             {
                 bodyBuilder.Append(@"<lastChanges>").AppendLine();
 

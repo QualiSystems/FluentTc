@@ -1,5 +1,7 @@
 namespace FluentTc.Locators
 {
+    using System;
+
     public interface IMoreOptionsHavingBuilder
     {
         IMoreOptionsHavingBuilder WithCleanSources();
@@ -8,7 +10,7 @@ namespace FluentTc.Locators
         IMoreOptionsHavingBuilder AsPersonal();
         IMoreOptionsHavingBuilder WithComment(string comment);
         IMoreOptionsHavingBuilder OnBranch(string branchName);
-        IMoreOptionsHavingBuilder OnChange(long changeId);
+        IMoreOptionsHavingBuilder OnChange(Action<IOnChangeHavingBuilder> onChangeHavingBuilderAction);
     }
 
     internal class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
@@ -16,11 +18,12 @@ namespace FluentTc.Locators
         private string m_Comment;
         private string m_BranchName;
         private readonly TriggeringOptions m_TriggeringOptions;
-        private long m_ChangeId;
+        private readonly OnChangeHavingBuilder m_OnChangeHavingBuilder;
 
         public MoreOptionsHavingBuilder()
         {
             m_TriggeringOptions = new TriggeringOptions();
+            m_OnChangeHavingBuilder = new OnChangeHavingBuilder();
         }
 
         public IMoreOptionsHavingBuilder WithCleanSources()
@@ -62,9 +65,9 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IMoreOptionsHavingBuilder OnChange(long changeId)
+        public IMoreOptionsHavingBuilder OnChange(Action<IOnChangeHavingBuilder> onChangeHavingBuilderAction)
         {
-            this.m_ChangeId = changeId;
+            onChangeHavingBuilderAction(this.m_OnChangeHavingBuilder);
             return this;
         }
 
@@ -88,9 +91,14 @@ namespace FluentTc.Locators
             get { return m_TriggeringOptions; }
         }
 
+        public bool HasChangeId()
+        {
+            return this.m_OnChangeHavingBuilder.GetChangeId() != 0;
+        }
+
         public long GetChangeId()
         {
-            return this.m_ChangeId;
+            return this.m_OnChangeHavingBuilder.GetChangeId();
         }
     }
 
