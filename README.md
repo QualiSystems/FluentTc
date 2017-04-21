@@ -1,4 +1,4 @@
-[![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc)  [![Stories in Ready](https://badge.waffle.io/QualiSystems/FluentTc.png?label=ready&title=Ready)](https://waffle.io/QualiSystems/FluentTc)
+﻿[![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc)  [![Stories in Ready](https://badge.waffle.io/QualiSystems/FluentTc.png?label=ready&title=Ready)](https://waffle.io/QualiSystems/FluentTc)
 
 # FluentTc 
 Integrate with TeamCity fluently
@@ -80,9 +80,7 @@ localTc.ChangeBuildStatus(BuildStatus.Success);
 # Download
 
 The easiest way to get __FluentTc__ is through Nuget: Visual Studio -> Manage Nuget packages or from Nuget Package Manager Console:
-```PS
-PM> install-package FluentTc
-```
+
 
 # Get Involved
 * For reporting bugs, create an issue on [Github issues](https://github.com/QualiSystems/FluentTc/issues)
@@ -96,5 +94,3 @@ FluentTc is released under [Apache License 2.0](https://github.com/QualiSystems/
 
 ## Credits
 FluentTc project keeps growing with the support of growing comminity of [contributors](https://github.com/QualiSystems/FluentTc/graphs/contributors)
-
-
