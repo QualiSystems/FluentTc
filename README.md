@@ -8,12 +8,19 @@ Get TeamCity builds with branches, status, start and finish date and paging
 ```C#
 IList<IBuild> builds =
     new RemoteTc().Connect(h => h.ToHost("teamcity.codebetter.com").AsGuest())
-        .GetBuilds(b =>
-            b.BuildConfiguration(c =>
-                c.Id("FluentTc_FluentTcDevelop"))
+        .GetBuilds(
+            having => having
+                .BuildConfiguration(
+                    buildConfiguration => buildConfiguration
+                        .Id("FluentTc_FluentTcDevelop"))
                 .Branch(r => r.Branched()),
-            i => i.IncludeStatusText().IncludeStartDate().IncludeFinishDate(), 
-            p => p.Start(30).Count(10));
+            include => include
+                .IncludeStatusText()
+                .IncludeStartDate()
+                .IncludeFinishDate(), 
+            paging => paging
+                .Start(30)
+                .Count(10));
 ```
 
 Run custom build
@@ -25,13 +32,13 @@ IBuild build = new RemoteTc().Connect(h => h.ToHost("teamcity.codebetter.com").A
          parameters => parameters
                      .Parameter("param1", "value1")
                      .Parameter("param2", "value2"),
-         custom => custom.OnBranch("develop")
+         options => options.OnBranch("develop")
                     .WithComment("personal build on develop")
                     .AsPersonal()
                     .QueueAtTop()
                     .RebuildAllDependencies()
-                    .WithCleanSources().
-                    OnChange(change => change.Id(123456)));
+                    .WithCleanSources()
+                    .OnChange(change => change.Id(123456)));
 ```
 
 Interact with TeamCity from within a build step without authentication
@@ -66,15 +73,14 @@ localTc.ChangeBuildStatus(BuildStatus.Success);
 
 # Download
 
-The easiest way to get __FluentTc__ is through Nuget
-Manage Nuget packages or from Nuget Package Manager Console:
+The easiest way to get __FluentTc__ is through Nuget: Visual Studio -> Manage Nuget packages or from Nuget Package Manager Console:
 ```PS
 PM> install-package FluentTc
 ```
 
 # Get Involved
 * For reporting bugs, create an issue on [Github issues](https://github.com/QualiSystems/FluentTc/issues)
-* For contribution fork and submit change via Pull Request 
+* For contribution fork and submit a change via Pull Request 
 
 ## Versioning
 FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
@@ -83,6 +89,6 @@ FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically m
 FluentTc is released under [Apache License 2.0](https://github.com/QualiSystems/FluentTc/blob/master/LICENSE)
 
 ## Credits
-This project would not be possible with the support of [contributors](https://github.com/QualiSystems/FluentTc/graphs/contributors)
+FluentTc project keeps growing with the support of growing comminity of [contributors](https://github.com/QualiSystems/FluentTc/graphs/contributors)
 
 
