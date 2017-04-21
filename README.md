@@ -7,13 +7,16 @@ Integrate with TeamCity fluently
 Get TeamCity builds with branches, status, start and finish date and paging
 ```C#
 IList<IBuild> builds =
-    new RemoteTc().Connect(h => h.ToHost("teamcity.codebetter.com").AsGuest())
+    new RemoteTc()
+        .Connect(connect => connect
+            .ToHost("teamcity.jetbrains.com")
+            .AsGuest())
         .GetBuilds(
             having => having
                 .BuildConfiguration(
                     buildConfiguration => buildConfiguration
-                        .Id("FluentTc_FluentTcDevelop"))
-                .Branch(r => r.Branched()),
+                        .Id("FluentTc"))
+                .Branch(branch => branch.Branched()),
             include => include
                 .IncludeStatusText()
                 .IncludeStartDate()
@@ -25,9 +28,12 @@ IList<IBuild> builds =
 
 Run custom build
 ```C#
-IBuild build = new RemoteTc().Connect(h => h.ToHost("teamcity.codebetter.com").AsGuest())
+IBuild build = new RemoteTc()
+    .Connect(connect => connect
+        .ToHost("teamcity.jetbrains.com")
+        .AsGuest())
     .RunBuildConfiguration(
-         buildConfiguration => buildConfiguration.Id("bt2"), 
+         buildConfiguration => buildConfiguration.Id("FluentTc"), 
          agent => agent.Name("Agent1"),
          parameters => parameters
                      .Parameter("param1", "value1")
