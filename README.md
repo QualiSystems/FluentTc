@@ -74,7 +74,7 @@ PM> install-package FluentTc
 
 # Get Involved
 * For reporting bugs, create an issue on [Github issues](https://github.com/QualiSystems/FluentTc/issues)
-* For contribution read 
+* For contribution fork and submit change via Pull Request 
 
 ## Versioning
 FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
