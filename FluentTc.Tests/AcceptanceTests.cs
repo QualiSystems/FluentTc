@@ -1295,5 +1295,99 @@ namespace FluentTc.Tests
                     HttpContentTypes.TextPlain, "/app/rest/buildTypes/id:BuildId/name", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
+
+
+
+
+        [Test]
+        public void CreateVcsRoot()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+            var project = connectedTc.GetProjectById("ProjectId");
+
+            // Act
+            var vcsRoot = connectedTc.CreateVcsRoot(project, __ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.Anonymous)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .Name("VcsRootName")
+                .Password("Password")
+                .SubModuleCheckout(true)
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates(true)
+                .Username("Username")
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Assert
+            string xmlData = string.Format(
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}"">
+                    <project id=""{3}"" name=""{4}"" href=""{5}""/>
+                    <properties count =""{6}"">",
+                vcsRoot.Id, vcsRoot.Name, vcsRoot.vcsName, vcsRoot.Project.Id, vcsRoot.Project.Name, vcsRoot.Project.Href, vcsRoot.Properties.Property.Count);
+
+            foreach (var property in vcsRoot.Properties.Property)
+            {
+                xmlData += @"<property name=""";
+                xmlData += property.Name + @"""";
+                xmlData += @" value=""" + property.Value + @"""/>";
+            }
+            xmlData += @"</properties>";
+
+            xmlData += @"</vcs-root>";
+
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(xmlData,
+                    HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void AttachVcsRoot()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            var project = connectedTc.GetProjectById("ProjectId");
+            var vcsRoot = connectedTc.CreateVcsRoot(project, __ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.Anonymous)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .Name("VcsRootName")
+                .Password("Password")
+                .SubModuleCheckout(true)
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates(true)
+                .Username("Username")
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Act
+            connectedTc.AttachVcsRootToBuildConfiguration(_ => _.Id("BuildId"), vcsRoot);
+
+            // Assert
+            string xmlData = string.Format(
+                @"<vcs-root-entry id=""{0}"">
+                    <vcs-root id=""{0}"" 
+                        vcsName=""{1}""
+                        href=""{2}""/>                    
+                    <checkout-rules/>
+                </vcs-root-entry>", vcsRoot.Id, vcsRoot.Id, vcsRoot.vcsName, vcsRoot.Href);
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(xmlData,
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildTypes/id:BuildId/vcs-root-entries", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
     }
 }
