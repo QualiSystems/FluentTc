@@ -76,16 +76,24 @@ namespace FluentTc.Engine
         {
             var bodyBuilder = new StringBuilder();
 
-            if (moreOptions != null &&
-                moreOptions.TriggeringOptions.Personal == true)
+            bodyBuilder.Append(@"<build");
+
+            if (moreOptions != null)
             {
-                bodyBuilder.Append(@"<build personal=""true"">").AppendLine();
+                if (moreOptions.TriggeringOptions.Personal == true)
+                {
+                    bodyBuilder.Append(@" personal=""true""");
+                }
+
+                if (moreOptions.HasBranch())
+                {
+                    var encodedName = SecurityElement.Escape(moreOptions.GetBranchName());
+                    bodyBuilder.AppendFormat(@" branchName=""{0}""", encodedName);
+                }
             }
-            else
-            {
-                bodyBuilder.Append(@"<build>").AppendLine();
-            }
-            
+
+            bodyBuilder.Append(@">").AppendLine();
+
             bodyBuilder.AppendFormat(@"<buildType id=""{0}""/>", buildConfigId).AppendLine();
 
             if (agentId.HasValue)
@@ -135,6 +143,15 @@ namespace FluentTc.Engine
                 }
 
                 bodyBuilder.Append(@"</properties>").AppendLine();
+            }
+
+            if (moreOptions != null && moreOptions.HasChangeId())
+            {
+                bodyBuilder.Append(@"<lastChanges>").AppendLine();
+
+                bodyBuilder.AppendFormat(@"<change id=""{0}""/>", moreOptions.GetChangeId()).AppendLine();
+
+                bodyBuilder.Append(@"</lastChanges>").AppendLine();
             }
 
             bodyBuilder.Append("</build>").AppendLine();

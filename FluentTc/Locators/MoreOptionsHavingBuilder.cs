@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Xml;
-
 namespace FluentTc.Locators
 {
+    using System;
+
     public interface IMoreOptionsHavingBuilder
     {
         IMoreOptionsHavingBuilder WithCleanSources();
@@ -11,16 +9,21 @@ namespace FluentTc.Locators
         IMoreOptionsHavingBuilder QueueAtTop();
         IMoreOptionsHavingBuilder AsPersonal();
         IMoreOptionsHavingBuilder WithComment(string comment);
+        IMoreOptionsHavingBuilder OnBranch(string branchName);
+        IMoreOptionsHavingBuilder OnChange(Action<IOnChangeHavingBuilder> onChangeHavingBuilderAction);
     }
 
     internal class MoreOptionsHavingBuilder : IMoreOptionsHavingBuilder
     {
         private string m_Comment;
+        private string m_BranchName;
         private readonly TriggeringOptions m_TriggeringOptions;
+        private readonly OnChangeHavingBuilder m_OnChangeHavingBuilder;
 
         public MoreOptionsHavingBuilder()
         {
             m_TriggeringOptions = new TriggeringOptions();
+            m_OnChangeHavingBuilder = new OnChangeHavingBuilder();
         }
 
         public IMoreOptionsHavingBuilder WithCleanSources()
@@ -56,14 +59,46 @@ namespace FluentTc.Locators
             return this;
         }
 
+        public IMoreOptionsHavingBuilder OnBranch(string branchName)
+        {
+            m_BranchName = branchName;
+            return this;
+        }
+
+        public IMoreOptionsHavingBuilder OnChange(Action<IOnChangeHavingBuilder> onChangeHavingBuilderAction)
+        {
+            onChangeHavingBuilderAction(m_OnChangeHavingBuilder);
+            return this;
+        }
+
         public string GetComment()
         {
             return m_Comment;
         }
 
+        public string GetBranchName()
+        {
+            return m_BranchName;
+        }
+
+        public bool HasBranch()
+        {
+            return !string.IsNullOrEmpty(m_BranchName);
+        }
+
         public TriggeringOptions TriggeringOptions
         {
             get { return m_TriggeringOptions; }
+        }
+
+        public bool HasChangeId()
+        {
+            return m_OnChangeHavingBuilder.GetChangeId() != 0;
+        }
+
+        public long GetChangeId()
+        {
+            return m_OnChangeHavingBuilder.GetChangeId();
         }
     }
 
