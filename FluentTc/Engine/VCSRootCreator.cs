@@ -49,11 +49,12 @@ namespace FluentTc.Engine
             xmlData += @"</properties>";
 
             xmlData += @"</vcs-root>";
-            return m_TeamCityCaller.PostFormat<VcsRoot>(
-                xmlData, 
-                HttpContentTypes.ApplicationXml, 
-                HttpContentTypes.ApplicationJson,
-                "/app/rest/vcs-roots");
+            m_TeamCityCaller.Post(
+                xmlData,
+                HttpContentTypes.ApplicationXml,
+                "/app/rest/vcs-roots",
+                HttpContentTypes.ApplicationJson);
+            return vcs;
         }
     }
 }
