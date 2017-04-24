@@ -34,7 +34,11 @@ namespace FluentTc.Engine
                     <checkout-rules/>
                 </vcs-root-entry>", vcsRoot.Id, vcsRoot.Id, vcsRoot.vcsName, vcsRoot.Href);
 
-            m_TeamCityCaller.PostFormat(xmlData, HttpContentTypes.ApplicationXml, "/app/rest/buildTypes/{0}/vcs-root-entries", buildConfigurationHavingBuilder.GetLocator());
+            m_TeamCityCaller.PostFormat(
+                xmlData, 
+                HttpContentTypes.ApplicationXml, 
+                "/app/rest/buildTypes/{0}/vcs-root-entries", 
+                buildConfigurationHavingBuilder.GetLocator());
         }
     }
 }
