@@ -8,6 +8,7 @@ using FluentTc.Domain;
 using FluentTc.Engine;
 using FluentTc.Locators;
 using NUnit.Framework;
+using System.Security;
 
 namespace FluentTc.Tests
 {
@@ -1631,13 +1632,19 @@ namespace FluentTc.Tests
             // Assert
             string xmlData = string.Format(
                 @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}"" name=""{4}"" href=""{5}""/> <properties count =""{6}"">",
-                vcsRoot.Id, vcsRoot.Name, vcsRoot.vcsName, vcsRoot.Project.Id, vcsRoot.Project.Name, vcsRoot.Project.Href, vcsRoot.Properties.Property.Count);
+                SecurityElement.Escape(vcsRoot.Id),
+                SecurityElement.Escape(vcsRoot.Name),
+                SecurityElement.Escape(vcsRoot.vcsName),
+                SecurityElement.Escape(vcsRoot.Project.Id),
+                SecurityElement.Escape(vcsRoot.Project.Name),
+                SecurityElement.Escape(vcsRoot.Project.Href), 
+                vcsRoot.Properties.Property.Count);
 
             foreach (var property in vcsRoot.Properties.Property)
             {
                 xmlData += @"<property name=""";
-                xmlData += property.Name + @"""";
-                xmlData += @" value=""" + property.Value + @"""/>";
+                xmlData += SecurityElement.Escape(property.Name) + @"""";
+                xmlData += @" value=""" + SecurityElement.Escape(property.Value) + @"""/>";
             }
             xmlData += @"</properties>";
 
