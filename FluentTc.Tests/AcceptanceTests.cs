@@ -1630,9 +1630,7 @@ namespace FluentTc.Tests
 
             // Assert
             string xmlData = string.Format(
-                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}"">
-                    <project id=""{3}"" name=""{4}"" href=""{5}""/>
-                    <properties count =""{6}"">",
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}"" name=""{4}"" href=""{5}""/> <properties count =""{6}"">",
                 vcsRoot.Id, vcsRoot.Name, vcsRoot.vcsName, vcsRoot.Project.Id, vcsRoot.Project.Name, vcsRoot.Project.Href, vcsRoot.Properties.Property.Count);
 
             foreach (var property in vcsRoot.Properties.Property)

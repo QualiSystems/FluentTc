@@ -34,23 +34,22 @@ namespace FluentTc.Engine
 
             var vcs = gitVCSBuilder.GetVCSRoot();
 
-            string xmlData = string.Format(
-                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}"">
-                    <project id=""{3}"" name=""{4}"" href=""{5}""/>
-                    <properties count =""{6}"">", 
+            StringBuilder xmlData = new StringBuilder();
+            xmlData.AppendFormat(
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}"" name=""{4}"" href=""{5}""/> <properties count =""{6}"">", 
                 vcs.Id, vcs.Name, vcs.vcsName, vcs.Project.Id, vcs.Project.Name, vcs.Project.Href, vcs.Properties.Property.Count);
 
             foreach (var property in vcs.Properties.Property)
             {
-                xmlData += @"<property name=""";
-                xmlData += property.Name + @"""";
-                xmlData += @" value=""" + property.Value + @"""/>";
+                xmlData.Append(@"<property name=""");
+                xmlData.AppendFormat(@"{0}""", property.Name);
+                xmlData.AppendFormat(@" value=""{0}""/>", property.Value);
             }
-            xmlData += @"</properties>";
+            xmlData.Append(@"</properties>");
 
-            xmlData += @"</vcs-root>";
+            xmlData.Append(@"</vcs-root>");
             m_TeamCityCaller.Post(
-                xmlData,
+                xmlData.ToString(),
                 HttpContentTypes.ApplicationXml,
                 "/app/rest/vcs-roots",
                 HttpContentTypes.ApplicationJson);
