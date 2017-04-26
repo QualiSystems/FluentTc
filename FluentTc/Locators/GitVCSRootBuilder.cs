@@ -80,147 +80,97 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IGitVCSRootBuilder AgentCleanFilePolicy(AgentCleanFilePolicy value)
+        private void AppendProperty(string name, string value)
         {
             m_VCSRoot.Properties.Property.Add(
                 new Property()
                 {
-                    Name = FromPascalToCamelCase(typeof(AgentCleanFilePolicy).Name),
+                    Name = name,
+                    Value = value
+                }
+            );
+        }
+
+        private void AppendProperty<T>(T value)
+        {
+            m_VCSRoot.Properties.Property.Add(
+                new Property()
+                {
+                    Name = FromPascalToCamelCase(typeof(T).Name),
                     Value = FromPascalToCapitalizedCase(value.ToString())
                 }
             );
+        }
+
+        public IGitVCSRootBuilder AgentCleanFilePolicy(AgentCleanFilePolicy value)
+        {
+            AppendProperty(value);
             return this;
         }
 
         public IGitVCSRootBuilder AgentCleanPolicy(AgentCleanPolicy value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = FromPascalToCamelCase(typeof(AgentCleanPolicy).Name),
-                    Value = FromPascalToCapitalizedCase(value.ToString())
-                }
-            );
+            AppendProperty(value);
             return this;
         }
 
         public IGitVCSRootBuilder AuthMethod(AuthMethod value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = FromPascalToCamelCase(typeof(AuthMethod).Name),
-                    Value = FromPascalToCapitalizedCase(value.ToString())
-                }
-            );
+            AppendProperty(value);
             return this;
         }
 
         public IGitVCSRootBuilder Branch(string value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "branch",
-                    Value = value
-                }
-            );
+            AppendProperty("branch", value);
             return this;
         }
 
         public IGitVCSRootBuilder IgnoreKnownHosts(bool value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "ignoreKnownHosts",
-                    Value = value.ToString(CultureInfo.InvariantCulture).ToLower()
-                }
-            );
+            AppendProperty("ignoreKnownHosts", value.ToString(CultureInfo.InvariantCulture).ToLower());
             return this;
         }
 
         public IGitVCSRootBuilder UserNameStyle(UserNameStyle value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = FromPascalToCamelCase(typeof(UserNameStyle).Name),
-                    Value = FromPascalToCapitalizedCase(value.ToString())
-                }
-            );
+            AppendProperty(value);
             return this;
         }
 
         public IGitVCSRootBuilder Username(string value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "username",
-                    Value = value
-                }
-            );
+            AppendProperty("username", value);
             return this;
         }
 
         public IGitVCSRootBuilder Password(string value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "secure:password",
-                    Value = value
-                }
-            );
+            AppendProperty("secure:password", value);
             return this;
         }
 
         public IGitVCSRootBuilder UseAlternates(bool value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "useAlternates",
-                    Value = value.ToString(CultureInfo.InvariantCulture).ToLower()
-                }
-            );
+            AppendProperty("useAlternates", value.ToString(CultureInfo.InvariantCulture).ToLower());
             return this;
         }
 
         public IGitVCSRootBuilder Url(Uri value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "url",
-                    Value = value.ToString()
-                }
-            );
+            AppendProperty("url", value.ToString());
             return this;
         }
 
         public IGitVCSRootBuilder BranchSpec(string value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "teamcity:branchSpec",
-                    Value = value
-                }
-            );
+            AppendProperty("teamcity:branchSpec", value);
             return this;
         }
 
         public IGitVCSRootBuilder SubModuleCheckout(bool value)
         {
-            m_VCSRoot.Properties.Property.Add(
-                new Property()
-                {
-                    Name = "teamcity:branchSpec",
-                    Value = (value ? "true" : "false")
-                }
-            );
+            AppendProperty("submoduleCheckout", (value ? "CHECKOUT" : "IGNORE"));
             return this;
         }
 
