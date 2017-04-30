@@ -9,7 +9,7 @@ namespace FluentTc.Locators
         IVCSRootEntryBuilder CheckoutRules(string value);
     }
 
-    public class VCSRootEntryBuilder: IVCSRootEntryBuilder
+    internal class VCSRootEntryBuilder: IVCSRootEntryBuilder
     {
         private VcsRootEntry m_VCSRootEntry = new VcsRootEntry();
 
@@ -26,7 +26,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public VcsRootEntry GetVCSRootEntry()
+        internal VcsRootEntry GetVCSRootEntry()
         {
             return m_VCSRootEntry;
         }

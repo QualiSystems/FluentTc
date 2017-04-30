@@ -6,7 +6,7 @@ namespace FluentTc.Extensions
     {
         public static string FromPascalToCapitalizedCase(this string value)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(value.Length);
 
             int charCount = 0;
             foreach (char c in value)
@@ -26,7 +26,7 @@ namespace FluentTc.Extensions
             var len = value.Length;
             if (len > 0)
             {
-                var sb = new StringBuilder();
+                var sb = new StringBuilder(value.Length);
                 sb.Append(char.ToLower(value[0]));
                 if (len > 1)
                     sb.Append(value.Substring(1, len - 1));
