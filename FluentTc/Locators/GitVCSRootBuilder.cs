@@ -49,10 +49,12 @@ namespace FluentTc.Locators
         IGitVCSRootBuilder UserNameStyle(UserNameStyle value);
         IGitVCSRootBuilder Username(string value);
         IGitVCSRootBuilder Password(string value);
-        IGitVCSRootBuilder UseAlternates(bool value);
+        IGitVCSRootBuilder UseAlternates();
+        IGitVCSRootBuilder DontUseAlternates();
         IGitVCSRootBuilder Url(Uri value);
         IGitVCSRootBuilder BranchSpec(string value);
-        IGitVCSRootBuilder SubModuleCheckout(bool value);
+        IGitVCSRootBuilder CheckoutSubModule();
+        IGitVCSRootBuilder DontCheckoutSubModule();
 
         IGitVCSRootBuilder Project(Project value);
 
@@ -151,9 +153,15 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IGitVCSRootBuilder UseAlternates(bool value)
+        public IGitVCSRootBuilder DontUseAlternates()
         {
-            AppendProperty("useAlternates", value.ToString(CultureInfo.InvariantCulture).ToLower());
+            AppendProperty("useAlternates", "false");
+            return this;
+        }
+
+        public IGitVCSRootBuilder UseAlternates()
+        {
+            AppendProperty("useAlternates", "true");
             return this;
         }
 
@@ -169,9 +177,15 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IGitVCSRootBuilder SubModuleCheckout(bool value)
+        public IGitVCSRootBuilder CheckoutSubModule()
         {
-            AppendProperty("submoduleCheckout", (value ? "CHECKOUT" : "IGNORE"));
+            AppendProperty("submoduleCheckout", "CHECKOUT");
+            return this;
+        }
+
+        public IGitVCSRootBuilder DontCheckoutSubModule()
+        {
+            AppendProperty("submoduleCheckout", "IGNORE");
             return this;
         }
 

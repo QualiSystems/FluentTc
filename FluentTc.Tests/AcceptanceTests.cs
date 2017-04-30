@@ -1623,9 +1623,9 @@ namespace FluentTc.Tests
                 .Id("VcsRootId")
                 .Name("VcsRootName")
                 .Password("Password")
-                .SubModuleCheckout(true)
+                .CheckoutSubModule()
                 .Url(new Uri("http://www.gooogle.com"))
-                .UseAlternates(true)
+                .UseAlternates()
                 .Username("Username")
                 .UserNameStyle(UserNameStyle.AuthorName));
 
@@ -1675,9 +1675,9 @@ namespace FluentTc.Tests
                 .Id("VcsRootId")
                 .Name("VcsRootName")
                 .Password("Password")
-                .SubModuleCheckout(true)
+                .CheckoutSubModule()
                 .Url(new Uri("http://www.gooogle.com"))
-                .UseAlternates(true)
+                .UseAlternates()
                 .Username("Username")
                 .UserNameStyle(UserNameStyle.AuthorName));
 
