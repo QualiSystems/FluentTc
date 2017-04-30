@@ -175,8 +175,8 @@ namespace FluentTc
         /// Attaches the VCS root to a build configuration.
         /// </summary>
         /// <param name="having">The having.</param>
-        /// <param name="vcsRootEntry">The VCS root entry.</param>
-        void AttachVcsRootToBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, VcsRoot vcsRoot);
+        /// <param name="vcsRootEntryHaving">The VCS root entry.</param>
+        void AttachVcsRootToBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IVCSRootEntryBuilder> vcsRootEntryHaving);
     }
 
     internal class ConnectedTc : IConnectedTc
@@ -533,10 +533,10 @@ namespace FluentTc
         /// Attaches the VCS root to a build configuration.
         /// </summary>
         /// <param name="having">The having.</param>
-        /// <param name="vcsRootEntry">The VCS root entry.</param>
-        public void AttachVcsRootToBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, VcsRoot vcsRoot)
+        /// <param name="vcsRootEntryHaving">The VCS root entry.</param>
+        public void AttachVcsRootToBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having, Action<IVCSRootEntryBuilder> vcsRootEntryHaving)
         {
-            m_VcsRootAttacher.Attach(having, vcsRoot);
+            m_VcsRootAttacher.Attach(having, vcsRootEntryHaving);
         }
 
     }

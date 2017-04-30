@@ -204,6 +204,7 @@
     <Compile Include="Locators\UserHavingBuilder.cs" />
     <Compile Include="Locators\UserHavingBuilderFactory.cs" />
     <Compile Include="Locators\GitVCSRootBuilder.cs" />
+    <Compile Include="Locators\VCSRootEntryBuilder.cs" />
     <Compile Include="RemoteTc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Locators\TeamCityConfigurationBuilder.cs" />

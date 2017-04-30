@@ -1621,6 +1621,7 @@ namespace FluentTc.Tests
                 .Branch("refs/head/develop")
                 .BranchSpec("+:refs/head/feature/*")
                 .Id("VcsRootId")
+                .IgnoreKnownHosts()
                 .Name("VcsRootName")
                 .Password("Password")
                 .CheckoutSubModule()
@@ -1682,16 +1683,17 @@ namespace FluentTc.Tests
                 .UserNameStyle(UserNameStyle.AuthorName));
 
             // Act
-            connectedTc.AttachVcsRootToBuildConfiguration(_ => _.Id("BuildId"), vcsRoot);
+            connectedTc.AttachVcsRootToBuildConfiguration(
+                _ => _.Id("BuildId"), 
+                _ => _.Id(vcsRoot.Id)
+                      .CheckoutRules("CheckoutRules"));
 
             // Assert
             string xmlData = string.Format(
                 @"<vcs-root-entry id=""{0}"">
-                    <vcs-root id=""{0}"" 
-                        vcsName=""{1}""
-                        href=""{2}""/>                    
-                    <checkout-rules/>
-                </vcs-root-entry>", vcsRoot.Id, vcsRoot.Id, vcsRoot.vcsName, vcsRoot.Href);
+                    <vcs-root id=""{1}""/>                    
+                    <checkout-rules>{2}</checkout-rules>
+                </vcs-root-entry>", vcsRoot.Id, vcsRoot.Id, "CheckoutRules");
             A.CallTo(
                 () =>
                     teamCityCaller.Post(xmlData,

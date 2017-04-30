@@ -45,7 +45,8 @@ namespace FluentTc.Locators
         IGitVCSRootBuilder AuthMethod(AuthMethod value);
 
         IGitVCSRootBuilder Branch(string value);
-        IGitVCSRootBuilder IgnoreKnownHosts(bool value);
+        IGitVCSRootBuilder IgnoreKnownHosts();
+        IGitVCSRootBuilder DontIgnoreKnownHosts();
         IGitVCSRootBuilder UserNameStyle(UserNameStyle value);
         IGitVCSRootBuilder Username(string value);
         IGitVCSRootBuilder Password(string value);
@@ -129,9 +130,15 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IGitVCSRootBuilder IgnoreKnownHosts(bool value)
+        public IGitVCSRootBuilder IgnoreKnownHosts()
         {
-            AppendProperty("ignoreKnownHosts", value.ToString(CultureInfo.InvariantCulture).ToLower());
+            AppendProperty("ignoreKnownHosts", "true");
+            return this;
+        }
+
+        public IGitVCSRootBuilder DontIgnoreKnownHosts()
+        {
+            AppendProperty("ignoreKnownHosts", "false");
             return this;
         }
 
