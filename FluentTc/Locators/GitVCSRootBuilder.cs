@@ -1,4 +1,5 @@
 ﻿using FluentTc.Domain;
+using FluentTc.Extensions;
 using System;
 using System.Globalization;
 using System.Text;
@@ -96,8 +97,8 @@ namespace FluentTc.Locators
             m_VCSRoot.Properties.Property.Add(
                 new Property()
                 {
-                    Name = FromPascalToCamelCase(typeof(T).Name),
-                    Value = FromPascalToCapitalizedCase(value.ToString())
+                    Name = typeof(T).Name.FromPascalToCamelCase(),
+                    Value = value.ToString().FromPascalToCapitalizedCase()
                 }
             );
         }
@@ -183,38 +184,6 @@ namespace FluentTc.Locators
         public VcsRoot GetVCSRoot()
         {
             return m_VCSRoot;
-        }
-
-        private string FromPascalToCapitalizedCase(string value)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            int charCount = 0;
-            foreach (char c in value)
-            {
-                charCount++;
-                if (char.IsUpper(c) && charCount != value.Length && charCount != 1)
-                {
-                    sb.Append("_");
-                }
-                sb.Append(char.ToUpper(c));
-            }
-            return sb.ToString();
-        }
-
-        private string FromPascalToCamelCase(string value)
-        {
-            var len = value.Length;
-            if (len > 0)
-            {
-                var sb = new StringBuilder();
-                sb.Append(char.ToLower(value[0]));
-                if (len > 1)
-                    sb.Append(value.Substring(1, len - 1));
-                return sb.ToString();
-            }
-            else
-                return "";
         }
     }
 }
