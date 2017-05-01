@@ -1691,9 +1691,9 @@ namespace FluentTc.Tests
             // Assert
             string xmlData = string.Format(
                 @"<vcs-root-entry id=""{0}"">
-                    <vcs-root id=""{1}""/>                    
-                    <checkout-rules>{2}</checkout-rules>
-                </vcs-root-entry>", vcsRoot.Id, vcsRoot.Id, "CheckoutRules");
+                    <vcs-root id=""{0}""/>                    
+                    <checkout-rules>{1}</checkout-rules>
+                </vcs-root-entry>", vcsRoot.Id, "CheckoutRules");
             A.CallTo(
                 () =>
                     teamCityCaller.Post(xmlData,
