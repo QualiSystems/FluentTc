@@ -132,9 +132,11 @@
     <Compile Include="Locators\ChangesHavingBuilderTests.cs" />
     <Compile Include="Locators\ChangesIncludeBuilderTests.cs" />
     <Compile Include="Locators\CountBuilderTests.cs" />
+    <Compile Include="Locators\GitVCSRootBuilderTests.cs" />
     <Compile Include="Locators\QueueHavingBuilderTests.cs" />
     <Compile Include="Locators\TeamCityConfigurationBuilderTests.cs" />
     <Compile Include="Locators\UserHavingBuilderTests.cs" />
+    <Compile Include="Locators\VCSRootEntryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteTcTests.cs" />
     <Compile Include="AgentsRetrieverTests.cs" />
