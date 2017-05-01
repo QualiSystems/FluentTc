@@ -57,7 +57,7 @@ namespace FluentTc.Locators
         IGitVCSRootBuilder CheckoutSubModule();
         IGitVCSRootBuilder DontCheckoutSubModule();
 
-        IGitVCSRootBuilder Project(Project value);
+        IGitVCSRootBuilder ProjectId(string value);
 
     }
 
@@ -67,6 +67,7 @@ namespace FluentTc.Locators
 
         public GitVCSRootBuilder()
         {
+            m_VCSRoot.Project = new Project();
             m_VCSRoot.Properties = new Properties();
             m_VCSRoot.Properties.Property = new System.Collections.Generic.List<Property>();
             m_VCSRoot.vcsName = "jetbrains.git";
@@ -196,9 +197,9 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IGitVCSRootBuilder Project(Project value)
+        public IGitVCSRootBuilder ProjectId(string value)
         {
-            m_VCSRoot.Project = value;
+            m_VCSRoot.Project.Id = value;
             return this;
         }
 

@@ -1611,10 +1611,9 @@ namespace FluentTc.Tests
             var teamCityCaller = CreateTeamCityCaller();
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
-            var project = connectedTc.GetProjectById("ProjectId");
 
             // Act
-            var vcsRoot = connectedTc.CreateVcsRoot(project, __ => __
+            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
                 .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
                 .AgentCleanPolicy(AgentCleanPolicy.Always)
                 .AuthMethod(AuthMethod.Anonymous)
@@ -1624,6 +1623,7 @@ namespace FluentTc.Tests
                 .IgnoreKnownHosts()
                 .Name("VcsRootName")
                 .Password("Password")
+                .ProjectId("ProjectId")
                 .CheckoutSubModule()
                 .Url(new Uri("http://www.gooogle.com"))
                 .UseAlternates()
@@ -1632,13 +1632,11 @@ namespace FluentTc.Tests
 
             // Assert
             string xmlData = string.Format(
-                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}"" name=""{4}"" href=""{5}""/> <properties count =""{6}"">",
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}""/> <properties count =""{4}"">",
                 SecurityElement.Escape(vcsRoot.Id),
                 SecurityElement.Escape(vcsRoot.Name),
                 SecurityElement.Escape(vcsRoot.vcsName),
                 SecurityElement.Escape(vcsRoot.Project.Id),
-                SecurityElement.Escape(vcsRoot.Project.Name),
-                SecurityElement.Escape(vcsRoot.Project.Href), 
                 vcsRoot.Properties.Property.Count);
 
             foreach (var property in vcsRoot.Properties.Property)
@@ -1666,8 +1664,7 @@ namespace FluentTc.Tests
 
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
-            var project = connectedTc.GetProjectById("ProjectId");
-            var vcsRoot = connectedTc.CreateVcsRoot(project, __ => __
+            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
                 .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
                 .AgentCleanPolicy(AgentCleanPolicy.Always)
                 .AuthMethod(AuthMethod.Anonymous)
@@ -1676,6 +1673,7 @@ namespace FluentTc.Tests
                 .Id("VcsRootId")
                 .Name("VcsRootName")
                 .Password("Password")
+                .ProjectId("ProjectId")
                 .CheckoutSubModule()
                 .Url(new Uri("http://www.gooogle.com"))
                 .UseAlternates()

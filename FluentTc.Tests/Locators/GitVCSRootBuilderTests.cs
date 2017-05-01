@@ -13,7 +13,6 @@ namespace FluentTc.Tests.Locators
         public void SimpleCreation()
         {
             var vcsRootBuilder = new GitVCSRootBuilder();
-            var project = new FluentTc.Domain.Project();
             var url = new Uri("http://www.google.com");
 
             vcsRootBuilder
@@ -27,7 +26,7 @@ namespace FluentTc.Tests.Locators
                 .IgnoreKnownHosts()
                 .Name("name")
                 .Password("password")
-                .Project(project)
+                .ProjectId("projectId")
                 .Url(url)
                 .UseAlternates()
                 .Username("username")
@@ -36,7 +35,7 @@ namespace FluentTc.Tests.Locators
             var vcsRoot = vcsRootBuilder.GetVCSRoot();
             vcsRoot.Id.Should().Be("id");
             vcsRoot.Name.Should().Be("name");
-            vcsRoot.Project.Should().Be(project);
+            vcsRoot.Project.Id.Should().Be("projectId");
             var properties = vcsRoot.Properties.Property;
             properties.FirstOrDefault(
                 p => p.Name == "agentCleanFilePolicy" && 

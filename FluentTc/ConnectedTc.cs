@@ -166,10 +166,9 @@ namespace FluentTc
         /// <summary>
         /// Creates a VCS root.
         /// </summary>
-        /// <param name="project">The project that will contain the VCS Root.</param>
         /// <param name="vcsRoot">The VCS root data.</param>
         /// <returns></returns>
-        VcsRoot CreateVcsRoot(Project project, Action<IGitVCSRootBuilder> vcsRoot);
+        VcsRoot CreateVcsRoot(Action<IGitVCSRootBuilder> vcsRoot);
 
         /// <summary>
         /// Attaches the VCS root to a build configuration.
@@ -521,12 +520,11 @@ namespace FluentTc
         /// <summary>
         /// Creates a VCS root.
         /// </summary>
-        /// <param name="project">The project that will contain the VCS Root.</param>
         /// <param name="vcsRoot">The VCS root data.</param>
         /// <returns></returns>
-        public VcsRoot CreateVcsRoot(Project project, Action<IGitVCSRootBuilder> vcsRoot)
+        public VcsRoot CreateVcsRoot(Action<IGitVCSRootBuilder> vcsRoot)
         {
-            return m_VcsRootCreator.Create(project, vcsRoot);
+            return m_VcsRootCreator.Create(vcsRoot);
         }
 
         /// <summary>
