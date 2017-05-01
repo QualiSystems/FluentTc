@@ -13,9 +13,13 @@ namespace FluentTc.Locators
     {
         private VcsRootEntry m_VCSRootEntry = new VcsRootEntry();
 
+        public VCSRootEntryBuilder()
+        {
+            m_VCSRootEntry.VcsRoot = new VcsRoot();
+        }
+
         public IVCSRootEntryBuilder Id(string value)
         {
-            if (m_VCSRootEntry.VcsRoot == null) m_VCSRootEntry.VcsRoot = new VcsRoot();
             m_VCSRootEntry.VcsRoot.Id = value;
             return this;
         }
