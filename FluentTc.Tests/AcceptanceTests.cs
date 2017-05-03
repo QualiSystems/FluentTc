@@ -8,6 +8,7 @@ using FluentTc.Domain;
 using FluentTc.Engine;
 using FluentTc.Locators;
 using NUnit.Framework;
+using System.Security;
 
 namespace FluentTc.Tests
 {
@@ -1597,6 +1598,104 @@ namespace FluentTc.Tests
                 () =>
                     teamCityCaller.Put(name,
                     HttpContentTypes.TextPlain, "/app/rest/buildTypes/id:BuildId/name", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+
+
+
+        [Test]
+        public void CreateVcsRoot()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.Anonymous)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .IgnoreKnownHosts()
+                .Name("VcsRootName")
+                .Password("Password")
+                .ProjectId("ProjectId")
+                .CheckoutSubModule()
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates()
+                .Username("Username")
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Assert
+            string xmlData = string.Format(
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}""/> <properties count =""{4}"">",
+                SecurityElement.Escape(vcsRoot.Id),
+                SecurityElement.Escape(vcsRoot.Name),
+                SecurityElement.Escape(vcsRoot.vcsName),
+                SecurityElement.Escape(vcsRoot.Project.Id),
+                vcsRoot.Properties.Property.Count);
+
+            foreach (var property in vcsRoot.Properties.Property)
+            {
+                xmlData += @"<property name=""";
+                xmlData += SecurityElement.Escape(property.Name) + @"""";
+                xmlData += @" value=""" + SecurityElement.Escape(property.Value) + @"""/>";
+            }
+            xmlData += @"</properties>";
+
+            xmlData += @"</vcs-root>";
+
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(xmlData,
+                    HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void AttachVcsRoot()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.Anonymous)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .Name("VcsRootName")
+                .Password("Password")
+                .ProjectId("ProjectId")
+                .CheckoutSubModule()
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates()
+                .Username("Username")
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Act
+            connectedTc.AttachVcsRootToBuildConfiguration(
+                _ => _.Id("BuildId"), 
+                _ => _.Id(vcsRoot.Id)
+                      .CheckoutRules("CheckoutRules"));
+
+            // Assert
+            string xmlData = string.Format(
+                @"<vcs-root-entry id=""{0}"">
+                    <vcs-root id=""{0}""/>                    
+                    <checkout-rules>{1}</checkout-rules>
+                </vcs-root-entry>", vcsRoot.Id, "CheckoutRules");
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(xmlData,
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildTypes/id:BuildId/vcs-root-entries", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
