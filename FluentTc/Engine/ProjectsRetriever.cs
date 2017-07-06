@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentTc.Domain;
 using FluentTc.Locators;
 using EasyHttp.Http;
+using FluentTc.Exceptions;
 
 namespace FluentTc.Engine
 {
@@ -10,15 +11,15 @@ namespace FluentTc.Engine
     {
         IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having = null);
         Project GetProject(string projectId);
-
+        Project GetProject(Action<IBuildProjectHavingBuilder> having = null);
         void SetFields(Action<IBuildProjectHavingBuilder> having, Action<IBuildProjectFieldValueBuilder> fields);
-
     }
 
     internal class ProjectsRetriever : IProjectsRetriever
     {
         private readonly IBuildProjectHavingBuilderFactory m_BuildProjectHavingBuilderFactory;
         private readonly ITeamCityCaller m_TeamCityCaller;
+        private const string TeamCityProjectPrefix = "/app/rest/projects";
 
         public ProjectsRetriever(IBuildProjectHavingBuilderFactory buildProjectHavingBuilderFactory,
             ITeamCityCaller teamCityCaller)
@@ -30,19 +31,19 @@ namespace FluentTc.Engine
         public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having = null)
         {
             var locator = having == null ? string.Empty : GetLocator(having);
-            return m_TeamCityCaller.GetFormat<ProjectWrapper>("/app/rest/projects/{0}", locator).Project;
-        }
-
-        private string GetLocator(Action<IBuildProjectHavingBuilder> having)
-        {
-            var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
-            having(buildProjectHavingBuilder);
-            return buildProjectHavingBuilder.GetLocator();
+            return m_TeamCityCaller.GetFormat<ProjectWrapper>(GetApiCall ("/{0}"), locator).Project;
         }
 
         public Project GetProject(string projectId)
         {
-            return m_TeamCityCaller.GetFormat<Project>("/app/rest/projects/id:{0}", projectId);
+            return m_TeamCityCaller.GetFormat<Project>(GetApiCall("/id:{0}"), projectId);
+        }
+
+        public Project GetProject(Action<IBuildProjectHavingBuilder> having = null)
+        {
+            var locator = having == null ? string.Empty : GetLocator(having);
+            var result = m_TeamCityCaller.GetFormat<Project>(GetApiCall("/{0}"), locator);
+            return result;
         }
 
         public void SetFields(Action<IBuildProjectHavingBuilder> having, Action<IBuildProjectFieldValueBuilder> fields)
@@ -57,8 +58,19 @@ namespace FluentTc.Engine
                 .ForEach(
                     f =>
                         m_TeamCityCaller.PutFormat(f.Value, HttpContentTypes.TextPlain,
-                            "/app/rest/projects/{0}/{1}", projectConfigurationHavingBuilder.GetLocator(), f.Name));
+                            GetApiCall("/{0}/{1}"), projectConfigurationHavingBuilder.GetLocator(), f.Name));
+        }
 
+        private string GetLocator(Action<IBuildProjectHavingBuilder> having)
+        {
+            var buildProjectHavingBuilder = m_BuildProjectHavingBuilderFactory.CreateBuildProjectHavingBuilder();
+            having(buildProjectHavingBuilder);
+            return buildProjectHavingBuilder.GetLocator();
+        }
+
+        private string GetApiCall(string appendix)
+        {
+            return TeamCityProjectPrefix + appendix;
         }
     }
 }
