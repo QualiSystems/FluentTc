@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentTc.Domain;
 using FluentTc.Locators;
 using EasyHttp.Http;
@@ -31,7 +32,8 @@ namespace FluentTc.Engine
         public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having = null)
         {
             var locator = having == null ? string.Empty : GetLocator(having);
-            return m_TeamCityCaller.GetFormat<ProjectWrapper>(GetApiCall ("/{0}"), locator).Project;
+            var projects = m_TeamCityCaller.GetFormat<ProjectWrapper>(GetApiCall("/{0}"), locator).Project;
+            return projects ?? new List<Project>();
         }
 
         public Project GetProject(string projectId)
@@ -39,11 +41,12 @@ namespace FluentTc.Engine
             return m_TeamCityCaller.GetFormat<Project>(GetApiCall("/id:{0}"), projectId);
         }
 
-        public Project GetProject(Action<IBuildProjectHavingBuilder> having = null)
+        public Project GetProject(Action<IBuildProjectHavingBuilder> having)
         {
-            var locator = having == null ? string.Empty : GetLocator(having);
-            var result = m_TeamCityCaller.GetFormat<Project>(GetApiCall("/{0}"), locator);
-            return result;
+            var projects = GetProjects(having);
+            if (!projects.Any()) throw new ProjectNotFoundException();
+            if (projects.Count > 1) throw new MoreThanOneProjectFoundException();
+            return projects.Single();
         }
 
         public void SetFields(Action<IBuildProjectHavingBuilder> having, Action<IBuildProjectFieldValueBuilder> fields)
@@ -70,7 +73,8 @@ namespace FluentTc.Engine
 
         private string GetApiCall(string appendix)
         {
-            return TeamCityProjectPrefix + appendix;
+            var result = TeamCityProjectPrefix + appendix;
+            return result;
         }
     }
 }

@@ -73,6 +73,8 @@
     <Compile Include="Domain\TestOccurrences.cs" />
     <Compile Include="Engine\VCSRootAttacher.cs" />
     <Compile Include="Engine\VCSRootCreator.cs" />
+    <Compile Include="Exceptions\MoreThanOneProjectFoundException.cs" />
+    <Compile Include="Exceptions\ProjectNotFoundException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Locators\BuildProjectFieldValueBuilder.cs" />
     <Compile Include="Locators\BuildState.cs" />

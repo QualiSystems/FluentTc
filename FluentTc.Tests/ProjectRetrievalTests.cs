@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FakeItEasy;
+using FluentAssertions;
 using FluentTc.Domain;
 using FluentTc.Engine;
+using FluentTc.Exceptions;
+using FluentTc.Locators;
 using NUnit.Framework;
 
 namespace FluentTc.Tests
@@ -11,74 +15,98 @@ namespace FluentTc.Tests
     {
         [TestCase("FluentTC")]
         [TestCase("Test 1")]
-        [TestCase("Test%20C")]
-        public void GetProject_ByName(string projectName)
+        [TestCase("Test!@#$%^&*()")]
+        public void GetProject_ById(string projectId)
         {
             // Arrange
-            var teamCityCaller = CreateTeamCityCaller();
-            new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller)
-                          .GetProject(project => project.Name(projectName));
+            var teamCityCaller = A.Fake<ITeamCityCaller>();
+            A.CallTo(
+                    () =>
+                        teamCityCaller.GetFormat<ProjectWrapper>("/app/rest/projects/{0}",
+                            string.Format("id:{0}", projectId)))
+                .Returns(new ProjectWrapper
+                {
+                    Project = new List<Project> { new Project { Id = projectId, Name = "Test 1" } },
+                    Count = "1"
+                });
 
-            //Expectations
-            var expectedCall = string.Format(@"/app/rest/projects/name:{0}", projectName);
-            A.CallTo(() => teamCityCaller.Get<Project>(expectedCall)).MustHaveHappened();
+            var projectsRetriever = new ProjectsRetriever(new BuildProjectHavingBuilderFactory(), teamCityCaller);
+
+            // Act
+            var result = projectsRetriever.GetProject(project => project.Id(projectId));
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Name.Should().Be("Test 1");
+            result.Id.Should().Be(projectId);
         }
 
         [TestCase("1234")]
         [TestCase("ABcd")]
         [TestCase("129@$$jd")]
-        public void GetProject_ById(string projectId)
+        public void GetProject_ByName(string projectName)
         {
             // Arrange
-            var teamCityCaller = CreateTeamCityCaller();
-            new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller)
-                          .GetProject(project => project.Id(projectId));
+            var teamCityCaller = A.Fake<ITeamCityCaller>();
+            A.CallTo(
+                    () =>
+                        teamCityCaller.GetFormat<ProjectWrapper>("/app/rest/projects/{0}", 
+                        string.Format("name:{0}", projectName)))
+                .Returns(new ProjectWrapper
+                {
+                    Project = new List<Project> { new Project { Id = "Project1", Name = projectName } },
+                    Count = "1"
+                });
+            
+            var projectsRetriever = new ProjectsRetriever(new BuildProjectHavingBuilderFactory(), teamCityCaller);
 
-            //Expectations
-            var expectedCall = string.Format(@"/app/rest/projects/id:{0}", projectId);
-            A.CallTo(() => teamCityCaller.Get<Project>(expectedCall)).MustHaveHappened();
+            // Act
+            var result = projectsRetriever.GetProject(project => project.Name(projectName));
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Name.Should().Be(projectName);
+            result.Id.Should().Be("Project1");
         }
 
-        private static TeamCityCaller CreateTeamCityCaller()
+        [Test]
+        public void GetProject_MultipleProjects_MoreThanOneProjectFoundExceptionThrown()
         {
-            var teamCityCaller = A.Fake<TeamCityCaller>();
-            var projectWrapper = new ProjectWrapper
-            {
-                Project = new List<Project>
-                {
-                    new Project
-                    {
-                        Id = "1234",
-                        Name = "Test 1"
-                    },
-                    new Project
-                    {
-                        Id = "ABcd",
-                        Name = "Test%20C"
-                    },
-                    new Project
-                    {
-                        Id = "129@$$jd",
-                        Name = "FluentTC"
-                    }
-                }
-            };
-            A.CallTo(() => teamCityCaller.GetFormat<User>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<UserWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<InvestigationWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<BuildModel>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<BuildConfiguration>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._)).Returns(projectWrapper);
-            A.CallTo(() => teamCityCaller.GetFormat<Project>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<BuildTypeWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<BuildWrapper>(A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.GetFormat<BuildWrapper>(A<string>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.PostFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.PostFormat<BuildConfiguration>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.PostFormat<Project>(A<object>._, A<string>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.PutFormat(A<object>._, A<string>._, A<string>._, A<object[]>._)).CallsBaseMethod();
-            A.CallTo(() => teamCityCaller.DeleteFormat(A<string>._, A<object[]>._)).CallsBaseMethod();
-            return teamCityCaller;
+            // Arrange
+            var teamCityCaller = A.Fake<ITeamCityCaller>();
+            A.CallTo(
+                    () =>
+                        teamCityCaller.GetFormat<ProjectWrapper>("/app/rest/projects/{0}", "name:exception"))
+                .Returns(new ProjectWrapper { Project = new List<Project>{new Project(), new Project()}, Count = "2" });
+
+            var projectsRetriever = new ProjectsRetriever(new BuildProjectHavingBuilderFactory(), teamCityCaller);
+
+            // Act
+            Action action = () => projectsRetriever.GetProject(project => project.Name("exception"));
+
+            // Assert
+            action.ShouldThrow<MoreThanOneProjectFoundException>();
+        }
+
+        [Test]
+        public void GetProject_NoProjects_ProjectNotFoundException()
+        {
+            // Arrange
+            var teamCityCaller = A.Fake<ITeamCityCaller>();
+            A.CallTo(
+                    () =>
+                        teamCityCaller.GetFormat<ProjectWrapper>(
+                            "/app/rest/projects?locator={0}",
+                            A<object[]>.That.IsSameSequenceAs(new[] { "enabled:False" })))
+                .Returns(new ProjectWrapper { Project = new List<Project>(), Count = "0" });
+
+            var projectsRetriever = new ProjectsRetriever(new BuildProjectHavingBuilderFactory(), teamCityCaller);
+
+            // Act
+            Action action = () => projectsRetriever.GetProject(project => project.Name("exception"));
+
+            // Assert
+            action.ShouldThrow<ProjectNotFoundException>();
         }
     }
 }
