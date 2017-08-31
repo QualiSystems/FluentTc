@@ -1650,10 +1650,61 @@ namespace FluentTc.Tests
             xmlData += @"</vcs-root>";
 
             A.CallTo(
-                () =>
-                    teamCityCaller.Post(xmlData,
-                    HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
-                        .MustHaveHappened(Repeated.Exactly.Once);
+                    () =>
+                        teamCityCaller.Post(xmlData,
+                            HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
+                .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void CreateVcsRootSsh()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.TeamcitySshKey)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .IgnoreKnownHosts()
+                .Name("VcsRootName")
+                .ProjectId("ProjectId")
+                .CheckoutSubModule()
+                .UploadedKey("keyName")
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates()
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Assert
+            string xmlData = string.Format(
+                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}""/> <properties count =""{4}"">",
+                SecurityElement.Escape(vcsRoot.Id),
+                SecurityElement.Escape(vcsRoot.Name),
+                SecurityElement.Escape(vcsRoot.vcsName),
+                SecurityElement.Escape(vcsRoot.Project.Id),
+                vcsRoot.Properties.Property.Count);
+
+            foreach (var property in vcsRoot.Properties.Property)
+            {
+                xmlData += @"<property name=""";
+                xmlData += SecurityElement.Escape(property.Name) + @"""";
+                xmlData += @" value=""" + SecurityElement.Escape(property.Value) + @"""/>";
+            }
+            xmlData += @"</properties>";
+
+            xmlData += @"</vcs-root>";
+
+            A.CallTo(
+                    () =>
+                        teamCityCaller.Post(xmlData,
+                            HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
+                .MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]

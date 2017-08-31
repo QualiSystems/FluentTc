@@ -23,7 +23,8 @@ namespace FluentTc.Locators
     public enum AuthMethod
     {
         Anonymous,
-        Password
+        Password,
+        TeamcitySshKey
     }
 
     public enum UserNameStyle
@@ -43,6 +44,7 @@ namespace FluentTc.Locators
         IGitVCSRootBuilder AgentCleanPolicy(AgentCleanPolicy value);
 
         IGitVCSRootBuilder AuthMethod(AuthMethod value);
+        IGitVCSRootBuilder UploadedKey(string value);
 
         IGitVCSRootBuilder Branch(string value);
         IGitVCSRootBuilder IgnoreKnownHosts();
@@ -122,6 +124,12 @@ namespace FluentTc.Locators
         public IGitVCSRootBuilder AuthMethod(AuthMethod value)
         {
             AppendProperty(value);
+            return this;
+        }
+
+        public IGitVCSRootBuilder UploadedKey(string value)
+        {
+            AppendProperty("teamcitySshKey", value);
             return this;
         }
 
