@@ -1609,11 +1609,10 @@ namespace FluentTc.Tests
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
-
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
+            connectedTc.CreateVcsRoot(__ => __
                 .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
                 .AgentCleanPolicy(AgentCleanPolicy.Always)
                 .AuthMethod(AuthMethod.Anonymous)
@@ -1631,23 +1630,8 @@ namespace FluentTc.Tests
                 .UserNameStyle(UserNameStyle.AuthorName));
 
             // Assert
-            string xmlData = string.Format(
-                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}""/> <properties count =""{4}"">",
-                SecurityElement.Escape(vcsRoot.Id),
-                SecurityElement.Escape(vcsRoot.Name),
-                SecurityElement.Escape(vcsRoot.vcsName),
-                SecurityElement.Escape(vcsRoot.Project.Id),
-                vcsRoot.Properties.Property.Count);
-
-            foreach (var property in vcsRoot.Properties.Property)
-            {
-                xmlData += @"<property name=""";
-                xmlData += SecurityElement.Escape(property.Name) + @"""";
-                xmlData += @" value=""" + SecurityElement.Escape(property.Value) + @"""/>";
-            }
-            xmlData += @"</properties>";
-
-            xmlData += @"</vcs-root>";
+            string xmlData =
+                "<vcs-root id=\"VcsRootId\" name=\"VcsRootName\" vcsName=\"jetbrains.git\"> <project id=\"ProjectId\"/> <properties count =\"12\"><property name=\"agentCleanFilePolicy\" value=\"ALL_IGNORED_UNTRACKED_FILES\"/><property name=\"agentCleanPolicy\" value=\"ALWAYS\"/><property name=\"authMethod\" value=\"ANONYMOUS\"/><property name=\"branch\" value=\"refs/head/develop\"/><property name=\"teamcity:branchSpec\" value=\"+:refs/head/feature/*\"/><property name=\"ignoreKnownHosts\" value=\"true\"/><property name=\"secure:password\" value=\"Password\"/><property name=\"submoduleCheckout\" value=\"CHECKOUT\"/><property name=\"url\" value=\"http://www.gooogle.com/\"/><property name=\"useAlternates\" value=\"true\"/><property name=\"username\" value=\"Username\"/><property name=\"userNameStyle\" value=\"AUTHOR_NAME\"/></properties></vcs-root>";
 
             A.CallTo(
                     () =>
@@ -1661,11 +1645,10 @@ namespace FluentTc.Tests
         {
             // Arrange
             var teamCityCaller = CreateTeamCityCaller();
-
             var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
 
             // Act
-            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
+            connectedTc.CreateVcsRoot(__ => __
                 .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
                 .AgentCleanPolicy(AgentCleanPolicy.Always)
                 .AuthMethod(AuthMethod.TeamcitySshKey)
@@ -1682,23 +1665,8 @@ namespace FluentTc.Tests
                 .UserNameStyle(UserNameStyle.AuthorName));
 
             // Assert
-            string xmlData = string.Format(
-                @"<vcs-root id=""{0}"" name=""{1}"" vcsName=""{2}""> <project id=""{3}""/> <properties count =""{4}"">",
-                SecurityElement.Escape(vcsRoot.Id),
-                SecurityElement.Escape(vcsRoot.Name),
-                SecurityElement.Escape(vcsRoot.vcsName),
-                SecurityElement.Escape(vcsRoot.Project.Id),
-                vcsRoot.Properties.Property.Count);
-
-            foreach (var property in vcsRoot.Properties.Property)
-            {
-                xmlData += @"<property name=""";
-                xmlData += SecurityElement.Escape(property.Name) + @"""";
-                xmlData += @" value=""" + SecurityElement.Escape(property.Value) + @"""/>";
-            }
-            xmlData += @"</properties>";
-
-            xmlData += @"</vcs-root>";
+            var xmlData =
+                "<vcs-root id=\"VcsRootId\" name=\"VcsRootName\" vcsName=\"jetbrains.git\"> <project id=\"ProjectId\"/> <properties count =\"11\"><property name=\"agentCleanFilePolicy\" value=\"ALL_IGNORED_UNTRACKED_FILES\"/><property name=\"agentCleanPolicy\" value=\"ALWAYS\"/><property name=\"authMethod\" value=\"TEAMCITY_SSH_KEY\"/><property name=\"branch\" value=\"refs/head/develop\"/><property name=\"teamcity:branchSpec\" value=\"+:refs/head/feature/*\"/><property name=\"ignoreKnownHosts\" value=\"true\"/><property name=\"submoduleCheckout\" value=\"CHECKOUT\"/><property name=\"teamcitySshKey\" value=\"keyName\"/><property name=\"url\" value=\"http://www.gooogle.com/\"/><property name=\"useAlternates\" value=\"true\"/><property name=\"userNameStyle\" value=\"AUTHOR_NAME\"/></properties></vcs-root>";
 
             A.CallTo(
                     () =>
