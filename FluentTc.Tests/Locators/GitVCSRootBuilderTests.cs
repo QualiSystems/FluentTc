@@ -78,7 +78,7 @@ namespace FluentTc.Tests.Locators
             var vcsRootBuilder = new GitVCSRootBuilder();
             vcsRootBuilder
                 .AuthMethod(AuthMethod.TeamcitySshKey)
-                .UploadedKey("keyName");
+                .TeamcitySshKey("keyName");
             var vcsRoot = vcsRootBuilder.GetVCSRoot();
 
             // Assert

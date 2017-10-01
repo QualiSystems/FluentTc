@@ -1659,7 +1659,7 @@ namespace FluentTc.Tests
                 .Name("VcsRootName")
                 .ProjectId("ProjectId")
                 .CheckoutSubModule()
-                .UploadedKey("keyName")
+                .TeamcitySshKey("keyName")
                 .Url(new Uri("http://www.gooogle.com"))
                 .UseAlternates()
                 .UserNameStyle(UserNameStyle.AuthorName));

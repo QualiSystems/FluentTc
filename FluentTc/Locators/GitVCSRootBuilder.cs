@@ -44,7 +44,7 @@ namespace FluentTc.Locators
         IGitVCSRootBuilder AgentCleanPolicy(AgentCleanPolicy value);
 
         IGitVCSRootBuilder AuthMethod(AuthMethod value);
-        IGitVCSRootBuilder UploadedKey(string value);
+        IGitVCSRootBuilder TeamcitySshKey(string value);
 
         IGitVCSRootBuilder Branch(string value);
         IGitVCSRootBuilder IgnoreKnownHosts();
@@ -127,7 +127,7 @@ namespace FluentTc.Locators
             return this;
         }
 
-        public IGitVCSRootBuilder UploadedKey(string value)
+        public IGitVCSRootBuilder TeamcitySshKey(string value)
         {
             AppendProperty("teamcitySshKey", value);
             return this;
