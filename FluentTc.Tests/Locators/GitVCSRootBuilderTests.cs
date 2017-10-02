@@ -2,7 +2,6 @@
 using FluentTc.Locators;
 using NUnit.Framework;
 using System;
-using System.Linq;
 
 namespace FluentTc.Tests.Locators
 {
@@ -37,42 +36,55 @@ namespace FluentTc.Tests.Locators
             vcsRoot.Name.Should().Be("name");
             vcsRoot.Project.Id.Should().Be("projectId");
             var properties = vcsRoot.Properties.Property;
-            properties.FirstOrDefault(
-                p => p.Name == "agentCleanFilePolicy" && 
-                p.Value == "ALL_IGNORED_UNTRACKED_FILES").Should().NotBeNull();
-            properties.FirstOrDefault(
+            properties.Should().ContainSingle(
                 p => p.Name == "agentCleanPolicy" &&
-                p.Value == "ALWAYS").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "ALWAYS");
+            properties.Should().ContainSingle(
                 p => p.Name == "authMethod" &&
-                p.Value == "ANONYMOUS").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "ANONYMOUS");
+            properties.Should().ContainSingle(
                 p => p.Name == "branch" &&
-                p.Value == "branch").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "branch");
+            properties.Should().ContainSingle(
                 p => p.Name == "teamcity:branchSpec" &&
-                p.Value == "branchSpec").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "branchSpec");
+            properties.Should().ContainSingle(
                 p => p.Name == "submoduleCheckout" &&
-                p.Value == "CHECKOUT").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "CHECKOUT");
+            properties.Should().ContainSingle(
                 p => p.Name == "ignoreKnownHosts" &&
-                p.Value == "true").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "true");
+            properties.Should().ContainSingle(
                 p => p.Name == "secure:password" &&
-                p.Value == "password").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "password");
+            properties.Should().ContainSingle(
                 p => p.Name == "url" &&
-                p.Value == url.ToString()).Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == url.ToString());
+            properties.Should().ContainSingle(
                 p => p.Name == "useAlternates" &&
-                p.Value == "true").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "true");
+            properties.Should().ContainSingle(
                 p => p.Name == "username" &&
-                p.Value == "username").Should().NotBeNull();
-            properties.FirstOrDefault(
+                     p.Value == "username");
+            properties.Should().ContainSingle(
                 p => p.Name == "userNameStyle" &&
-                p.Value == "AUTHOR_NAME").Should().NotBeNull();
+                     p.Value == "AUTHOR_NAME");
+        }
+
+        [Test]
+        public void GetVCSRoot_SshKey_SshKeyCreated()
+        {
+            // Act
+            var vcsRootBuilder = new GitVCSRootBuilder();
+            vcsRootBuilder
+                .AuthMethod(AuthMethod.TeamcitySshKey)
+                .TeamcitySshKey("keyName");
+            var vcsRoot = vcsRootBuilder.GetVCSRoot();
+
+            // Assert
+            vcsRoot.Properties.Property.Should()
+                .ContainSingle(p => p.Name == "authMethod" && p.Value == "TEAMCITY_SSH_KEY");
+            vcsRoot.Properties.Property.Should().ContainSingle(p => p.Name == "teamcitySshKey" && p.Value == "keyName");
         }
     }
 }
