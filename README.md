@@ -74,9 +74,9 @@ bool isPersonal = localTc.IsPersonal;
 localTc.ChangeBuildStatus(BuildStatus.Success);
 ```
 
-# Quick Links
-* Documentation [https://github.com/QualiSystems/FluentTc/wiki](https://github.com/QualiSystems/FluentTc/wiki)
-* Questions [https://stackoverflow.com/questions/tagged/fluenttc](https://stackoverflow.com/questions/tagged/fluenttc)
+## Quick Links
+* Documentation: [https://github.com/QualiSystems/FluentTc/wiki](https://github.com/QualiSystems/FluentTc/wiki)
+* Questions: [https://stackoverflow.com/questions/tagged/fluenttc](https://stackoverflow.com/questions/tagged/fluenttc)
 * Bug/Feature Tracking: [https://github.com/QualiSystems/FluentTc/issues](https://github.com/QualiSystems/FluentTc/issues)
 * Build status: [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) 
 * Code coverage: [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)  
