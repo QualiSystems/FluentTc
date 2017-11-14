@@ -2,7 +2,7 @@
 Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity
 
 ## Installation
-Install with NuGet [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc) 
+Run from NuGet Package Manager console: 
 ```PowerShell
 PM > Install-Package FluentTc
 ```
@@ -78,8 +78,11 @@ localTc.ChangeBuildStatus(BuildStatus.Success);
 * Documentation: [https://github.com/QualiSystems/FluentTc/wiki](https://github.com/QualiSystems/FluentTc/wiki)
 * Questions: [https://stackoverflow.com/questions/tagged/fluenttc](https://stackoverflow.com/questions/tagged/fluenttc)
 * Bug/Feature Tracking: [https://github.com/QualiSystems/FluentTc/issues](https://github.com/QualiSystems/FluentTc/issues)
-* Build status: [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) 
-* Code coverage: [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)  
+
+## Project status
+* Continuous Integration: [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) 
+* Code Coverage: [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)  
+* Downloads: [![NuGet](https://img.shields.io/nuget/dt/fluenttc.svg)]()
 
 ## Contribute
 The best way to contribute is by **spreading the word** about the library:
