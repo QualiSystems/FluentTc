@@ -4,7 +4,7 @@ Easy-to-use, readable and comprehensive library for consuming TeamCity REST API.
 ## Installation
 Install with NuGet [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc) 
 ```PowerShell
-PM > Install-Package FluentAssertions
+PM > Install-Package FluentTc
 ```
 
 ## Usage
