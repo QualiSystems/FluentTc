@@ -1,4 +1,5 @@
 using System;
+using JsonFx.Json;
 
 namespace FluentTc.Domain
 {
@@ -11,7 +12,7 @@ namespace FluentTc.Domain
         public string Version { get; set; }
         public DateTime Date { get; set; }
         public string Comment { get; set; }
-
+        public string VcsBranchName { get; set; }
         public FileWrapper Files { get; set; }
 
         public User User { get; set; }
