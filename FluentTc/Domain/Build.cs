@@ -19,6 +19,7 @@ namespace FluentTc.Domain
         List<Change> Changes { get; }
         string WebUrl { get; }
         Properties Properties { get; }
+        RevisionsWrapper Revisions { get; }
         void SetChanges(List<Change> changes);
         void SetBuildConfiguration(BuildConfiguration buildConfiguration);
     }
@@ -37,11 +38,12 @@ namespace FluentTc.Domain
         private readonly BuildState? m_State;
         private readonly string m_WebUrl;
         private readonly Properties m_Properties;
+        private readonly RevisionsWrapper m_Revisions;
         private ITestOccurrences m_TestOccurrences;
 
         public Build(long id, string number, BuildStatus? status, DateTime startDate, DateTime finishDate,
             DateTime queuedDate, BuildConfiguration buildConfiguration, Agent agent, List<Change> changes, string webUrl,
-            Properties properties, ITestOccurrences testOccurrences, BuildState? state)
+            Properties properties, ITestOccurrences testOccurrences, BuildState? state, RevisionsWrapper revisions)
         {
             m_Id = id;
             m_Number = number;
@@ -56,6 +58,7 @@ namespace FluentTc.Domain
             m_Changes = changes;
             m_WebUrl = webUrl;
             m_Properties = properties;
+            m_Revisions = revisions;
         }
 
         public long Id
@@ -91,6 +94,11 @@ namespace FluentTc.Domain
         public DateTime QueuedDate
         {
             get { return m_QueuedDate; }
+        }
+
+        public RevisionsWrapper Revisions
+        {
+            get { return m_Revisions; }
         }
 
         public BuildConfiguration BuildConfiguration

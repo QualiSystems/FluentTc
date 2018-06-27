@@ -17,7 +17,7 @@ namespace FluentTc.Tests.Domain
             var build = new Build(1, "2", BuildStatus.Success, new DateTime(), new DateTime(), new DateTime(), null,
                 null,
                 new List<Change>(), "",
-                null, new TestOccurrences { Count = 0 }, BuildState.Finished);
+                null, new TestOccurrences { Count = 0 }, BuildState.Finished, new RevisionsWrapper());
 
             // Act
             build.SetBuildConfiguration(new BuildConfiguration {Id = "ConfigId"});
