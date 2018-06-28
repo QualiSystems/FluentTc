@@ -140,7 +140,7 @@ namespace FluentTc.Tests
             // Assert
             build.Id.Should().Be(123);
             build.Revisions.Should().NotBeNull();
-            build.Revisions.Count.Should().Be(1);
+            build.Revisions.Revision.Count.Should().Be(1);
             build.Revisions.Revision.First().VcsBranchName.Should().Be("refs/head/master");
         }
 
