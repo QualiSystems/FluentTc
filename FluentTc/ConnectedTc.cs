@@ -88,6 +88,8 @@ namespace FluentTc
 
         IBuild GetBuild(long buildId);
 
+        Properties GetBuildProperties(long buildId);
+
         BuildConfiguration GetBuildConfiguration(Action<IBuildConfigurationHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurations(Action<IBuildConfigurationHavingBuilder> having);
 
@@ -274,6 +276,11 @@ namespace FluentTc
             return GetBuild(having, _ => _.IncludeDefaults());
         }
 
+        public Properties GetBuildProperties(long buildId)
+        {
+            return m_BuildsRetriever.GetBuildProperties(buildId);
+        }
+        
         public IBuild GetLastBuild(Action<IBuildHavingBuilder> having)
         {
             return GetLastBuild(having, _ => { });
