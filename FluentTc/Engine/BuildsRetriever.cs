@@ -12,6 +12,8 @@ namespace FluentTc.Engine
 
         IList<IBuild> GetBuildsQueue(Action<IQueueHavingBuilder> having = null);
         IBuild GetBuild(long buildId);
+        Properties GetBuildProperties(long buildId);
+
     }
 
     internal class BuildsRetriever : IBuildsRetriever
@@ -64,6 +66,11 @@ namespace FluentTc.Engine
         {
             var buildModel = m_Caller.GetFormat<BuildModel>("/app/rest/builds/id:{0}", buildId);
             return m_BuildModelToBuildConverter.ConvertToBuild(buildModel);
+        }
+        
+        public Properties GetBuildProperties(long buildId)
+        {
+            return m_Caller.GetFormat<Properties>("/app/rest/builds/id:{0}/resulting-properties", buildId);
         }
 
         private BuildWrapper GetBuildWrapper(BuildHavingBuilder buildHavingBuilder, CountBuilder countBuilder,
