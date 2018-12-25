@@ -1,9 +1,13 @@
-﻿[![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) [![NuGet version](https://badge.fury.io/nu/FluentTc.svg)](https://badge.fury.io/nu/FluentTc)  [![Stories in Ready](https://badge.waffle.io/QualiSystems/FluentTc.png?label=ready&title=Ready)](https://waffle.io/QualiSystems/FluentTc)
-
 # FluentTc 
-Integrate with TeamCity fluently
+Easy-to-use, readable and comprehensive library for consuming TeamCity REST API. Written using real scenarios in mind, enables variuos range of queries and operation on TeamCity
 
-# Getting Started
+## Installation
+Run from NuGet Package Manager console: 
+```PowerShell
+PM > Install-Package FluentTc
+```
+
+## Usage
 Get TeamCity builds with branches, status, start and finish date and paging
 ```C#
 IList<IBuild> builds =
@@ -26,7 +30,7 @@ IList<IBuild> builds =
                 .Count(10));
 ```
 
-Run custom build
+Run build on build configuration FluentTc on agent Agent1 with parameters on branch develop, with comment 'personal build on develop', as a personal build, queue on top, rebuild all dependencies on change 123456
 ```C#
 IBuild build = new RemoteTc()
     .Connect(connect => connect
@@ -70,27 +74,30 @@ bool isPersonal = localTc.IsPersonal;
 localTc.ChangeBuildStatus(BuildStatus.Success);
 ```
 
-# Dive In
+## Quick Links
+* Documentation: [https://github.com/QualiSystems/FluentTc/wiki](https://github.com/QualiSystems/FluentTc/wiki)
+* Questions: [https://stackoverflow.com/questions/tagged/fluenttc](https://stackoverflow.com/questions/tagged/fluenttc)
+* Bug/Feature Tracking: [https://github.com/QualiSystems/FluentTc/issues](https://github.com/QualiSystems/FluentTc/issues)
 
-* For more examples and documentation read the [Wiki](https://github.com/QualiSystems/FluentTc/wiki)
+## Project status
+* Continuous Integration: [![build status](http://teamcity.codebetter.com/app/rest/builds/buildType:id:FluentTc/statusIcon)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1) 
+* Code Coverage: [![code coverage](https://img.shields.io/teamcity/coverage/FluentTc.svg)](http://teamcity.codebetter.com/viewType.html?buildTypeId=FluentTc&guest=1)  
+* Downloads: [![NuGet](https://img.shields.io/nuget/dt/fluenttc.svg)]()
 
-* For questions and discussions chat on Gitter:  [![Chat on gitter](https://img.shields.io/gitter/room/QualiSystems/FluentTc.svg)](https://gitter.im/QualiSystems/FluentTc)
+## Contribute
+The best way to contribute is by **spreading the word** about the library:
 
+ - Blog it
+ - Comment it
+ - Fork it
+ - Star it
+ - Share it
+ 
+A **HUGE THANKS** for your help.
 
-# Download
-
-The easiest way to get __FluentTc__ is through Nuget: Visual Studio -> Manage Nuget packages or from Nuget Package Manager Console:
-
-
-# Get Involved
-* For reporting bugs, create an issue on [Github issues](https://github.com/QualiSystems/FluentTc/issues)
-* For contribution fork and submit a change via Pull Request 
-
-## Versioning
-FluentTc adheres to [Semantic Versioning 2.0.0](http://semver.org/), basically means that there are no breaking changes unless the version is 0.x or major version is promoted. 
+## Contributors
+FluentTc keeps growing with the support of of [contributors](https://github.com/QualiSystems/FluentTc/graphs/contributors)
 
 ## License
-FluentTc is released under [Apache License 2.0](https://github.com/QualiSystems/FluentTc/blob/master/LICENSE)
+[Apache License 2.0](https://github.com/QualiSystems/FluentTc/blob/master/LICENSE)
 
-## Credits
-FluentTc project keeps growing with the support of growing comminity of [contributors](https://github.com/QualiSystems/FluentTc/graphs/contributors)

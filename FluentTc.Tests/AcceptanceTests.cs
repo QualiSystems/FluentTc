@@ -8,6 +8,7 @@ using FluentTc.Domain;
 using FluentTc.Engine;
 using FluentTc.Locators;
 using NUnit.Framework;
+using System.Security;
 
 namespace FluentTc.Tests
 {
@@ -1597,6 +1598,123 @@ namespace FluentTc.Tests
                 () =>
                     teamCityCaller.Put(name,
                     HttpContentTypes.TextPlain, "/app/rest/buildTypes/id:BuildId/name", string.Empty))
+                        .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+
+
+
+        [Test]
+        public void CreateVcsRoot()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.CreateVcsRoot(__ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.Anonymous)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .IgnoreKnownHosts()
+                .Name("VcsRootName")
+                .Password("Password")
+                .ProjectId("ProjectId")
+                .CheckoutSubModule()
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates()
+                .Username("Username")
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Assert
+            string xmlData =
+                "<vcs-root id=\"VcsRootId\" name=\"VcsRootName\" vcsName=\"jetbrains.git\"> <project id=\"ProjectId\"/> <properties count =\"12\"><property name=\"agentCleanFilePolicy\" value=\"ALL_IGNORED_UNTRACKED_FILES\"/><property name=\"agentCleanPolicy\" value=\"ALWAYS\"/><property name=\"authMethod\" value=\"ANONYMOUS\"/><property name=\"branch\" value=\"refs/head/develop\"/><property name=\"teamcity:branchSpec\" value=\"+:refs/head/feature/*\"/><property name=\"ignoreKnownHosts\" value=\"true\"/><property name=\"secure:password\" value=\"Password\"/><property name=\"submoduleCheckout\" value=\"CHECKOUT\"/><property name=\"url\" value=\"http://www.gooogle.com/\"/><property name=\"useAlternates\" value=\"true\"/><property name=\"username\" value=\"Username\"/><property name=\"userNameStyle\" value=\"AUTHOR_NAME\"/></properties></vcs-root>";
+
+            A.CallTo(
+                    () =>
+                        teamCityCaller.Post(xmlData,
+                            HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
+                .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void CreateVcsRootSsh()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            connectedTc.CreateVcsRoot(__ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.TeamcitySshKey)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .IgnoreKnownHosts()
+                .Name("VcsRootName")
+                .ProjectId("ProjectId")
+                .CheckoutSubModule()
+                .TeamcitySshKey("keyName")
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates()
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Assert
+            var xmlData =
+                "<vcs-root id=\"VcsRootId\" name=\"VcsRootName\" vcsName=\"jetbrains.git\"> <project id=\"ProjectId\"/> <properties count =\"11\"><property name=\"agentCleanFilePolicy\" value=\"ALL_IGNORED_UNTRACKED_FILES\"/><property name=\"agentCleanPolicy\" value=\"ALWAYS\"/><property name=\"authMethod\" value=\"TEAMCITY_SSH_KEY\"/><property name=\"branch\" value=\"refs/head/develop\"/><property name=\"teamcity:branchSpec\" value=\"+:refs/head/feature/*\"/><property name=\"ignoreKnownHosts\" value=\"true\"/><property name=\"submoduleCheckout\" value=\"CHECKOUT\"/><property name=\"teamcitySshKey\" value=\"keyName\"/><property name=\"url\" value=\"http://www.gooogle.com/\"/><property name=\"useAlternates\" value=\"true\"/><property name=\"userNameStyle\" value=\"AUTHOR_NAME\"/></properties></vcs-root>";
+
+            A.CallTo(
+                    () =>
+                        teamCityCaller.Post(xmlData,
+                            HttpContentTypes.ApplicationXml, "/app/rest/vcs-roots", HttpContentTypes.ApplicationJson))
+                .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void AttachVcsRoot()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            var vcsRoot = connectedTc.CreateVcsRoot(__ => __
+                .AgentCleanFilePolicy(AgentCleanFilePolicy.AllIgnoredUntrackedFiles)
+                .AgentCleanPolicy(AgentCleanPolicy.Always)
+                .AuthMethod(AuthMethod.Anonymous)
+                .Branch("refs/head/develop")
+                .BranchSpec("+:refs/head/feature/*")
+                .Id("VcsRootId")
+                .Name("VcsRootName")
+                .Password("Password")
+                .ProjectId("ProjectId")
+                .CheckoutSubModule()
+                .Url(new Uri("http://www.gooogle.com"))
+                .UseAlternates()
+                .Username("Username")
+                .UserNameStyle(UserNameStyle.AuthorName));
+
+            // Act
+            connectedTc.AttachVcsRootToBuildConfiguration(
+                _ => _.Id("BuildId"), 
+                _ => _.Id(vcsRoot.Id)
+                      .CheckoutRules("CheckoutRules"));
+
+            // Assert
+            string xmlData = string.Format(
+                @"<vcs-root-entry id=""{0}"">
+                    <vcs-root id=""{0}""/>                    
+                    <checkout-rules>{1}</checkout-rules>
+                </vcs-root-entry>", vcsRoot.Id, "CheckoutRules");
+            A.CallTo(
+                () =>
+                    teamCityCaller.Post(xmlData,
+                    HttpContentTypes.ApplicationXml, "/app/rest/buildTypes/id:BuildId/vcs-root-entries", string.Empty))
                         .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
