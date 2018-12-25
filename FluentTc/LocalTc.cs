@@ -227,7 +227,8 @@ namespace FluentTc
         /// </param>
         public void PublishArtifact(string fileDirectoryName, string targetDirectoryArchive)
         {
-            m_TeamCityWriter.PublishArtifact($"{fileDirectoryName} => {targetDirectoryArchive}");
+            // ReSharper disable once UseStringInterpolation
+            m_TeamCityWriter.PublishArtifact(string.Format("{0} => {1}", fileDirectoryName, targetDirectoryArchive));
         }
     }
 }
