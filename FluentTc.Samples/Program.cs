@@ -7,9 +7,9 @@ namespace FluentTc.Samples
 {
     internal static class Program
     {
-        private const string TeamCityHost = "";
-        private static readonly string Username = "";
-        private static readonly string Password = "";
+        private const string TeamCityHost = "tc";
+        private static readonly string Username = "buser";
+        private static readonly string Password = "qaz$9512";
 
         private static void Main(string[] args)
         {
