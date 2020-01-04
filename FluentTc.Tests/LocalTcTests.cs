@@ -183,5 +183,39 @@ namespace FluentTc.Tests
             // Assert
             isPersonal.Should().BeFalse();
         }
+
+        [Test]
+        public void PublishArtifact_FileName_Published()
+        {
+            // Arrange
+            var teamCityWriterFactory = A.Fake<ITeamCityWriterFactory>();
+            var teamCityWriter = A.Fake<ITeamCityWriter>();
+            A.CallTo(() => teamCityWriterFactory.CreateTeamCityWriter()).Returns(teamCityWriter);
+
+            var localTc = new LocalTc(A.Fake<IBuildParameters>(), teamCityWriterFactory);
+
+            // Act
+            localTc.PublishArtifact("file.txt");
+
+            // Assert
+            A.CallTo(()=>teamCityWriter.PublishArtifact("file.txt")).MustHaveHappened();
+        }
+
+        [Test]
+        public void PublishArtifact_FileNameAndTarget_Published()
+        {
+            // Arrange
+            var teamCityWriterFactory = A.Fake<ITeamCityWriterFactory>();
+            var teamCityWriter = A.Fake<ITeamCityWriter>();
+            A.CallTo(() => teamCityWriterFactory.CreateTeamCityWriter()).Returns(teamCityWriter);
+
+            var localTc = new LocalTc(A.Fake<IBuildParameters>(), teamCityWriterFactory);
+
+            // Act
+            localTc.PublishArtifact("file.txt", "dir");
+
+            // Assert
+            A.CallTo(()=>teamCityWriter.PublishArtifact("file.txt => dir")).MustHaveHappened();
+        }
     }
 }

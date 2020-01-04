@@ -31,6 +31,31 @@ namespace FluentTc
         bool IsTeamCityMode { get; }
         bool IsPersonal { get; }
         void SetBuildParameter(string parameterName, string parameterValue);
+
+        /// <summary>
+        /// Attaches new artifact publishing rules as described in
+        /// http://confluence.jetbrains.net/display/TCD7/Build+Artifact
+        /// </summary>
+        /// <param name="fileDirectoryName">
+        /// Filename to publish. The file name should be relative to the build checkout directory.
+        /// Directory name to publish all the files and subdirectories within the directory specified. The directory name should be a path relative to the build checkout directory. The files will be published preserving the directories structure under the directory specified (the directory itself will not be included).
+        /// </param>
+        void PublishArtifact(string fileDirectoryName);
+
+        /// <summary>
+        /// Attaches new artifact publishing rules as described in
+        /// http://confluence.jetbrains.net/display/TCD7/Build+Artifact
+        /// </summary>
+        /// <param name="fileDirectoryName">
+        /// Filename to publish. The file name should be relative to the build checkout directory.
+        /// Directory name to publish all the files and subdirectories within the directory specified. The directory name should be a path relative to the build checkout directory. The files will be published preserving the directories structure under the directory specified (the directory itself will not be included).
+        /// </param>
+        /// <param name="targetDirectoryArchive">
+        /// Target directory - the directory in the resulting build's artifacts that will contain the files determined by the left part of the pattern.
+        /// Target archive - the path to the archive to be created by TeamCity by packing build artifacts.
+        /// TeamCity treats <paramref name="targetDirectoryArchive"/> as archive whenever it ends with a supported archive extension, i.e. .zip, .jar, .tar.gz, or .tgz.
+        /// </param>
+        void PublishArtifact(string fileDirectoryName, string targetDirectoryArchive);
     }
 
     public class LocalTc : ILocalTc
@@ -172,6 +197,38 @@ namespace FluentTc
         public bool IsPersonal
         {
             get { return m_BuildParameters.IsPersonal; }
+        }
+
+        /// <summary>
+        /// Attaches new artifact publishing rules as described in
+        /// http://confluence.jetbrains.net/display/TCD7/Build+Artifact
+        /// </summary>
+        /// <param name="fileDirectoryName">
+        /// Filename to publish. The file name should be relative to the build checkout directory.
+        /// Directory name to publish all the files and subdirectories within the directory specified. The directory name should be a path relative to the build checkout directory. The files will be published preserving the directories structure under the directory specified (the directory itself will not be included).
+        /// </param>
+        public void PublishArtifact(string fileDirectoryName)
+        {
+            m_TeamCityWriter.PublishArtifact(fileDirectoryName);
+        }
+
+        /// <summary>
+        /// Attaches new artifact publishing rules as described in
+        /// http://confluence.jetbrains.net/display/TCD7/Build+Artifact
+        /// </summary>
+        /// <param name="fileDirectoryName">
+        /// Filename to publish. The file name should be relative to the build checkout directory.
+        /// Directory name to publish all the files and subdirectories within the directory specified. The directory name should be a path relative to the build checkout directory. The files will be published preserving the directories structure under the directory specified (the directory itself will not be included).
+        /// </param>
+        /// <param name="targetDirectoryArchive">
+        /// Target directory - the directory in the resulting build's artifacts that will contain the files determined by the left part of the pattern.
+        /// Target archive - the path to the archive to be created by TeamCity by packing build artifacts.
+        /// TeamCity treats <paramref name="targetDirectoryArchive"/> as archive whenever it ends with a supported archive extension, i.e. .zip, .jar, .tar.gz, or .tgz.
+        /// </param>
+        public void PublishArtifact(string fileDirectoryName, string targetDirectoryArchive)
+        {
+            // ReSharper disable once UseStringInterpolation
+            m_TeamCityWriter.PublishArtifact(string.Format("{0} => {1}", fileDirectoryName, targetDirectoryArchive));
         }
     }
 }
