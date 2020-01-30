@@ -129,7 +129,18 @@ namespace FluentTc
         void DisableAgent(Action<IAgentHavingBuilder> having);
         void EnableAgent(Action<IAgentHavingBuilder> having);
         void AttachBuildConfigurationToTemplate(Action<IBuildConfigurationHavingBuilder> having, string buildTemplateId);
+        /// <summary>
+        ///     Retrieves a project that has the projectId as an Id.
+        /// </summary>
+        /// <param name="projectId">The expected id for the wanted project.</param>
+        /// <returns>Project</returns>
         Project GetProjectById(string projectId);
+        /// <summary>
+        ///     Retrieves a project that matches having parameter.
+        /// </summary>
+        /// <param name="having">Retrieve project that matches the criteria</param>
+        /// <returns>Project</returns>
+        Project GetProject(Action<IBuildProjectHavingBuilder> having);
         IList<BuildConfiguration> GetBuildConfigurationsRecursively(string projectId);
         IList<Project> GetAllProjects();
         IList<string> DownloadArtifacts(int buildId, string destinationPath);
@@ -404,6 +415,11 @@ namespace FluentTc
         public Project GetProjectById(string projectId)
         {
             return m_ProjectsRetriever.GetProject(projectId);
+        }
+
+        public Project GetProject(Action<IBuildProjectHavingBuilder> having)
+        {
+            return m_ProjectsRetriever.GetProject(having);
         }
 
         public IList<Project> GetProjects(Action<IBuildProjectHavingBuilder> having)

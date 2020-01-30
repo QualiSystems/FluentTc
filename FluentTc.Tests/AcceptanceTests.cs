@@ -1194,7 +1194,43 @@ namespace FluentTc.Tests
 
             // Assert
             A.CallTo(() => teamCityCaller.Get<ProjectWrapper>(@"/app/rest/projects/")).MustHaveHappened();
-        }    
+        }
+
+        [TestCase("FluentTC")]
+        [TestCase("Test 1")]
+        public void GetProject_ByName(string projectName)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._))
+                .Returns(new ProjectWrapper { Count = "1", Project = new List<Project> { new Project{Name = projectName} } });
+            //Act
+            var result = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller)
+                .GetProject(project => project.Name(projectName));
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Name.Should().Be(projectName);
+        }
+
+        [TestCase("1234")]
+        [TestCase("ABcd")]
+        [TestCase("129@$$jd")]
+        public void GetProject_ById(string projectId)
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(() => teamCityCaller.GetFormat<ProjectWrapper>(A<string>._, A<object[]>._))
+            .Returns(new ProjectWrapper { Count = "1", Project = new List<Project> { new Project{Id = projectId}} });
+
+            //Act
+            var result = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller)
+                .GetProject(project => project.Name(projectId));
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Id.Should().Be(projectId);
+        }
 
         [Test]
         public void GetAllBuildConfigurationTemplates()

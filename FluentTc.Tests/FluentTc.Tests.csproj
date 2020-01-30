@@ -137,6 +137,7 @@
     <Compile Include="Locators\TeamCityConfigurationBuilderTests.cs" />
     <Compile Include="Locators\UserHavingBuilderTests.cs" />
     <Compile Include="Locators\VCSRootEntryBuilderTests.cs" />
+    <Compile Include="ProjectRetrievalTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteTcTests.cs" />
     <Compile Include="AgentsRetrieverTests.cs" />
