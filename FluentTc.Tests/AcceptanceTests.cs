@@ -112,6 +112,39 @@ namespace FluentTc.Tests
         }
 
         [Test]
+        public void GetBuildWithRevisions()
+        {
+            // Arrange
+            var teamCityCaller = CreateTeamCityCaller();
+            A.CallTo(() => teamCityCaller.Get<BuildModel>("/app/rest/builds/id:123")).Returns(new BuildModel
+            {
+                Id = 123,
+                Status = "SUCCESS",
+                Revisions = new RevisionsWrapper()
+                {
+                    Revision = new List<Change>
+                    {
+                        new Change
+                        {
+                            VcsBranchName = "refs/head/master"
+                        }
+                    }
+                }
+            });
+
+            var connectedTc = new RemoteTc().Connect(_ => _.AsGuest(), teamCityCaller);
+
+            // Act
+            var build = connectedTc.GetBuild(123);
+
+            // Assert
+            build.Id.Should().Be(123);
+            build.Revisions.Should().NotBeNull();
+            build.Revisions.Revision.Count.Should().Be(1);
+            build.Revisions.Revision.First().VcsBranchName.Should().Be("refs/head/master");
+        }
+
+        [Test]
         public void GetBuildFullResponse_TestOccurrences_Build()
         {
             // Arrange
